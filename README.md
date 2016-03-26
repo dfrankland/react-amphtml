@@ -13,14 +13,14 @@ import amphtml from 'react-amphtml';
 var amphtml = require('react-amphtml').default;
 ```
 
-### `amphtml(*component-name*, *callback*)`
-Returns a React component of the requested `*component-name*`.
+### `amphtml('component-name', callback)`
+Returns a React component of the requested `'component-name'`.
 
-#### `*component-name*`
-Pass the name of the amphtml component without the `amp-` prefix. Throws exception if it doesn't exist.
-Ex: `facebook`, `font`, `list`, `img`
+#### `'component-name'`
+Pass a string of the name of the amphtml component without the `amp-` prefix. Throws exception if it doesn't exist.
+Ex: `'facebook'`, `'font'`, `'list'`, `'img'`
 
-#### `*callback*`
+#### `callback`
 Function that will be called with an argument passed containing an object of the amphtml component name and script URL.
 Will only be called if the component is an extension, not a builtin.
 Ex:
