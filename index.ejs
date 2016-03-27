@@ -1,0 +1,20 @@
+import 'babel-polyfill';
+import React from 'react';
+
+const builtins = <%- builtins %>;
+const extensions = <%- extensions %>;
+
+const reactAmpHtml = (directive, addScript = () => {}) => {
+  const name = `amp-${directive}`;
+  const Component = name;
+  if (extensions.includes(directive)) {
+    const src = `https://cdn.ampproject.org/v0/${name}-0.1.js`;
+    addScript({ customElement: name, src });
+  } else if (!builtins.includes(directive)) {
+    throw new Error(`"${directive}" is not a valid amphtml directive.`);
+  }
+
+  return (props) => <Component {...props} />;
+};
+
+export default reactAmpHtml;
