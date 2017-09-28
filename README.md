@@ -1,64 +1,89 @@
 # react-amphtml
+
 Use amphtml components inside your React apps easily!
 
-## Install
-```bash
-$ npm install --saved react-amphtml
-```
-
 ## Usage
+
 ```js
-import amphtml from 'react-amphtml';
-/* OR */
-var amphtml = require('react-amphtml').default;
+import * as amphtml from 'react-amphtml';
 ```
 
-### `amphtml('component-name', callback)`
-Returns a React component of the requested `'component-name'`.
+### amphtml.Amp
 
-#### `'component-name'`
-Pass a string of the name of the amphtml component without the `amp-` prefix. Throws exception if it doesn't exist.
-Ex: `'facebook'`, `'font'`, `'list'`, `'img'`
+An object containing React components that correspond to all built-ins and
+extensions of [`amphtml`][amp repo].
 
-#### `callback`
-Function that will be called with an argument passed containing an object of the amphtml component name and script URL.
-Will only be called if the component is an extension, not a builtin.
-Ex:
-```js
-{
-  customElement: 'amp-analytics',
-  src: 'https://cdn.ampproject.org/v0/amp-analytics-0.1.js'
-}
-```
+The properties of this object are the names of each built-in or extension of
+[`amphtml`][amp repo], but with the `amp-` prefix removed, and camel-cased,
+instead of kebab-cased.
 
-## Example
-```js
-import React, { Component } from 'react';
-import amphtml from 'react-amphtml';
+#### amphtml.Amp\[Amp Component\](\[props\]\[, context\])
 
-const ampScripts = [];
-const addScript = script => ampScripts.push(script);
+*   `props` [`<Object>`][mdn object]
 
-const AmpImg = amphtml('img', addScript);
-const AmpAnalytics = amphtml('analytics', addScript);
+*   `context` [`<Object>`][mdn object]
 
-// Outputs list of component names and src to be used in HTML head
-// Builtin components (like amp-img) don't add to the list, but extensions (like amp-analytics) will
-// Ex: [ { customElement: 'amp-analytics', src: 'https://cdn.ampproject.org/v0/amp-analytics-0.1.js' } ]
-console.log(ampScripts);
+    *   `[CONTEXT_KEY]` `<AmpScripts>`
 
-const Example => (props) => (
-  <div>
-    <AmpImg height={300} width={100} src="/awesome.png" /> // Returns <amp-image height="100" width={300} src="/awesome.png"></amp-image>
-    <AmpAnalytics /> // Returns <amp-analytics></amp-analytics>
-  </div>
-);
+Amp Components will accept any `props` given to them. If `AmpScriptsManager` is
+passing an instance of `AmpScripts` through `context`, these components will add
+the appropriate `<script />` tag to it.
 
-export default Example;
-```
+### amphtml.AmpScript(props)
+
+*   `props` [`<Object>`][mdn object]
+
+    *   `src` [`<string>`][mdn string]
+
+A component used to generate `amphtml` `<script />` tags to be rendered in the
+`<head />` of the document. More than likely, you will not need to use this, as
+these are created by an `AmpScripts` instance.
+
+### Class: amphtml.AmpScripts
+
+A class that is used to keep track of generated `amphtml` `<script />` tags. An
+instance of this should be given to `AmpScriptsManager` for `Amp` components to
+utilize through context.
+
+#### new AmpScripts()
+
+No constructor options.
+
+#### ampScripts.addComponent(component)
+
+Used to add a new `<script />` tag for use in the `<head />` of the
+document.
+
+*   `component` [`<string>`][mdn string]
+
+    The name of the component (ex `"amp-youtube"`).
+
+#### ampScripts.getScriptElements()
+
+Returns an array of `AmpScripts`, `<script />` tags, to be rendered in the
+`<head />` of the document.
+
+### amphtml.AmpScriptsManager(props)
+
+*   `props` [`<Object>`][mdn object]
+
+    *   `children`  `<Component>`
+
+    *   `ampScripts` `<AmpScripts>`
+
+A component that passes an instance of `AmpScripts` as context to `Amp`
+components.
 
 ## Resources
-### AMP Project's [amphtml](https://github.com/ampproject/amphtml) repo
-For a list of builtin components and extensions:
-* [Builtins](https://github.com/ampproject/amphtml/tree/master/builtins)
-* [Extensions](https://github.com/ampproject/amphtml/tree/master/extensions)
+
+*   AMP Project's [`amphtml` repo][amp repo]
+
+    *   [Builtins][amp repo builtins]
+
+    *   [Extensions][amp repo extensions]
+
+[amp repo]: https://github.com/ampproject/amphtml
+[amp repo builtins]: ttps://github.com/ampproject/amphtml/tree/master/builtins
+[amp repo extensions]: https://github.com/ampproject/amphtml/tree/master/extensions
+[mdn object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
+[mdn string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
