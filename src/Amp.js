@@ -1,16 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { builtins, extensions } from './amp-html';
+import amphtml from /* preval */ './amp-html';
 import AmpScripts, { CONTEXT_KEY } from './AmpScripts';
+
+const { builtins, extensions } = amphtml;
 
 const getAmpComponent = ({ Component, addComponentToAmpScripts }) => {
   const AmpComponent = (props, context) => {
-    if (addComponentToAmpScripts) context[CONTEXT_KEY].addComponent(Component);
+    if (
+      addComponentToAmpScripts &&
+      context &&
+      context[CONTEXT_KEY] &&
+      typeof context[CONTEXT_KEY].addComponent === 'function'
+    ) {
+      context[CONTEXT_KEY].addComponent(Component);
+    }
+
     return <Component {...props} />;
   };
 
   AmpComponent.contextTypes = {
-    [CONTEXT_KEY]: PropTypes.instanceOf(AmpScripts).isRequired,
+    [CONTEXT_KEY]: PropTypes.instanceOf(AmpScripts),
   };
 
   return AmpComponent;
