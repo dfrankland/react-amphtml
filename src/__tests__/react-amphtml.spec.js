@@ -1,6 +1,4 @@
 import React from 'react';
-import { DOMProperty } from 'react-dom/lib/ReactInjection';
-import { properties as DOMProperties } from 'react-dom/lib/DOMProperty';
 import Adapter from 'enzyme-adapter-react-15';
 import Enzyme, { render, shallow } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
@@ -12,23 +10,11 @@ import {
   AmpScripts,
   AmpScriptsManager,
   AmpScript,
+  headerBoilerplate,
+  whitelist,
 } from '../';
 
-// By default React limit the set of valid DOM elements and attributes
-// (https://github.com/facebook/react/issues/140) this config whitelist
-// Amp elements/attributes
-if (typeof DOMProperties.amp === 'undefined') {
-  DOMProperty.injectDOMPropertyConfig({
-    Properties: { amp: DOMProperty.MUST_USE_ATTRIBUTE },
-    isCustomAttribute: attributeName => attributeName.startsWith('amp-'),
-  });
-}
-if (typeof DOMProperties.customElement === 'undefined') {
-  DOMProperty.injectDOMPropertyConfig({
-    Properties: { customElement: DOMProperty.MUST_USE_ATTRIBUTE },
-    isCustomAttribute: attributeName => attributeName === 'custom-element',
-  });
-}
+whitelist();
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -80,13 +66,13 @@ describe('react-amphtml', () => {
     expect(wrapper.html()).toEqual('<script async="" src="test"></script>');
   });
 
-  it('the README example works', async () => {
+  it('can server-side render valid html', async () => {
     expect.assertions(2);
 
     const app = createServer((req, res) => {
       const ampScripts = new AmpScripts();
 
-      const body = renderToStaticMarkup((
+      const bodyContent = renderToStaticMarkup((
         <AmpScriptsManager ampScripts={ampScripts}>
           <div>
             <Amp.Img src="/" width={0} height={0} layout="responsive" alt="test" />
@@ -95,47 +81,23 @@ describe('react-amphtml', () => {
         </AmpScriptsManager>
       ));
 
-      const ampScriptElements = ampScripts.getScriptElements();
-
       /* eslint-disable react/no-danger */
-      const head = renderToStaticMarkup((
-        <head>
-          <meta charSet="utf-8" />
-          <link rel="canonical" href="/" />
-          <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
-          <style
-            amp-boilerplate=""
-            dangerouslySetInnerHTML={{
-              __html: `
-                body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}
-              `,
-            }}
-          />
-          <noscript>
-            <style
-              amp-boilerplate=""
-              dangerouslySetInnerHTML={{
-                __html: `
-                  body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
-                `,
-              }}
-            />
-          </noscript>
-          <title>react-amphtml</title>
-          {ampScriptElements}
-        </head>
+      const html = renderToStaticMarkup((
+        <html lang="en" amp="">
+          <head>
+            {headerBoilerplate}
+            <title>react-amphtml</title>
+            {ampScripts.getScriptElements()}
+          </head>
+          <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
+        </html>
       ));
       /* eslint-enable */
 
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.end(`
         <!doctype html>
-        <html lang="en" ⚡>
-          ${head}
-          <body>
-            ${body}
-          </head>
-        </html>
+        ${html}
       `);
     });
 
