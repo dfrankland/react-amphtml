@@ -85,7 +85,7 @@ describe('react-amphtml', () => {
       const html = renderToStaticMarkup((
         <html lang="en" amp="">
           <head>
-            {headerBoilerplate}
+            {headerBoilerplate('/')}
             <title>react-amphtml</title>
             {ampScripts.getScriptElements()}
           </head>

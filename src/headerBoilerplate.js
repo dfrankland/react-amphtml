@@ -3,7 +3,7 @@ import React from 'react';
 
 const key = suffix => `react-amphtml-header-boilerplate-${suffix}`;
 
-export default [
+export default href => [
   (
     <meta key={key('meta-charset')} charSet="utf-8" />
   ),
@@ -11,7 +11,7 @@ export default [
     <meta key={key('meta-viewport')} name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1" />
   ),
   (
-    <link key={key('canonical-link')} rel="canonical" href="/" />
+    <link key={key('canonical-link')} rel="canonical" href={href} />
   ),
   (
     <style
