@@ -2,10 +2,16 @@
   "name": "react-amphtml",
   "version": "1.0.2",
   "description": "Use amphtml components inside your React apps easily!",
-  "main": "./index.js",
+  "main": "./dist/index.js",
+  "files": [
+    "dist/index.js"
+  ],
   "scripts": {
-    "compile": "babel-node compile",
-    "prepublish": "npm run compile"
+    "prebuild": "rimraf ./dist",
+    "build": "rollup -c ./rollup.config.js",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint -c ./package.json ./src",
+    "test": "jest"
   },
   "keywords": [
     "react",
@@ -18,22 +24,101 @@
   "author": "Dylan Frankland",
   "license": "MIT",
   "devDependencies": {
-    "amp-html": "github:ampproject/amphtml#1458844805881",
-    "babel-cli": "^6.6.5",
-    "babel-core": "^6.7.4",
-    "babel-preset-node5": "^11.0.1",
-    "babel-preset-react": "^6.5.0",
-    "babel-preset-stage-0": "^6.5.0",
-    "ejs": "^2.4.1"
+    "amp-html": "github:ampproject/amphtml",
+    "amphtml-validator": "^1.0.20",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-jest": "^21.2.0",
+    "babel-plugin-external-helpers": "^6.22.0",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-preval": "^1.5.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-15": "^1.0.0",
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jest": "^21.2.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.4.0",
+    "jest": "^21.2.1",
+    "node-fetch": "^1.7.3",
+    "react": "^15.6.2",
+    "react-dom": "^15.6.2",
+    "react-test-renderer": "^15.6.2",
+    "rollup": "^0.50.0",
+    "rollup-plugin-babel": "^3.0.2"
   },
   "dependencies": {
-    "babel-polyfill": "^6.7.4",
-    "react": "^0.14.7"
+    "glob": "^7.1.2",
+    "prop-types": "^15.6.0"
+  },
+  "peerDependencies": {
+    "react": "^15.6.2 || ^16.0.0",
+    "react-dom": "^15.6.2 || ^16.0.0"
   },
   "babel": {
     "presets": [
-      "node5",
-      "stage-0"
+      [
+        "env",
+        {
+          "targets": {
+            "node": "6",
+            "browsers": [
+              "last 2 versions",
+              "> 1%"
+            ]
+          }
+        }
+      ],
+      "stage-0",
+      "react"
+    ],
+    "plugins": [
+      "istanbul",
+      "preval"
     ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "extends": "airbnb",
+    "env": {
+      "browser": true,
+      "jest/globals": true
+    },
+    "rules": {
+      "react/jsx-filename-extension": "off",
+      "import/no-extraneous-dependencies": [
+        "error",
+        {
+          "devDependencies": [
+            "rollup.config.js",
+            "**/__tests__/**/*"
+          ]
+        }
+      ]
+    },
+    "plugins": [
+      "jest"
+    ]
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "./src/**/*"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 50,
+        "functions": 50,
+        "lines": 50,
+        "statements": 50
+      }
+    }
   }
 }
