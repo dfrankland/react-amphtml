@@ -4,6 +4,7 @@ import AmpScripts, { CONTEXT_KEY } from '../AmpScripts';
 import amphtml from /* preval */ './amp-html';
 import getMappedComponentNames from './getMappedComponentNames';
 import getMappedComponent from './getMappedComponent';
+import utilityComponents from './utilityComponents';
 
 const { builtins, extensions } = amphtml;
 
@@ -55,6 +56,6 @@ export default extensions.reduce(
   ampComponentReducer({ addComponentToAmpScripts: true }),
   builtins.reduce(
     ampComponentReducer({ addComponentToAmpScripts: false }),
-    {},
+    utilityComponents,
   ),
 );
