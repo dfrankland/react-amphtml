@@ -67,7 +67,7 @@ Returns an array of `AmpScripts`, `<script />` tags, to be rendered in the
 
 *   `props` [`<Object>`][mdn object]
 
-    *   `children`  `<Component>`
+    *   `children` `<Component>`
 
     *   `ampScripts` `<AmpScripts>`
 
@@ -98,7 +98,7 @@ notation so `Amp.Bind` can be used to make it easier to read in these cases.
 
 *   `props` [`<Object>`][mdn object]
 
-    *   `children`  `<Component>`
+    *   `children` `<Component>`
 
     *   `[bound attribute]` [`<string>`][mdn string]
 
@@ -108,8 +108,6 @@ notation so `Amp.Bind` can be used to make it easier to read in these cases.
 
 ```html
 <p [text]="'Hello ' + foo">Hello World</p>
-
-<button on="tap:AMP.setState({foo: 'amp-bind'})">
 ```
 
 ##### JSX
@@ -118,11 +116,88 @@ notation so `Amp.Bind` can be used to make it easier to read in these cases.
 <Amp.Bind text="'Hello ' + foo">
   <p>Hello World</p>
 </Amp.Bind>
-
-<button on="tap:AMP.setState({foo: 'amp-bind'})">
 ```
 
 [amp docs amp-bind]: https://www.ampproject.org/docs/reference/components/amp-bind
+
+### amphtml.Amp.State
+
+`amp-state`, a component included in the `amp-bind` component script, requires
+a single `<script type="application/json" />` element, with JSON as a child. In
+React, the requires using `dangerouslySetInnerHTML`. To make this easier,
+`Amp.State` does the heavy lifting.
+
+*   `props` [`<Object>`][mdn object]
+
+    *   `children` [`<Object>`][mdn object]
+
+    *   `id` [`<string>`][mdn string]
+
+#### Example
+
+##### Target HTML
+
+```html
+<amp-state id="allAnimals">
+  <script type="application/json">
+    {
+      "currentAnimal": "dog"
+    }
+  </script>
+</amp-state>
+```
+
+##### JSX
+
+```js
+<Amp.State id="allAnimals">
+  {{
+    currentAnimal: 'dog',
+  }}
+</Amp.State>
+```
+
+### amphtml.Amp.Action
+
+> The `on` attribute is used to install event handlers on elements. The events
+> that are supported depend on the element. &mdash; [AMP Docs][amp docs on]
+
+`on` is an attribute that is commonly used for actions, not just in
+[`amphtml` repo][amp repo], but React too. React will remove any `on` attributes
+from elements and try to set the appropriate event handlers, but `Amp.Action`,
+has a small work-around to prevent this from happening. It's also a bit easier
+to write the syntax for the events and actions that are to be applied to an
+element.
+
+*   `props` [`<Object>`][mdn object]
+
+    *   `children` `<Component>`
+
+    *   `events` [`<Object>`][mdn object]
+
+        *   `[eventName]` [`<Array>`][mdn array]
+
+#### Example
+
+##### Target HTML
+
+```html
+<button on="tap:AMP.setState({ foo: 'amp-bind' })">
+```
+
+##### JSX
+
+```js
+<Amp.Action
+  events={{
+    tap: ['AMP.setState({ foo: "amp-bind" })'],
+  }}
+>
+  <button />
+</Amp.Action>
+```
+
+[amp docs on]: https://www.ampproject.org/docs/reference/common_attributes#on
 
 ## Resources
 
@@ -137,3 +212,4 @@ notation so `Amp.Bind` can be used to make it easier to read in these cases.
 [amp repo extensions]: https://github.com/ampproject/amphtml/tree/master/extensions
 [mdn object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 [mdn string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
+[mdn array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
