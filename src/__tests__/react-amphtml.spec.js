@@ -58,6 +58,16 @@ describe('react-amphtml', () => {
     expect(wrapper.find('amp-accordion').length).toEqual(1);
   });
 
+  it('renders amp-form, properly', () => {
+    const wrapper = render((
+      <div>
+        <Amp.Form />
+      </div>
+    ));
+
+    expect(wrapper.find('form').length).toEqual(1);
+  });
+
   it('creates async script tags', () => {
     const wrapper = shallow(<AmpScript src="test" />);
     expect(wrapper.html()).toEqual('<script async="" src="test"></script>');
