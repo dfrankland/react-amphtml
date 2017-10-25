@@ -59,12 +59,18 @@ describe('react-amphtml', () => {
   });
 
   it('renders amp-form, properly', () => {
+    const ampScripts = new AmpScripts();
     const wrapper = render((
-      <div>
-        <Amp.Form />
-      </div>
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.Form />
+        </div>
+      </AmpScriptsManager>
     ));
 
+    const ampScriptElements = ampScripts.getScriptElements();
+
+    expect(ampScriptElements.length).toEqual(2);
     expect(wrapper.find('form').length).toEqual(1);
   });
 
