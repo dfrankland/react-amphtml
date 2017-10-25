@@ -19,7 +19,7 @@ const ampComponentReducer = ({ addComponentToAmpScripts }) => (allComponents, co
           context[CONTEXT_KEY] &&
           typeof context[CONTEXT_KEY].addComponent === 'function'
         ) {
-          context[CONTEXT_KEY].addComponent(nextMappedComponentName);
+          context[CONTEXT_KEY].addComponent(component);
         }
 
         const MappedComponent = getMappedComponent(nextMappedComponentName);
