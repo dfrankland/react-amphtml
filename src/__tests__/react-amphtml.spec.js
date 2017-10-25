@@ -58,6 +58,22 @@ describe('react-amphtml', () => {
     expect(wrapper.find('amp-accordion').length).toEqual(1);
   });
 
+  it('renders amp-form, properly', () => {
+    const ampScripts = new AmpScripts();
+    const wrapper = render((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.Form />
+        </div>
+      </AmpScriptsManager>
+    ));
+
+    const ampScriptElements = ampScripts.getScriptElements();
+
+    expect(ampScriptElements.length).toEqual(2);
+    expect(wrapper.find('form').length).toEqual(1);
+  });
+
   it('creates async script tags', () => {
     const wrapper = shallow(<AmpScript src="test" />);
     expect(wrapper.html()).toEqual('<script async="" src="test"></script>');

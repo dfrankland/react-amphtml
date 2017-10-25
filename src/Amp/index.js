@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import AmpScripts, { CONTEXT_KEY } from '../AmpScripts';
 import amphtml from /* preval */ './amp-html';
-import AmpScripts, { CONTEXT_KEY } from './AmpScripts';
+import getMappedComponent from './getMappedComponent';
 
 const { builtins, extensions } = amphtml;
 
-const getAmpComponent = ({ Component, addComponentToAmpScripts }) => {
+const getAmpComponent = ({ component, addComponentToAmpScripts }) => {
   const AmpComponent = (props, context) => {
     if (
       addComponentToAmpScripts &&
@@ -13,10 +14,12 @@ const getAmpComponent = ({ Component, addComponentToAmpScripts }) => {
       context[CONTEXT_KEY] &&
       typeof context[CONTEXT_KEY].addComponent === 'function'
     ) {
-      context[CONTEXT_KEY].addComponent(Component);
+      context[CONTEXT_KEY].addComponent(component);
     }
 
-    return <Component {...props} />;
+    const MappedComponent = getMappedComponent(component);
+
+    return <MappedComponent {...props} />;
   };
 
   AmpComponent.contextTypes = {
@@ -28,14 +31,14 @@ const getAmpComponent = ({ Component, addComponentToAmpScripts }) => {
 
 const capitalize = (match, p1) => p1.toUpperCase();
 
-const ampComponentReducer = ({ addComponentToAmpScripts }) => (allComponents, Component) => {
+const ampComponentReducer = ({ addComponentToAmpScripts }) => (allComponents, component) => {
   const componentName = (
-    Component
+    component
       .replace(/^amp-(.)/, capitalize)
       .replace(/-(.)/g, capitalize)
   );
 
-  const AmpComponent = getAmpComponent({ Component, addComponentToAmpScripts });
+  const AmpComponent = getAmpComponent({ component, addComponentToAmpScripts });
 
   return {
     ...allComponents,
