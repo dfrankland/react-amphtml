@@ -74,11 +74,14 @@ describe('react-amphtml', () => {
     expect(wrapper.find('form').length).toEqual(1);
   });
 
-  it('renders amp-bind, properly', () => {
+  it('renders amp-state & amp-bind properly, and only appends the amp-bind script', () => {
     const ampScripts = new AmpScripts();
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
+          <Amp.State id="myState">
+            {{ text: 'Hello, World!' }}
+          </Amp.State>
           <Amp.Bind text="myState.text">
             <div />
           </Amp.Bind>
@@ -90,27 +93,31 @@ describe('react-amphtml', () => {
 
     expect(ampScriptElements.length).toEqual(2);
     expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
+    expect(wrapper.find('amp-state').length).toEqual(1);
   });
 
-  it('renders amp-state, properly', () => {
-    const ampScripts = new AmpScripts();
-    const wrapper = render((
-      <AmpScriptsManager ampScripts={ampScripts}>
-        <div>
-          <Amp.State />
-        </div>
-      </AmpScriptsManager>
+  it('renders amphtml action `on` attribute properly', () => {
+    const wrapper = shallow((
+      <Amp.Action
+        events={{
+          tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
+          change: ['AMP.setState({ myState: { input: event.value } })'],
+        }}
+      >
+        <input />
+      </Amp.Action>
     ));
 
-    const ampScriptElements = ampScripts.getScriptElements();
-
-    expect(ampScriptElements.length).toEqual(2);
-    expect(wrapper.find('amp-state').length).toEqual(1);
+    expect((
+      wrapper.props()[' on']
+    )).toEqual((
+      'tap:AMP.setState({ myState: { text: "tap!" }}),print;change:AMP.setState({ myState: { input: event.value } })'
+    ));
   });
 
   it('creates async script tags', () => {
     const wrapper = shallow(<AmpScript src="test" />);
-    expect(wrapper.html()).toEqual('<script async="" src="test"></script>');
+    expect(wrapper.find('script[async]').length).toEqual(1);
   });
 
   it('can server-side render valid html', async () => {
