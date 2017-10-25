@@ -1,0 +1,3 @@
+global.requestAnimationFrame = (cb) => {
+  cb();
+};
