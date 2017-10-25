@@ -11,9 +11,9 @@ const AmpScripts = class {
   }
 
   getScriptElements() {
-    return [...this.scripts].map(
-      ([component, script]) => <AmpScript key={script} customElement={component} src={script} />,
-    );
+    return [...this.scripts].map((
+      ([component, script]) => <AmpScript key={script} customElement={component} src={script} />
+    ));
   }
 };
 

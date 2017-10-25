@@ -119,7 +119,13 @@ describe('react-amphtml', () => {
     const validator = await amphtmlValidator.getInstance();
     const result = validator.validateString(html);
 
-    result.errors.forEach(({ line, col, message, specUrl, severity }) => {
+    result.errors.forEach(({
+      line,
+      col,
+      message,
+      specUrl,
+      severity,
+    }) => {
       ((severity === 'ERROR') ? console.error : console.warn)(( // eslint-disable-line no-console
         `line ${
           line

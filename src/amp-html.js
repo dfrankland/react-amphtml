@@ -6,14 +6,14 @@ const AMP_DIR_BUILTINS = resolvePath(AMP_DIR, './builtins');
 const AMP_DIR_EXTENSIONS = resolvePath(AMP_DIR, './extensions');
 
 module.exports = {
-  builtins: globSync(
-    resolvePath(AMP_DIR_BUILTINS, './amp-*.js'),
-  ).map(
-    path => basename(path, '.js'),
-  ),
-  extensions: globSync(
-    resolvePath(AMP_DIR_EXTENSIONS, './amp-*/'),
-  ).map(
-    path => basename(path),
-  ),
+  builtins: globSync((
+    resolvePath(AMP_DIR_BUILTINS, './amp-*.js')
+  )).map((
+    path => basename(path, '.js')
+  )),
+  extensions: globSync((
+    resolvePath(AMP_DIR_EXTENSIONS, './amp-*/')
+  )).map((
+    path => basename(path)
+  )),
 };
