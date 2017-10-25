@@ -2,47 +2,52 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AmpScripts, { CONTEXT_KEY } from '../AmpScripts';
 import amphtml from /* preval */ './amp-html';
+import getMappedComponentNames from './getMappedComponentNames';
 import getMappedComponent from './getMappedComponent';
 
 const { builtins, extensions } = amphtml;
 
-const getAmpComponent = ({ component, addComponentToAmpScripts }) => {
-  const AmpComponent = (props, context) => {
-    if (
-      addComponentToAmpScripts &&
-      context &&
-      context[CONTEXT_KEY] &&
-      typeof context[CONTEXT_KEY].addComponent === 'function'
-    ) {
-      context[CONTEXT_KEY].addComponent(component);
-    }
-
-    const MappedComponent = getMappedComponent(component);
-
-    return <MappedComponent {...props} />;
-  };
-
-  AmpComponent.contextTypes = {
-    [CONTEXT_KEY]: PropTypes.instanceOf(AmpScripts),
-  };
-
-  return AmpComponent;
-};
-
 const capitalize = (match, p1) => p1.toUpperCase();
 
 const ampComponentReducer = ({ addComponentToAmpScripts }) => (allComponents, component) => {
-  const componentName = (
-    component
-      .replace(/^amp-(.)/, capitalize)
-      .replace(/-(.)/g, capitalize)
-  );
+  const ampComponents = getMappedComponentNames(component).reduce(
+    (allAmpComponents, nextMappedComponentName) => {
+      const AmpComponent = (props, context) => {
+        if (
+          addComponentToAmpScripts &&
+          context &&
+          context[CONTEXT_KEY] &&
+          typeof context[CONTEXT_KEY].addComponent === 'function'
+        ) {
+          context[CONTEXT_KEY].addComponent(nextMappedComponentName);
+        }
 
-  const AmpComponent = getAmpComponent({ component, addComponentToAmpScripts });
+        const MappedComponent = getMappedComponent(nextMappedComponentName);
+
+        return <MappedComponent {...props} />;
+      };
+
+      AmpComponent.contextTypes = {
+        [CONTEXT_KEY]: PropTypes.instanceOf(AmpScripts),
+      };
+
+      const componentName = (
+        nextMappedComponentName
+          .replace(/^amp-(.)/, capitalize)
+          .replace(/-(.)/g, capitalize)
+      );
+
+      return {
+        ...allAmpComponents,
+        [componentName]: AmpComponent,
+      };
+    },
+    {},
+  );
 
   return {
     ...allComponents,
-    [componentName]: AmpComponent,
+    ...ampComponents,
   };
 };
 

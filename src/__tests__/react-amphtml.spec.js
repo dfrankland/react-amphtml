@@ -74,6 +74,40 @@ describe('react-amphtml', () => {
     expect(wrapper.find('form').length).toEqual(1);
   });
 
+  it('renders amp-bind, properly', () => {
+    const ampScripts = new AmpScripts();
+    const wrapper = render((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.Bind text="myState.text">
+            <div />
+          </Amp.Bind>
+        </div>
+      </AmpScriptsManager>
+    ));
+
+    const ampScriptElements = ampScripts.getScriptElements();
+
+    expect(ampScriptElements.length).toEqual(2);
+    expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
+  });
+
+  it('renders amp-state, properly', () => {
+    const ampScripts = new AmpScripts();
+    const wrapper = render((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.State />
+        </div>
+      </AmpScriptsManager>
+    ));
+
+    const ampScriptElements = ampScripts.getScriptElements();
+
+    expect(ampScriptElements.length).toEqual(2);
+    expect(wrapper.find('amp-state').length).toEqual(1);
+  });
+
   it('creates async script tags', () => {
     const wrapper = shallow(<AmpScript src="test" />);
     expect(wrapper.html()).toEqual('<script async="" src="test"></script>');
