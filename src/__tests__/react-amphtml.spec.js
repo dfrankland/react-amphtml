@@ -123,6 +123,61 @@ describe('react-amphtml', () => {
     ));
   });
 
+  it('renders amp-action inside amp-bind properly', () => {
+    const wrapper = shallow((
+      <Amp.Bind text="myState.text">
+        <Amp.Action
+          events={{
+            tap: ['print'],
+          }}
+        >
+          <input />
+        </Amp.Action>
+      </Amp.Bind>
+    ));
+
+    const props = wrapper.dive().dive().props();
+
+    expect(props[' on']).toEqual('tap:print');
+    expect(props['[text]']).toEqual('myState.text');
+  });
+
+  it('renders amp-bind inside amp-action properly', () => {
+    const wrapper = shallow((
+      <Amp.Action
+        events={{
+          tap: ['print'],
+        }}
+      >
+        <Amp.Bind text="myState.text">
+          <input />
+        </Amp.Bind>
+      </Amp.Action>
+    ));
+
+    const props = wrapper.dive().dive().props();
+
+    expect(props[' on']).toEqual('tap:print');
+    expect(props['[text]']).toEqual('myState.text');
+  });
+
+  it('renders amp-bind inside amp-bind properly', () => {
+    /* eslint-disable react/no-unknown-property */
+    const wrapper = shallow((
+      <Amp.Bind class="myState.class">
+        <Amp.Bind text="myState.text">
+          <input />
+        </Amp.Bind>
+      </Amp.Bind>
+    ));
+    /* eslint-enable */
+
+    const props = wrapper.dive().dive().dive().props();
+
+    expect(props['[class]']).toEqual('myState.class');
+    expect(props['[text]']).toEqual('myState.text');
+  });
+
   it('creates async script tags', () => {
     const wrapper = shallow(<AmpScript src="test" />);
     expect(wrapper.find('script[async]').length).toEqual(1);
