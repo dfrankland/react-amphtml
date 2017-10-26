@@ -1,6 +1,6 @@
 {
   "name": "react-amphtml",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "Use amphtml components inside your React apps easily!",
   "main": "./dist/index.js",
   "files": [
