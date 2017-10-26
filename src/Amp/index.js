@@ -25,7 +25,22 @@ const ampComponentReducer = ({ addComponentToAmpScripts }) => (allComponents, co
 
         const MappedComponent = getMappedComponent(nextMappedComponentName);
 
-        return <MappedComponent {...props} />;
+        // React does not transform `className` to `class` on Web Components
+        // like `amp-*`. This is mostly here as a convenience.
+        // https://reactjs.org/docs/web-components.html#using-web-components-in-react
+        let newProps = { ...props };
+        if (
+          /^amp-/.test(MappedComponent) &&
+          typeof props.className === 'string' // eslint-disable-line react/prop-types
+        ) {
+          newProps = {
+            ...newProps,
+            class: props.className,
+            className: undefined,
+          };
+        }
+
+        return <MappedComponent {...newProps} />;
       };
 
       AmpComponent.contextTypes = {

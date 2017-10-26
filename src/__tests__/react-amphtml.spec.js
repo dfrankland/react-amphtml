@@ -58,6 +58,14 @@ describe('react-amphtml', () => {
     expect(wrapper.find('amp-accordion').length).toEqual(1);
   });
 
+  it('renders amp-html, and passes `className` prop', () => {
+    const wrapper = shallow((
+      <Amp.Img className="cool" />
+    ));
+
+    expect(wrapper.find('[class="cool"]').length).toEqual(1);
+  });
+
   it('renders amp-form, properly', () => {
     const ampScripts = new AmpScripts();
     const wrapper = render((
