@@ -1,7 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Action = ({ children, events }) => {
+export const ON_ATTRIBUTE = ' on';
+
+const Action = ({ children, events, ...props }) => {
   const eventString = Object.keys(events).reduce(
     (entireEventString, nextEventName, eventIndex) => {
       const actionString = events[nextEventName].reduce(
@@ -19,9 +21,10 @@ const Action = ({ children, events }) => {
   return React.cloneElement(
     children,
     {
+      ...props,
       // `' on'` is used here as a hack to get React to render the `on`
       // attribute on the element
-      ' on': eventString,
+      [ON_ATTRIBUTE]: eventString,
     },
   );
 };
