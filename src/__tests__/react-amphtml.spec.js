@@ -6,7 +6,8 @@ import { createServer } from 'http';
 import fetch from 'node-fetch';
 import amphtmlValidator from 'amphtml-validator';
 import {
-  Amp,
+  amphtml as amp,
+  helpers,
   AmpScripts,
   AmpScriptsManager,
   AmpScript,
@@ -21,8 +22,8 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Img src="test" />
-          <Amp.Pixel something="blah" />
+          <amp.AmpImg src="test" />
+          <amp.AmpPixel src="blah" />
         </div>
       </AmpScriptsManager>
     ));
@@ -36,8 +37,8 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Youtube something="blah" />
-          <Amp.Accordion something="blah" />
+          <amp.AmpYoutube something="blah" />
+          <amp.AmpAccordion something="blah" />
         </div>
       </AmpScriptsManager>
     ));
@@ -49,8 +50,8 @@ describe('react-amphtml', () => {
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
     const wrapper = render((
       <div>
-        <Amp.Youtube something="blah" />
-        <Amp.Accordion something="blah" />
+        <amp.AmpYoutube something="blah" />
+        <amp.AmpAccordion something="blah" />
       </div>
     ));
 
@@ -60,7 +61,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-html, and passes `className` prop', () => {
     const wrapper = shallow((
-      <Amp.Img className="cool" />
+      <amp.AmpImg className="cool" />
     ));
 
     expect(wrapper.find('[class="cool"]').length).toEqual(1);
@@ -71,7 +72,7 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Form />
+          <amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
         </div>
       </AmpScriptsManager>
     ));
@@ -87,33 +88,33 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.State id="myState">
+          <amp.AmpState id="myState">
             {{ text: 'Hello, World!' }}
-          </Amp.State>
-          <Amp.Bind text="myState.text">
-            <div />
-          </Amp.Bind>
+          </amp.AmpState>
+          <helpers.Bind text="myState.text">
+            {props => <div {...props} />}
+          </helpers.Bind>
         </div>
       </AmpScriptsManager>
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
+    expect(ampScriptElements.length).toEqual(1);
     expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
     expect(wrapper.find('amp-state').length).toEqual(1);
   });
 
   it('renders amphtml action `on` attribute properly', () => {
     const wrapper = shallow((
-      <Amp.Action
+      <helpers.Action
         events={{
           tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        <input />
-      </Amp.Action>
+        {props => <input {...props} />}
+      </helpers.Action>
     ));
 
     expect((
@@ -125,15 +126,18 @@ describe('react-amphtml', () => {
 
   it('renders amp-action inside amp-bind properly', () => {
     const wrapper = shallow((
-      <Amp.Bind text="myState.text">
-        <Amp.Action
-          events={{
-            tap: ['print'],
-          }}
-        >
-          <input />
-        </Amp.Action>
-      </Amp.Bind>
+      <helpers.Bind text="myState.text">
+        {props => (
+          <helpers.Action
+            {...props}
+            events={{
+              tap: ['print'],
+            }}
+          >
+            {props1 => <input {...props1} />}
+          </helpers.Action>
+        )}
+      </helpers.Bind>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -144,15 +148,17 @@ describe('react-amphtml', () => {
 
   it('renders amp-bind inside amp-action properly', () => {
     const wrapper = shallow((
-      <Amp.Action
+      <helpers.Action
         events={{
           tap: ['print'],
         }}
       >
-        <Amp.Bind text="myState.text">
-          <input />
-        </Amp.Bind>
-      </Amp.Action>
+        {props => (
+          <helpers.Bind {...props} text="myState.text">
+            {props1 => <input {...props1} />}
+          </helpers.Bind>
+        )}
+      </helpers.Action>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -164,11 +170,13 @@ describe('react-amphtml', () => {
   it('renders amp-bind inside amp-bind properly', () => {
     /* eslint-disable react/no-unknown-property */
     const wrapper = shallow((
-      <Amp.Bind class="myState.class">
-        <Amp.Bind text="myState.text">
-          <input />
-        </Amp.Bind>
-      </Amp.Bind>
+      <helpers.Bind class="myState.class">
+        {props => (
+          <helpers.Bind {...props} text="myState.text">
+            {props1 => <input {...props1} />}
+          </helpers.Bind>
+        )}
+      </helpers.Bind>
     ));
     /* eslint-enable */
 
@@ -192,8 +200,8 @@ describe('react-amphtml', () => {
       const bodyContent = renderToStaticMarkup((
         <AmpScriptsManager ampScripts={ampScripts}>
           <div>
-            <Amp.Img src="/" width={0} height={0} layout="responsive" alt="test" />
-            <Amp.Accordion />
+            <amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
+            <amp.AmpAccordion />
           </div>
         </AmpScriptsManager>
       ));
@@ -218,7 +226,7 @@ describe('react-amphtml', () => {
       `);
     });
 
-    const PORT = 3000;
+    const PORT = 6969;
 
     await new Promise((resolve) => {
       app.listen(PORT, (err) => {

@@ -19,7 +19,7 @@ export default {
           {
             modules: false,
             targets: {
-              node: '6',
+              node: '8',
               browsers: ['last 2 versions', '> 1%'],
             },
           },
@@ -29,7 +29,7 @@ export default {
       ],
       plugins: [
         'external-helpers',
-        'preval',
+        'codegen',
       ],
     }),
   ],

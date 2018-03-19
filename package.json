@@ -24,37 +24,36 @@
   "author": "Dylan Frankland",
   "license": "MIT",
   "devDependencies": {
-    "amp-html": "github:ampproject/amphtml",
-    "amphtml-validator": "^1.0.20",
+    "amphtml-validator": "^1.0.23",
+    "amphtml-validator-rules": "^1.0.2",
     "babel-core": "^6.26.0",
-    "babel-eslint": "^8.0.1",
-    "babel-jest": "^21.2.0",
+    "babel-eslint": "^8.2.2",
+    "babel-jest": "^22.4.1",
+    "babel-plugin-codegen": "^1.2.1",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-istanbul": "^4.1.5",
-    "babel-plugin-preval": "^1.6.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "enzyme": "^3.1.0",
-    "enzyme-adapter-react-16": "^1.0.2",
-    "eslint": "^4.9.0",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "eslint": "^4.19.0",
     "eslint-config-airbnb": "^16.1.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-jest": "^21.2.0",
-    "eslint-plugin-jsx-a11y": "^6.0.2",
-    "eslint-plugin-react": "^7.4.0",
-    "jest": "^21.2.1",
-    "node-fetch": "^1.7.3",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-test-renderer": "^16.0.0",
-    "rollup": "^0.50.0",
-    "rollup-plugin-babel": "^3.0.2",
-    "rollup-plugin-node-resolve": "^3.0.0"
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jest": "^21.15.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "jest": "^22.4.2",
+    "node-fetch": "^2.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
+    "rollup": "^0.57.1",
+    "rollup-plugin-babel": "^3.0.3",
+    "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
     "glob": "^7.1.2",
-    "prop-types": "^15.6.0"
+    "prop-types": "^15.6.1"
   },
   "peerDependencies": {
     "react": "^15.0.0 || ^16.0.0",
@@ -66,11 +65,7 @@
         "env",
         {
           "targets": {
-            "node": "6",
-            "browsers": [
-              "last 2 versions",
-              "> 1%"
-            ]
+            "node": "8"
           }
         }
       ],
@@ -78,8 +73,7 @@
       "react"
     ],
     "plugins": [
-      "istanbul",
-      "preval"
+      "codegen"
     ]
   },
   "eslintConfig": {
@@ -112,7 +106,8 @@
     ],
     "collectCoverage": true,
     "collectCoverageFrom": [
-      "./src/**/*"
+      "<rootDir>/src/**/*.js",
+      "!<rootDir>/src/amphtml/index.js"
     ],
     "coverageThreshold": {
       "global": {
