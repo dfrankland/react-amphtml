@@ -151,7 +151,7 @@ const componentCode = newRules.tags.reduce(
       return `
         ${code}
         import ${componentName}Override from './components/${componentName}';
-        export const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
+        ${dupeName ? '' : 'export'} const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
           ${requiresExtensionContext}
           return <${componentName}Override {...propsHelper(props)} />;
         };
@@ -183,7 +183,7 @@ const componentCode = newRules.tags.reduce(
         }),
       };
 
-      export { ${componentName} };
+      ${dupeName ? '' : `export { ${componentName} };`}
     `;
   },
   `
