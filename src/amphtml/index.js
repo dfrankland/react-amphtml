@@ -111,10 +111,12 @@ const componentCode = newRules.tags.reduce(
       ({ propTypesCode, defaultPropsCode }, { name, mandatory, value }) => {
         if (!name) return { propTypesCode, defaultPropsCode };
 
-        const newPropTypesCode = `
+        const newPropTypesCode = (
+          `
           ${propTypesCode}
           '${name}': PropTypes.any${mandatory ? '.isRequired' : ''},
-        `;
+          `
+        );
 
         const newDefaultPropsCode = value === null || typeof value === 'undefined' ? (
           defaultPropsCode
@@ -159,93 +161,109 @@ const componentCode = newRules.tags.reduce(
     const requiresExtensionContext = (
       Array.isArray(requiresExtension) ? requiresExtension : []
     ).reduce(
-      (requiresExtensionContextCode, requiredExtension) => `
+      (requiresExtensionContextCode, requiredExtension) => (
+        `
         ${requiresExtensionContextCode}
         contextHelper({ context, extension: '${requiredExtension}' });
-      `,
+        `
+      ),
       '',
     );
 
     const componentOverride = componentOverrides[componentName];
     if (componentOverride) {
-      return `
+      return (
+        `
         ${code}
         import ${componentName}Override from './components/${componentName}';
         ${dupeName ? '' : 'export'} const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
           ${requiresExtensionContext}
           return <${componentName}Override {...propsHelper(props)} />;
         };
-      `;
+        `
+      );
     }
 
-    return `
+    return (
+      `
       ${code}
       const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
         ${requiresExtensionContext}
         return <${tagName.toLowerCase()} {...propsHelper(props)} />;
       };
 
-      ${propsCode.propTypesCode ? (`
+      ${propsCode.propTypesCode ? (
+        `
         ${componentName}.propTypes = {
           ${propsCode.propTypesCode}
         };
-      `) : ''}
+        `
+      ) : ''}
 
-      ${propsCode.defaultPropsCode ? (`
+      ${propsCode.defaultPropsCode ? (
+        `
         ${componentName}.defaultProps = {
           ${propsCode.defaultPropsCode}
         };
-      `) : ''}
+        `
+      ) : ''}
 
-      ${requiresExtensionContext ? (`
+      ${requiresExtensionContext ? (
+        `
         ${componentName}.contextTypes = {
           [CONTEXT_KEY]: PropTypes.shape({
             addComponent: PropTypes.func.isRequired,
           }),
         };
-      `) : ''}
+        `
+      ) : ''}
 
       ${dupeName ? '' : `export { ${componentName} };`}
-    `;
+      `
+    );
   },
   `
-    import React from 'react';
-    import PropTypes from 'prop-types';
-    import { CONTEXT_KEY } from '../AmpScripts';
+  import React from 'react';
+  import PropTypes from 'prop-types';
+  import { CONTEXT_KEY } from '../AmpScripts';
 
-    // React does not transform \`className\` to \`class\` on Web Components
-    // like \`amp-*\`. This is mostly here as a convenience.
-    // https://reactjs.org/docs/web-components.html#using-web-components-in-react
-    //
-    // Also, \`specName\` is only necessary for wrapping components.
-    const propsHelper = (props) => {
-      let newProps = Object.assign(
+  // React does not transform \`className\` to \`class\` on Web Components
+  // like \`amp-*\`. This is mostly here as a convenience.
+  // https://reactjs.org/docs/web-components.html#using-web-components-in-react
+  //
+  // Also, \`specName\` is only necessary for wrapping components.
+  const propsHelper = (props) => {
+    let newProps = Object.assign(
+      {},
+      props,
+    );
+
+    if (newProps.specName) {
+      delete newProps.specName;
+    }
+
+    if (newProps.className){
+      delete newProps.className;
+
+      newProps = Object.assign(
         {},
         props,
-      );
+        { class: props.className },
+      )
+    }
 
-      if (newProps.specName) {
-        delete newProps.specName;
-      }
+    return newProps;
+  };
 
-      if (newProps.className){
-        delete newProps.className;
-
-        newProps = Object.assign(
-          {},
-          props,
-          { class: props.className },
-        )
-      }
-
-      return newProps;
-    };
-
-    const contextHelper = ({ context, extension }) => {
-      if (typeof context === 'object' && typeof context[CONTEXT_KEY] === 'object' && typeof context[CONTEXT_KEY].addComponent === 'function') {
-        context[CONTEXT_KEY].addComponent(extension);
-      }
-    };
+  const contextHelper = ({ context, extension }) => {
+    if (
+      typeof context === 'object' &&
+      typeof context[CONTEXT_KEY] === 'object' &&
+      typeof context[CONTEXT_KEY].addComponent === 'function'
+    ) {
+      context[CONTEXT_KEY].addComponent(extension);
+    }
+  };
   `,
 );
 
@@ -254,17 +272,23 @@ const duplicateWrapperComponentCode = Object.entries(newRules.dupes).reduce(
     const componentName = tagNameToComponentName(tagName);
 
     const dupeComponentCode = Object.entries(dupes).reduce(
-      (dupeCode, [dupeTagName, specName]) => `
+      (dupeCode, [dupeTagName, specName]) => (
+        `
         ${dupeCode}
-        if (props.specName === '${specName}') return <${tagNameToComponentName(dupeTagName)} {...props} />;
-      `,
+        if (props.specName === '${specName}') {
+          return <${tagNameToComponentName(dupeTagName)} {...props} />
+        };
+        `
+      ),
       '',
     );
 
-    return `
+    return (
+      `
       ${code}
       const ${componentName} = (props) => {
         ${dupeComponentCode}
+        return null;
       };
 
       ${componentName}.propTypes = {
@@ -272,15 +296,18 @@ const duplicateWrapperComponentCode = Object.entries(newRules.dupes).reduce(
       };
 
       export { ${componentName} };
-    `;
+      `
+    );
   },
   '',
 );
 
-const code = `
+const code = (
+  `
   ${componentCode}
   ${duplicateWrapperComponentCode}
-`;
+  `
+);
 
 // For debugging purposes.
 // console.log(code.split('\n').map((line, index) => `${index + 1}${line}`).join('\n'));
