@@ -177,11 +177,13 @@ const componentCode = newRules.tags.reduce(
         };
       `) : ''}
 
-      ${componentName}.contextTypes = {
-        [CONTEXT_KEY]: PropTypes.shape({
-          addComponent: PropTypes.func.isRequired,
-        }),
-      };
+      ${requiresExtensionContext ? (`
+        ${componentName}.contextTypes = {
+          [CONTEXT_KEY]: PropTypes.shape({
+            addComponent: PropTypes.func.isRequired,
+          }),
+        };
+      `) : ''}
 
       ${dupeName ? '' : `export { ${componentName} };`}
     `;
