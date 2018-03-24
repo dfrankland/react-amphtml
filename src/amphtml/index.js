@@ -234,7 +234,7 @@ const duplicateWrapperComponentCode = Object.entries(newRules.dupes).reduce(
     const dupeComponentCode = Object.entries(dupes).reduce(
       (dupeCode, [dupeTagName, specName]) => `
         ${dupeCode}
-        if (props.specName === '${specName}') return <${tagNameToComponentName(dupeTagName)} {...propsHelper(props)} />;
+        if (props.specName === '${specName}') return <${tagNameToComponentName(dupeTagName)} {...props} />;
       `,
       '',
     );
