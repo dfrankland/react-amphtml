@@ -99,9 +99,10 @@ const componentCode = newRules.tags.reduce(
       dupeName,
       attrs,
       requiresExtension,
+      mandatoryAncestorSuggestedAlternative,
     },
   ) => {
-    if (blackList[tagName]) return code;
+    if (blackList[tagName] || mandatoryAncestorSuggestedAlternative) return code;
 
     const componentName = tagNameToComponentName(dupeName || tagName);
 
