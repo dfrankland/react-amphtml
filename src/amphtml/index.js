@@ -10,19 +10,16 @@ const componentOverrides = {
 };
 
 const tagNameToComponentName = tagName => (
-  tagName.toLowerCase().replace(/(^.|-.)/g, (m, p1) => p1.replace('-', '').toUpperCase())
+  tagName
+    .toLowerCase()
+    .replace(
+      /(^.|-.)/g,
+      (m, p1) => p1.replace('-', '').toUpperCase(),
+    )
 );
 
 const blackList = {
-  SCRIPT: true,
   '!DOCTYPE': true,
-  META: true,
-  LINK: true,
-  BODY: true,
-  HEAD: true,
-  HTML: true,
-  STYLE: true,
-  TITLE: true,
   $REFERENCE_POINT: true,
   'O:P': true,
 };
@@ -41,9 +38,14 @@ const duplicateTags = rules.tags.reduce(
 
 const newRules = rules.tags.reduce(
   ({ dupes, tags, ...rest }, tag) => {
-    const { tagName, specName: possibleSpecName } = tag;
+    const {
+      tagName,
+      specName: possibleSpecName,
+      extensionSpec: possibleExtensionSpec,
+    } = tag;
 
-    const specName = possibleSpecName || DUPLICATE_SPEC_NAME;
+    const extensionSpec = possibleExtensionSpec || {};
+    const specName = possibleSpecName || extensionSpec.name || DUPLICATE_SPEC_NAME;
 
     if (blackList[tagName]) {
       return {
