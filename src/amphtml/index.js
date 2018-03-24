@@ -116,12 +116,32 @@ const componentCode = newRules.tags.reduce(
           '${name}': PropTypes.any${mandatory ? '.isRequired' : ''},
         `;
 
-        const newDefaultPropsCode = mandatory || !value ? (
+        const newDefaultPropsCode = value === null || typeof value === 'undefined' ? (
           defaultPropsCode
         ) : (
           `
-            ${defaultPropsCode}
-            '${name}': '${value}',
+          ${defaultPropsCode}
+          '${name}': ${(
+            (() => {
+              if (!mandatory) return null;
+
+              const type = typeof value;
+
+              if (type === 'string') {
+                return `'${value}'`;
+              }
+
+              if (type === 'number' || type === 'boolean') return value;
+
+              try {
+                if (type === 'object') return JSON.stringify(value);
+              } catch (err) {
+                // Do nothing, return `null`.
+              }
+
+              return null;
+            })()
+          )},
           `
         );
 

@@ -208,14 +208,14 @@ describe('react-amphtml', () => {
 
       /* eslint-disable react/no-danger */
       const html = renderToStaticMarkup((
-        <html lang="en" amp="">
+        <amp.Html specName="html ⚡ for top-level html" lang="en">
           <head>
             {headerBoilerplate('/')}
             <title>react-amphtml</title>
             {ampScripts.getScriptElements()}
           </head>
           <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-        </html>
+        </amp.Html>
       ));
       /* eslint-enable */
 
