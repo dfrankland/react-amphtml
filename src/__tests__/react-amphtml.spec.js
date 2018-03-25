@@ -8,11 +8,15 @@ import amphtmlValidator from 'amphtml-validator';
 import {
   amphtml as amp,
   helpers,
+  setup,
+} from '../';
+
+const {
   AmpScripts,
   AmpScriptsManager,
   AmpScript,
   headerBoilerplate,
-} from '../';
+} = setup;
 
 Enzyme.configure({ adapter: new Adapter() });
 
