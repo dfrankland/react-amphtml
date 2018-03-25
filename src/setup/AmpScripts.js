@@ -1,8 +1,6 @@
 import React from 'react';
 import AmpScript from './AmpScript';
 
-export const CONTEXT_KEY = '__react-amphtml-ampscripts__';
-
 const AmpScripts = class {
   scripts = new Map([[null, 'https://cdn.ampproject.org/v0.js']]);
 

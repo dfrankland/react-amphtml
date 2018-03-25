@@ -247,7 +247,7 @@ const componentCode = newRules.tags.reduce(
   `
   import React from 'react';
   import PropTypes from 'prop-types';
-  import { CONTEXT_KEY } from '../setup/AmpScripts';
+  import { CONTEXT_KEY } from '../constants';
 
   // React does not transform \`className\` to \`class\` on Web Components
   // like \`amp-*\`. This is mostly here as a convenience.
