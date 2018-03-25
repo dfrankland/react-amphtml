@@ -3,8 +3,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import Enzyme, { render, shallow } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
-import amp from '../amphtml/amphtml';
-import helpers from '../helpers/helpers';
+import * as Amp from '../amphtml/amphtml';
+import * as AmpHelpers from '../helpers/helpers';
 import {
   AmpScripts,
   AmpScriptsManager,
@@ -19,8 +19,8 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <amp.AmpImg src="test" />
-          <amp.AmpPixel src="blah" />
+          <Amp.AmpImg src="test" />
+          <Amp.AmpPixel src="blah" />
         </div>
       </AmpScriptsManager>
     ));
@@ -34,8 +34,8 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <amp.AmpYoutube something="blah" />
-          <amp.AmpAccordion something="blah" />
+          <Amp.AmpYoutube something="blah" />
+          <Amp.AmpAccordion something="blah" />
         </div>
       </AmpScriptsManager>
     ));
@@ -47,8 +47,8 @@ describe('react-amphtml', () => {
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
     const wrapper = render((
       <div>
-        <amp.AmpYoutube something="blah" />
-        <amp.AmpAccordion something="blah" />
+        <Amp.AmpYoutube something="blah" />
+        <Amp.AmpAccordion something="blah" />
       </div>
     ));
 
@@ -58,7 +58,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-html, and passes `className` prop', () => {
     const wrapper = shallow((
-      <amp.AmpImg className="cool" src="blah" />
+      <Amp.AmpImg className="cool" src="blah" />
     ));
 
     expect(wrapper.find('[class="cool"]').length).toEqual(1);
@@ -69,7 +69,7 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
+          <Amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
         </div>
       </AmpScriptsManager>
     ));
@@ -85,12 +85,12 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <amp.AmpState id="myState">
+          <Amp.AmpState id="myState">
             {{ text: 'Hello, World!' }}
-          </amp.AmpState>
-          <helpers.Bind text="myState.text">
+          </Amp.AmpState>
+          <AmpHelpers.Bind text="myState.text">
             {props => <div {...props} />}
-          </helpers.Bind>
+          </AmpHelpers.Bind>
         </div>
       </AmpScriptsManager>
     ));
@@ -104,14 +104,14 @@ describe('react-amphtml', () => {
 
   it('renders amphtml action `on` attribute properly', () => {
     const wrapper = shallow((
-      <helpers.Action
+      <AmpHelpers.Action
         events={{
           tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
         {props => <input {...props} />}
-      </helpers.Action>
+      </AmpHelpers.Action>
     ));
 
     expect((
@@ -123,18 +123,18 @@ describe('react-amphtml', () => {
 
   it('renders amp-action inside amp-bind properly', () => {
     const wrapper = shallow((
-      <helpers.Bind text="myState.text">
+      <AmpHelpers.Bind text="myState.text">
         {props => (
-          <helpers.Action
+          <AmpHelpers.Action
             {...props}
             events={{
               tap: ['print'],
             }}
           >
             {props1 => <input {...props1} />}
-          </helpers.Action>
+          </AmpHelpers.Action>
         )}
-      </helpers.Bind>
+      </AmpHelpers.Bind>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -145,17 +145,17 @@ describe('react-amphtml', () => {
 
   it('renders amp-bind inside amp-action properly', () => {
     const wrapper = shallow((
-      <helpers.Action
+      <AmpHelpers.Action
         events={{
           tap: ['print'],
         }}
       >
         {props => (
-          <helpers.Bind {...props} text="myState.text">
+          <AmpHelpers.Bind {...props} text="myState.text">
             {props1 => <input {...props1} />}
-          </helpers.Bind>
+          </AmpHelpers.Bind>
         )}
-      </helpers.Action>
+      </AmpHelpers.Action>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -167,13 +167,13 @@ describe('react-amphtml', () => {
   it('renders amp-bind inside amp-bind properly', () => {
     /* eslint-disable react/no-unknown-property */
     const wrapper = shallow((
-      <helpers.Bind class="myState.class">
+      <AmpHelpers.Bind class="myState.class">
         {props => (
-          <helpers.Bind {...props} text="myState.text">
+          <AmpHelpers.Bind {...props} text="myState.text">
             {props1 => <input {...props1} />}
-          </helpers.Bind>
+          </AmpHelpers.Bind>
         )}
-      </helpers.Bind>
+      </AmpHelpers.Bind>
     ));
     /* eslint-enable */
 
@@ -191,22 +191,22 @@ describe('react-amphtml', () => {
     const bodyContent = renderToStaticMarkup((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
-          <amp.AmpAccordion />
+          <Amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
+          <Amp.AmpAccordion />
         </div>
       </AmpScriptsManager>
     ));
 
     /* eslint-disable react/no-danger */
     const html = renderToStaticMarkup((
-      <amp.Html specName="html ⚡ for top-level html" lang="en">
+      <Amp.Html specName="html ⚡ for top-level html" lang="en">
         <head>
           {headerBoilerplate('/')}
           <title>react-amphtml</title>
           {ampScripts.getScriptElements()}
         </head>
         <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-      </amp.Html>
+      </Amp.Html>
     ));
     /* eslint-enable */
 

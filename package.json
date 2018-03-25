@@ -110,7 +110,7 @@
     "collectCoverage": true,
     "collectCoverageFrom": [
       "<rootDir>/src/**/*.js",
-      "!<rootDir>/src/amphtml/index.js"
+      "!<rootDir>/src/amphtml/amphtml.js"
     ],
     "coverageThreshold": {
       "global": {
