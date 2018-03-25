@@ -192,58 +192,41 @@ describe('react-amphtml', () => {
   it('can server-side render valid html', async () => {
     expect.assertions(2);
 
-    const app = createServer((req, res) => {
-      const ampScripts = new AmpScripts();
+    const ampScripts = new AmpScripts();
 
-      const bodyContent = renderToStaticMarkup((
-        <AmpScriptsManager ampScripts={ampScripts}>
-          <div>
-            <amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
-            <amp.AmpAccordion />
-          </div>
-        </AmpScriptsManager>
-      ));
+    const bodyContent = renderToStaticMarkup((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
+          <amp.AmpAccordion />
+        </div>
+      </AmpScriptsManager>
+    ));
 
-      /* eslint-disable react/no-danger */
-      const html = renderToStaticMarkup((
-        <amp.Html specName="html ⚡ for top-level html" lang="en">
-          <head>
-            {headerBoilerplate('/')}
-            <title>react-amphtml</title>
-            {ampScripts.getScriptElements()}
-          </head>
-          <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-        </amp.Html>
-      ));
-      /* eslint-enable */
+    /* eslint-disable react/no-danger */
+    const html = renderToStaticMarkup((
+      <amp.Html specName="html ⚡ for top-level html" lang="en">
+        <head>
+          {headerBoilerplate('/')}
+          <title>react-amphtml</title>
+          {ampScripts.getScriptElements()}
+        </head>
+        <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
+      </amp.Html>
+    ));
+    /* eslint-enable */
 
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.end(`
+    const htmlPage = (
+      `
         <!doctype html>
         ${html}
-      `);
-    });
+      `
+    );
 
-    const PORT = 6969;
-
-    await new Promise((resolve) => {
-      app.listen(PORT, (err) => {
-        if (err) throw err;
-        resolve();
-      });
-    });
-
-    const response = await fetch(`http://localhost:${PORT}/`);
-    const buffer = await response.buffer();
-
-    app.close();
-
-    const html = buffer.toString('utf8');
-
-    expect(html).toMatchSnapshot();
+    expect(htmlPage).toMatchSnapshot();
 
     const validator = await amphtmlValidator.getInstance();
-    const result = validator.validateString(html);
+    const result = validator.validateString(htmlPage);
 
     result.errors.forEach(({
       line,
