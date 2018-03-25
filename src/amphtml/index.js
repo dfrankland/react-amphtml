@@ -7,6 +7,7 @@ import amphtmlValidatorRules from 'amphtml-validator-rules';
 
 const componentOverrides = {
   AmpState: true,
+  Script: true,
 };
 
 const tagNameToComponentName = tagName => (
@@ -100,6 +101,8 @@ const componentCode = newRules.tags.reduce(
       attrs,
       attrLists,
       requiresExtension,
+      extensionSpec,
+      mandatory,
       mandatoryAncestorSuggestedAlternative,
     },
   ) => {
@@ -130,13 +133,13 @@ const componentCode = newRules.tags.reduce(
         const attrIsString = typeof attr === 'string';
 
         const name = attrIsString ? attr : attr.name;
-        const mandatory = attrIsString ? false : attr.mandatory;
+        const mandatoryAttr = attrIsString ? false : attr.mandatory;
         const value = attrIsString ? null : attr.value;
 
         const newPropTypesCode = (
           `
           ${propTypesCode}
-          '${name}': PropTypes.any${mandatory ? '.isRequired' : ''},
+          '${name}': PropTypes.any${mandatoryAttr ? '.isRequired' : ''},
           `
         );
 
@@ -147,11 +150,14 @@ const componentCode = newRules.tags.reduce(
           ${defaultPropsCode}
           '${name}': ${(
             (() => {
-              if (!mandatory) return null;
+              if (!mandatoryAttr) return null;
 
               const type = typeof value;
 
               if (type === 'string') {
+                // React is weird, it removes `async` props that are empty strings
+                if (name === 'async') return true;
+
                 return `'${value}'`;
               }
 
@@ -192,15 +198,32 @@ const componentCode = newRules.tags.reduce(
       '',
     );
 
-    const componentOverride = componentOverrides[componentName];
-    if (componentOverride) {
+    const extensionProps = extensionSpec && typeof extensionSpec === 'object' ? (
+      {
+        extension: extensionSpec.name,
+        isCustomTemplate: extensionSpec.isCustomTemplate,
+      }
+    ) : (
+      false
+    );
+
+    const propsSpread = (
+      `{...propsHelper(props${extensionProps ? `, ${JSON.stringify(extensionProps)}` : ''})}`
+    );
+
+    const contextArgument = `${requiresExtensionContext ? ', context' : ''}`;
+
+    const componentOverride = componentOverrides[tagNameToComponentName(tagName)];
+    if (!mandatory && componentOverride) {
       return (
         `
         ${code}
-        import ${componentName}Override from './components/${componentName}';
-        ${dupeName ? '' : 'export'} const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
+        import ${componentName}Override from './components/${tagNameToComponentName(tagName)}';
+        ${dupeName ? '' : 'export'} const ${componentName} = (props${contextArgument}) => {
           ${requiresExtensionContext}
-          return <${componentName}Override {...propsHelper(props)} />;
+          return (
+            <${componentName}Override ${propsSpread} />
+          );
         };
         `
       );
@@ -209,9 +232,11 @@ const componentCode = newRules.tags.reduce(
     return (
       `
       ${code}
-      const ${componentName} = (props${requiresExtensionContext ? ', context' : ''}) => {
+      const ${componentName} = (props${contextArgument}) => {
         ${requiresExtensionContext}
-        return <${tagName.toLowerCase()} {...propsHelper(props)} />;
+        return (
+          <${tagName.toLowerCase()} ${propsSpread} />
+        );
       };
 
       ${propsCode.propTypesCode ? (
@@ -254,10 +279,11 @@ const componentCode = newRules.tags.reduce(
   // https://reactjs.org/docs/web-components.html#using-web-components-in-react
   //
   // Also, \`specName\` is only necessary for wrapping components.
-  const propsHelper = (props) => {
+  const propsHelper = (props, additionalProps) => {
     let newProps = Object.assign(
       {},
       props,
+      additionalProps,
     );
 
     if (newProps.specName) {

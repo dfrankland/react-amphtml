@@ -1,17 +1,23 @@
 import React from 'react';
-import AmpScript from './AmpScript';
+import { Script } from '../amphtml';
+import { AMP } from '../constants';
 
 const AmpScripts = class {
-  scripts = new Map([[null, 'https://cdn.ampproject.org/v0.js']]);
+  constructor(htmlFormat = AMP) {
+    this.scripts = new Map([
+      [
+        htmlFormat,
+        <Script key={htmlFormat} specName={htmlFormat} />,
+      ],
+    ]);
+  }
 
-  addComponent(component) {
-    this.scripts.set(component, `https://cdn.ampproject.org/v0/${component}-0.1.js`);
+  addComponent(extension) {
+    this.scripts.set(extension, <Script key={extension} specName={extension} />);
   }
 
   getScriptElements() {
-    return [...this.scripts].map((
-      ([component, script]) => <AmpScript key={script} customElement={component} src={script} />
-    ));
+    return [...this.scripts.values()];
   }
 };
 

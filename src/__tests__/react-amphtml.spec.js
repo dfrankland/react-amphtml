@@ -14,7 +14,6 @@ import {
 const {
   AmpScripts,
   AmpScriptsManager,
-  AmpScript,
   headerBoilerplate,
 } = setup;
 
@@ -188,11 +187,6 @@ describe('react-amphtml', () => {
 
     expect(props['[class]']).toEqual('myState.class');
     expect(props['[text]']).toEqual('myState.text');
-  });
-
-  it('creates async script tags', () => {
-    const wrapper = shallow(<AmpScript src="test" />);
-    expect(wrapper.find('script[async]').length).toEqual(1);
   });
 
   it('can server-side render valid html', async () => {
