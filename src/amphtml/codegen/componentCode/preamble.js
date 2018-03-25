@@ -1,8 +1,11 @@
 // This file is the preamble to `amphtml.js`, it is not run as a part of babel.
 
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars, import/no-unresolved, import/extensions */
+
 import React from 'react';
 import PropTypes from 'prop-types';
+
+// These are relative to the `src/amphtml/amphtml.js` file
 import { CONTEXT_KEY } from '../constants';
 
 // React does not transform `className` to `class` on Web Components
@@ -38,8 +41,8 @@ const contextHelper = ({ context, extension }) => {
   if (
     typeof context === 'object' &&
     typeof context[CONTEXT_KEY] === 'object' &&
-    typeof context[CONTEXT_KEY].addComponent === 'function'
+    typeof context[CONTEXT_KEY].addExtension === 'function'
   ) {
-    context[CONTEXT_KEY].addComponent(extension);
+    context[CONTEXT_KEY].addExtension(extension);
   }
 };

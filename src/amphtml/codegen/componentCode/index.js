@@ -171,7 +171,7 @@ module.exports = newRules.tags.reduce(
         `
         ${componentName}.contextTypes = {
           [CONTEXT_KEY]: PropTypes.shape({
-            addComponent: PropTypes.func.isRequired,
+            addExtension: PropTypes.func.isRequired,
           }),
         };
         `

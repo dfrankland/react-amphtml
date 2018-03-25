@@ -12,8 +12,11 @@ const AmpScripts = class {
     ]);
   }
 
-  addComponent(extension) {
-    this.scripts.set(extension, <Script key={extension} specName={extension} />);
+  addExtension(extension) {
+    this.scripts.set(
+      extension,
+      <Script key={extension} specName={extension} />,
+    );
   }
 
   getScriptElements() {
