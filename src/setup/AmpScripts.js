@@ -1,5 +1,5 @@
 import React from 'react';
-import { Script } from '../amphtml';
+import { Script } from '../amphtml/amphtml';
 import { AMP } from '../constants';
 
 const AmpScripts = class {

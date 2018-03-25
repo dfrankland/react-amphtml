@@ -2,15 +2,18 @@
   "name": "react-amphtml",
   "version": "2.2.2",
   "description": "Use amphtml components inside your React apps easily!",
-  "main": "./dist/index.js",
+  "main": "./index.js",
   "files": [
-    "dist/index.js"
+    "dist/*",
+    "index.js",
+    "helpers.js",
+    "setup.js"
   ],
   "scripts": {
     "prebuild": "rimraf ./dist",
     "build": "rollup -c ./rollup.config.js",
     "prepublishOnly": "npm run build",
-    "lint": "eslint -c ./package.json ./src",
+    "lint": "eslint -c ./package.json ./",
     "test": "jest"
   },
   "keywords": [
@@ -46,6 +49,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-test-renderer": "^16.2.0",
+    "rimraf": "^2.6.2",
     "rollup": "^0.57.1",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-node-resolve": "^3.3.0"

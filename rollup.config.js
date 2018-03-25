@@ -3,12 +3,18 @@ import babel from 'rollup-plugin-babel';
 import { dependencies, peerDependencies } from './package.json';
 
 export default {
-  input: './src/index.js',
+  input: [
+    './src/amphtml/amphtml.js',
+    './src/helpers/helpers.js',
+    './src/setup/setup.js',
+  ],
   output: {
-    file: './dist/index.js',
+    dir: './dist',
     format: 'cjs',
     sourcemap: true,
   },
+  experimentalCodeSplitting: true,
+  experimentalDynamicImport: true,
   plugins: [
     nodeResolve(),
     babel({

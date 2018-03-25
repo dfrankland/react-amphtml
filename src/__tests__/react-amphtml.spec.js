@@ -3,17 +3,13 @@ import Adapter from 'enzyme-adapter-react-16';
 import Enzyme, { render, shallow } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
+import amp from '../amphtml/amphtml';
+import helpers from '../helpers/helpers';
 import {
-  amphtml as amp,
-  helpers,
-  setup,
-} from '../';
-
-const {
   AmpScripts,
   AmpScriptsManager,
   headerBoilerplate,
-} = setup;
+} from '../setup/setup';
 
 Enzyme.configure({ adapter: new Adapter() });
 
