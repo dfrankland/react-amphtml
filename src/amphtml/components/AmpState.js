@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const State = ({ children, id }) => (
+const AmpState = ({ children, id }) => (
   <amp-state id={id}>
     <script
       type="application/json"
@@ -12,9 +12,9 @@ const State = ({ children, id }) => (
   </amp-state>
 );
 
-State.propTypes = {
+AmpState.propTypes = {
   children: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   id: PropTypes.string.isRequired,
 };
 
-export default State;
+export default AmpState;

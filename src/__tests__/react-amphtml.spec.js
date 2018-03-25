@@ -1,17 +1,15 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import Enzyme, { render, shallow } from 'enzyme';
+import Enzyme, { render, shallow, mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { createServer } from 'http';
-import fetch from 'node-fetch';
 import amphtmlValidator from 'amphtml-validator';
+import * as Amp from '../amphtml/amphtml';
+import * as AmpHelpers from '../helpers/helpers';
 import {
-  Amp,
   AmpScripts,
   AmpScriptsManager,
-  AmpScript,
   headerBoilerplate,
-} from '../';
+} from '../setup/setup';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -21,8 +19,8 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Img src="test" />
-          <Amp.Pixel something="blah" />
+          <Amp.AmpImg src="test" />
+          <Amp.AmpPixel src="blah" />
         </div>
       </AmpScriptsManager>
     ));
@@ -36,21 +34,28 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Youtube something="blah" />
-          <Amp.Accordion something="blah" />
+          <Amp.AmpYoutube something="blah" />
+          <Amp.AmpAccordion something="blah" />
+          <Amp.Template type="amp-mustache">
+            Hello, {'{{world}}'}!
+          </Amp.Template>
         </div>
       </AmpScriptsManager>
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
-    expect(ampScriptElements.length).toEqual(3);
+    const wrapper = mount(<div>{ampScriptElements}</div>);
+
+    expect(wrapper.find('[custom-element]').length).toEqual(2);
+    expect(wrapper.find('[custom-template]').length).toEqual(1);
+    expect(wrapper.find('script').length).toEqual(4);
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
     const wrapper = render((
       <div>
-        <Amp.Youtube something="blah" />
-        <Amp.Accordion something="blah" />
+        <Amp.AmpYoutube something="blah" />
+        <Amp.AmpAccordion something="blah" />
       </div>
     ));
 
@@ -60,7 +65,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-html, and passes `className` prop', () => {
     const wrapper = shallow((
-      <Amp.Img className="cool" />
+      <Amp.AmpImg className="cool" src="blah" />
     ));
 
     expect(wrapper.find('[class="cool"]').length).toEqual(1);
@@ -71,7 +76,7 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.Form />
+          <Amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
         </div>
       </AmpScriptsManager>
     ));
@@ -87,33 +92,33 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.State id="myState">
+          <Amp.AmpState id="myState">
             {{ text: 'Hello, World!' }}
-          </Amp.State>
-          <Amp.Bind text="myState.text">
-            <div />
-          </Amp.Bind>
+          </Amp.AmpState>
+          <AmpHelpers.Bind text="myState.text">
+            {props => <div {...props} />}
+          </AmpHelpers.Bind>
         </div>
       </AmpScriptsManager>
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
+    expect(ampScriptElements.length).toEqual(1);
     expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
     expect(wrapper.find('amp-state').length).toEqual(1);
   });
 
   it('renders amphtml action `on` attribute properly', () => {
     const wrapper = shallow((
-      <Amp.Action
+      <AmpHelpers.Action
         events={{
           tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        <input />
-      </Amp.Action>
+        {props => <input {...props} />}
+      </AmpHelpers.Action>
     ));
 
     expect((
@@ -125,15 +130,18 @@ describe('react-amphtml', () => {
 
   it('renders amp-action inside amp-bind properly', () => {
     const wrapper = shallow((
-      <Amp.Bind text="myState.text">
-        <Amp.Action
-          events={{
-            tap: ['print'],
-          }}
-        >
-          <input />
-        </Amp.Action>
-      </Amp.Bind>
+      <AmpHelpers.Bind text="myState.text">
+        {props => (
+          <AmpHelpers.Action
+            {...props}
+            events={{
+              tap: ['print'],
+            }}
+          >
+            {props1 => <input {...props1} />}
+          </AmpHelpers.Action>
+        )}
+      </AmpHelpers.Bind>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -144,15 +152,17 @@ describe('react-amphtml', () => {
 
   it('renders amp-bind inside amp-action properly', () => {
     const wrapper = shallow((
-      <Amp.Action
+      <AmpHelpers.Action
         events={{
           tap: ['print'],
         }}
       >
-        <Amp.Bind text="myState.text">
-          <input />
-        </Amp.Bind>
-      </Amp.Action>
+        {props => (
+          <AmpHelpers.Bind {...props} text="myState.text">
+            {props1 => <input {...props1} />}
+          </AmpHelpers.Bind>
+        )}
+      </AmpHelpers.Action>
     ));
 
     const props = wrapper.dive().dive().props();
@@ -164,11 +174,13 @@ describe('react-amphtml', () => {
   it('renders amp-bind inside amp-bind properly', () => {
     /* eslint-disable react/no-unknown-property */
     const wrapper = shallow((
-      <Amp.Bind class="myState.class">
-        <Amp.Bind text="myState.text">
-          <input />
-        </Amp.Bind>
-      </Amp.Bind>
+      <AmpHelpers.Bind class="myState.class">
+        {props => (
+          <AmpHelpers.Bind {...props} text="myState.text">
+            {props1 => <input {...props1} />}
+          </AmpHelpers.Bind>
+        )}
+      </AmpHelpers.Bind>
     ));
     /* eslint-enable */
 
@@ -178,66 +190,44 @@ describe('react-amphtml', () => {
     expect(props['[text]']).toEqual('myState.text');
   });
 
-  it('creates async script tags', () => {
-    const wrapper = shallow(<AmpScript src="test" />);
-    expect(wrapper.find('script[async]').length).toEqual(1);
-  });
-
   it('can server-side render valid html', async () => {
     expect.assertions(2);
 
-    const app = createServer((req, res) => {
-      const ampScripts = new AmpScripts();
+    const ampScripts = new AmpScripts();
 
-      const bodyContent = renderToStaticMarkup((
-        <AmpScriptsManager ampScripts={ampScripts}>
-          <div>
-            <Amp.Img src="/" width={0} height={0} layout="responsive" alt="test" />
-            <Amp.Accordion />
-          </div>
-        </AmpScriptsManager>
-      ));
+    const bodyContent = renderToStaticMarkup((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
+          <Amp.AmpAccordion />
+        </div>
+      </AmpScriptsManager>
+    ));
 
-      /* eslint-disable react/no-danger */
-      const html = renderToStaticMarkup((
-        <html lang="en" amp="">
-          <head>
-            {headerBoilerplate('/')}
-            <title>react-amphtml</title>
-            {ampScripts.getScriptElements()}
-          </head>
-          <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-        </html>
-      ));
-      /* eslint-enable */
+    /* eslint-disable react/no-danger */
+    const html = renderToStaticMarkup((
+      <Amp.Html specName="html ⚡ for top-level html" lang="en">
+        <head>
+          {headerBoilerplate('/')}
+          <title>react-amphtml</title>
+          {ampScripts.getScriptElements()}
+        </head>
+        <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
+      </Amp.Html>
+    ));
+    /* eslint-enable */
 
-      res.setHeader('Content-Type', 'text/html; charset=utf-8');
-      res.end(`
+    const htmlPage = (
+      `
         <!doctype html>
         ${html}
-      `);
-    });
+      `
+    );
 
-    const PORT = 3000;
-
-    await new Promise((resolve) => {
-      app.listen(PORT, (err) => {
-        if (err) throw err;
-        resolve();
-      });
-    });
-
-    const response = await fetch(`http://localhost:${PORT}/`);
-    const buffer = await response.buffer();
-
-    app.close();
-
-    const html = buffer.toString('utf8');
-
-    expect(html).toMatchSnapshot();
+    expect(htmlPage).toMatchSnapshot();
 
     const validator = await amphtmlValidator.getInstance();
-    const result = validator.validateString(html);
+    const result = validator.validateString(htmlPage);
 
     result.errors.forEach(({
       line,

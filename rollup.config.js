@@ -2,13 +2,21 @@ import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { dependencies, peerDependencies } from './package.json';
 
+process.env.BABEL_DISABLE_CACHE = 1;
+
 export default {
-  input: './src/index.js',
+  input: [
+    './src/amphtml/amphtml.js',
+    './src/helpers/helpers.js',
+    './src/setup/setup.js',
+  ],
   output: {
-    file: './dist/index.js',
+    dir: './dist',
     format: 'cjs',
     sourcemap: true,
   },
+  experimentalCodeSplitting: true,
+  experimentalDynamicImport: true,
   plugins: [
     nodeResolve(),
     babel({
@@ -19,7 +27,7 @@ export default {
           {
             modules: false,
             targets: {
-              node: '6',
+              node: '8',
               browsers: ['last 2 versions', '> 1%'],
             },
           },
@@ -29,7 +37,7 @@ export default {
       ],
       plugins: [
         'external-helpers',
-        'preval',
+        'codegen',
       ],
     }),
   ],

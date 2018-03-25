@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import AmpScripts, { CONTEXT_KEY } from './AmpScripts';
+import AmpScripts from './AmpScripts';
+import { CONTEXT_KEY } from '../constants';
 
 const AmpScriptsManager = class extends Component {
   getChildContext() {
