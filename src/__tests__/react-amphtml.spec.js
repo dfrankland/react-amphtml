@@ -2,8 +2,6 @@ import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
 import Enzyme, { render, shallow } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
-import { createServer } from 'http';
-import fetch from 'node-fetch';
 import amphtmlValidator from 'amphtml-validator';
 import {
   amphtml as amp,
