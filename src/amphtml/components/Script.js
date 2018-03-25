@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 const Script = ({ extension, isCustomTemplate }) => (
   <script
     async
-    custom-element={isCustomTemplate ? null : extension}
-    custom-template={isCustomTemplate ? extension : null}
+    {...{ [`custom-${isCustomTemplate ? 'template' : 'element'}`]: extension }}
     src={`https://cdn.ampproject.org/v0/${extension}-0.1.js`}
   />
 );

@@ -1,6 +1,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import Enzyme, { render, shallow } from 'enzyme';
+import Enzyme, { render, shallow, mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
 import * as Amp from '../amphtml/amphtml';
@@ -36,12 +36,19 @@ describe('react-amphtml', () => {
         <div>
           <Amp.AmpYoutube something="blah" />
           <Amp.AmpAccordion something="blah" />
+          <Amp.Template type="amp-mustache">
+            Hello, {'{{world}}'}!
+          </Amp.Template>
         </div>
       </AmpScriptsManager>
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
-    expect(ampScriptElements.length).toEqual(3);
+    const wrapper = mount(<div>{ampScriptElements}</div>);
+
+    expect(wrapper.find('[custom-element]').length).toEqual(2);
+    expect(wrapper.find('[custom-template]').length).toEqual(1);
+    expect(wrapper.find('script').length).toEqual(4);
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
