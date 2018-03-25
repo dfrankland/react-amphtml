@@ -61,7 +61,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-html, and passes `className` prop', () => {
     const wrapper = shallow((
-      <amp.AmpImg className="cool" />
+      <amp.AmpImg className="cool" src="blah" />
     ));
 
     expect(wrapper.find('[class="cool"]').length).toEqual(1);

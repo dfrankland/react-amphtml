@@ -98,6 +98,7 @@ const componentCode = newRules.tags.reduce(
       tagName,
       dupeName,
       attrs,
+      attrLists,
       requiresExtension,
       mandatoryAncestorSuggestedAlternative,
     },
@@ -106,11 +107,31 @@ const componentCode = newRules.tags.reduce(
 
     const componentName = tagNameToComponentName(dupeName || tagName);
 
-    const propsCode = attrs.map((
-      attr => (attr > 0 ? rules.attrs[attr] : rules.internedStrings[-1 * attr])
+    const propsCode = [
+      ...attrs,
+      ...attrLists.reduce(
+        (allAttrFromLists, list) => [
+          ...allAttrFromLists,
+          ...newRules.directAttrLists[list],
+        ],
+        [],
+      ),
+    ].map((
+      attr => (attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr])
     )).reduce(
-      ({ propTypesCode, defaultPropsCode }, { name, mandatory, value }) => {
-        if (!name) return { propTypesCode, defaultPropsCode };
+      ({ propTypesCode, defaultPropsCode }, attr) => {
+        if (!attr) {
+          return {
+            propTypesCode,
+            defaultPropsCode,
+          };
+        }
+
+        const attrIsString = typeof attr === 'string';
+
+        const name = attrIsString ? attr : attr.name;
+        const mandatory = attrIsString ? false : attr.mandatory;
+        const value = attrIsString ? null : attr.value;
 
         const newPropTypesCode = (
           `
