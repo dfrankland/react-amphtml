@@ -1,4 +1,6 @@
-import React from 'react';
+// TODO: Remove `{ Component }` when Rollup fixes its code splitting.
+// Currently, this fixes an `React__default is undefined` error.
+import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 
 export const ON_ATTRIBUTE = ' on';

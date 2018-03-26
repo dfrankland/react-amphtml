@@ -2,7 +2,9 @@
 
 /* eslint-disable no-unused-vars, import/no-unresolved, import/extensions */
 
-import React from 'react';
+// TODO: Remove `{ Component }` when Rollup fixes its code splitting.
+// Currently, this fixes an `React__default is undefined` error.
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 // These are relative to the `src/amphtml/amphtml.js` file
