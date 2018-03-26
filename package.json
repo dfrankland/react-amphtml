@@ -55,7 +55,6 @@
     "rollup-plugin-node-resolve": "^3.3.0"
   },
   "dependencies": {
-    "glob": "^7.1.2",
     "prop-types": "^15.6.1"
   },
   "peerDependencies": {
