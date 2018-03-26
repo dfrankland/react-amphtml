@@ -20,16 +20,14 @@ const propsHelper = (props, additionalProps) => {
     additionalProps,
   );
 
-  if (newProps.specName) {
-    delete newProps.specName;
-  }
+  delete newProps.specName;
 
   if (newProps.className) {
     delete newProps.className;
 
     newProps = Object.assign(
       {},
-      props,
+      newProps,
       { class: props.className },
     );
   }
