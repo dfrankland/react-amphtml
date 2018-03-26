@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 // These are relative to the `src/amphtml/amphtml.js` file
 import { CONTEXT_KEY } from '../constants';
+import contextHelper from '../lib/contextHelper';
 
 // React does not transform `className` to `class` on Web Components
 // like `amp-*`. This is mostly here as a convenience.
@@ -33,14 +34,4 @@ const propsHelper = (props, additionalProps) => {
   }
 
   return newProps;
-};
-
-const contextHelper = ({ context, extension }) => {
-  if (
-    typeof context === 'object' &&
-    typeof context[CONTEXT_KEY] === 'object' &&
-    typeof context[CONTEXT_KEY].addExtension === 'function'
-  ) {
-    context[CONTEXT_KEY].addExtension(extension);
-  }
 };

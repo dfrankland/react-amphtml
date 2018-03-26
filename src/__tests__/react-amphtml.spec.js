@@ -104,7 +104,7 @@ describe('react-amphtml', () => {
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(1);
+    expect(ampScriptElements.length).toEqual(2);
     expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
     expect(wrapper.find('amp-state').length).toEqual(1);
   });
