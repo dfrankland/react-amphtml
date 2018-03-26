@@ -3,8 +3,13 @@ import PropTypes from 'prop-types';
 import contextHelper from '../../lib/contextHelper';
 import { CONTEXT_KEY } from '../../constants';
 
-const AmpState = ({ children, id }, context) => {
+const AmpState = ({ children, id, src }, context) => {
   contextHelper({ context, extension: 'amp-bind' });
+
+  if (src) {
+    return <amp-state id={id} src={src} />;
+  }
+
   return (
     <amp-state id={id}>
       <script
@@ -18,14 +23,20 @@ const AmpState = ({ children, id }, context) => {
 };
 
 AmpState.propTypes = {
-  children: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   id: PropTypes.string.isRequired,
+  children: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  src: PropTypes.string,
 };
 
 AmpState.contextTypes = {
   [CONTEXT_KEY]: PropTypes.shape({
     addExtension: PropTypes.func.isRequired,
   }),
+};
+
+AmpState.defaultProps = {
+  children: null,
+  src: null,
 };
 
 export default AmpState;

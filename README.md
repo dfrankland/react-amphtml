@@ -35,7 +35,7 @@ the appropriate `<script />` tag to it.
 Some of the components of the `Amp` object are overridden to provide more
 ergonomics to using them in React.
 
-#### Amp.State(props, context)
+#### Amp.AmpState(props, context)
 
 *   `props` [`<Object>`][mdn object]
 
@@ -43,14 +43,17 @@ ergonomics to using them in React.
 
     *   `id` [`<string>`][mdn string]
 
+    *   `src` [`<string>`][mdn string]
+
 *   `context` [`<Object>`][mdn object]
 
     *   `[CONTEXT_KEY]` `<AmpScripts>`
 
 `amp-state`, a component included in the `amp-bind` component script, requires
-a single `<script type="application/json" />` element, with JSON as a child. In
-React, the requires using `dangerouslySetInnerHTML`. To make this easier,
-`Amp.State` does the heavy lifting.
+a single `<script type="application/json" />` element, with JSON as a child or,
+a `src` to load. In React, adding a `<script />` requires using
+`dangerouslySetInnerHTML`, so to make this a little more ergonomic
+`Amp.AmpState` does the heavy lifting.
 
 ##### Example
 
@@ -69,11 +72,11 @@ React, the requires using `dangerouslySetInnerHTML`. To make this easier,
 ###### JSX
 
 ```js
-<Amp.State id="allAnimals">
+<Amp.AmpState id="allAnimals">
   {{
     currentAnimal: 'dog',
   }}
-</Amp.State>
+</Amp.AmpState>
 ```
 
 ### AmpHelpers
