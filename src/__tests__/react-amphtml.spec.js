@@ -129,8 +129,10 @@ describe('react-amphtml', () => {
   });
 
   it('renders amp-action inside amp-bind properly', () => {
+    const myStateText = 'myState.text';
+
     const wrapper = shallow((
-      <AmpHelpers.Bind text="myState.text">
+      <AmpHelpers.Bind text={myStateText}>
         {props => (
           <AmpHelpers.Action
             {...props}
@@ -147,10 +149,12 @@ describe('react-amphtml', () => {
     const props = wrapper.dive().dive().props();
 
     expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual('myState.text');
+    expect(props['[text]']).toEqual(myStateText);
   });
 
   it('renders amp-bind inside amp-action properly', () => {
+    const myStateText = 'myState.text';
+
     const wrapper = shallow((
       <AmpHelpers.Action
         events={{
@@ -158,7 +162,7 @@ describe('react-amphtml', () => {
         }}
       >
         {props => (
-          <AmpHelpers.Bind {...props} text="myState.text">
+          <AmpHelpers.Bind {...props} text={myStateText}>
             {props1 => <input {...props1} />}
           </AmpHelpers.Bind>
         )}
@@ -168,15 +172,18 @@ describe('react-amphtml', () => {
     const props = wrapper.dive().dive().props();
 
     expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual('myState.text');
+    expect(props['[text]']).toEqual(myStateText);
   });
 
   it('renders amp-bind inside amp-bind properly', () => {
+    const myStateClass = 'myState.class';
+    const myStateText = 'myState.text';
+
     /* eslint-disable react/no-unknown-property */
     const wrapper = shallow((
-      <AmpHelpers.Bind class="myState.class">
+      <AmpHelpers.Bind class={myStateClass}>
         {props => (
-          <AmpHelpers.Bind {...props} text="myState.text">
+          <AmpHelpers.Bind {...props} text={myStateText}>
             {props1 => <input {...props1} />}
           </AmpHelpers.Bind>
         )}
@@ -186,8 +193,8 @@ describe('react-amphtml', () => {
 
     const props = wrapper.dive().dive().dive().props();
 
-    expect(props['[class]']).toEqual('myState.class');
-    expect(props['[text]']).toEqual('myState.text');
+    expect(props['[class]']).toEqual(myStateClass);
+    expect(props['[text]']).toEqual(myStateText);
   });
 
   it('can server-side render valid html', async () => {
