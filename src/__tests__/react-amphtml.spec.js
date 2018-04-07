@@ -197,6 +197,36 @@ describe('react-amphtml', () => {
     expect(props['[text]']).toEqual(myStateText);
   });
 
+  it(
+    (
+      'renders non-standard attributes on non-standard elements (this ' +
+      'shouldn\'t throw warnings, otherwise this won\'t work with React ' +
+      'normally even if this test passes; see ' +
+      'https://github.com/facebook/react/pull/12568)'
+    ),
+    () => {
+      const myStateClass = 'myState.class';
+      const myStateText = 'myState.text';
+
+      /* eslint-disable react/no-unknown-property */
+      const wrapper = mount((
+        <AmpHelpers.Bind class="myState.class">
+          {props => (
+            <AmpHelpers.Bind {...props} text="myState.text">
+              {props1 => <Amp.AmpList src="" {...props1} />}
+            </AmpHelpers.Bind>
+          )}
+        </AmpHelpers.Bind>
+      ));
+      /* eslint-enable */
+
+      const props = wrapper.find('amp-list').props();
+
+      expect(props['[class]']).toEqual(myStateClass);
+      expect(props['[text]']).toEqual(myStateText);
+    },
+  );
+
   it('can server-side render valid html', async () => {
     expect.assertions(2);
 
