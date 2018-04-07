@@ -122,7 +122,7 @@ describe('react-amphtml', () => {
     ));
 
     expect((
-      wrapper.props()[' on']
+      wrapper.props().on
     )).toEqual((
       'tap:AMP.setState({ myState: { text: "tap!" }}),print;change:AMP.setState({ myState: { input: event.value } })'
     ));
@@ -146,7 +146,7 @@ describe('react-amphtml', () => {
 
     const props = wrapper.dive().dive().props();
 
-    expect(props[' on']).toEqual('tap:print');
+    expect(props.on).toEqual('tap:print');
     expect(props['[text]']).toEqual('myState.text');
   });
 
@@ -167,7 +167,7 @@ describe('react-amphtml', () => {
 
     const props = wrapper.dive().dive().props();
 
-    expect(props[' on']).toEqual('tap:print');
+    expect(props.on).toEqual('tap:print');
     expect(props['[text]']).toEqual('myState.text');
   });
 

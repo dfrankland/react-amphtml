@@ -3,7 +3,7 @@
 import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 
-export const ON_ATTRIBUTE = ' on';
+export const ON_ATTRIBUTE = 'on';
 
 const Action = ({ children: RenderProp, events, ...props }) => {
   const eventString = Object.entries(events).reduce(
