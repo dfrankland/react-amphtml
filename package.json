@@ -28,7 +28,7 @@
   "license": "MIT",
   "devDependencies": {
     "amphtml-validator": "^1.0.23",
-    "amphtml-validator-rules": "^1.0.2",
+    "amphtml-validator-rules": "^1.1.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-jest": "^22.4.3",

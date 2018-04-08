@@ -19,7 +19,7 @@ describe('react-amphtml', () => {
     render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.AmpImg src="test" />
+          <Amp.AmpImg specName="default" src="test" />
           <Amp.AmpPixel src="blah" />
         </div>
       </AmpScriptsManager>
@@ -36,7 +36,7 @@ describe('react-amphtml', () => {
         <div>
           <Amp.AmpYoutube something="blah" />
           <Amp.AmpAccordion something="blah" />
-          <Amp.Template type="amp-mustache">
+          <Amp.Template specName="default" type="amp-mustache">
             Hello, {'{{world}}'}!
           </Amp.Template>
         </div>
@@ -65,10 +65,10 @@ describe('react-amphtml', () => {
 
   it('renders amp-html, and passes `className` prop', () => {
     const wrapper = shallow((
-      <Amp.AmpImg className="cool" src="blah" />
+      <Amp.AmpImg specName="default" className="cool" src="blah" />
     ));
 
-    expect(wrapper.find('[class="cool"]').length).toEqual(1);
+    expect(wrapper.dive().find('[class="cool"]').length).toEqual(1);
   });
 
   it('renders amp-form, properly', () => {
@@ -92,7 +92,7 @@ describe('react-amphtml', () => {
     const wrapper = render((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.AmpState id="myState">
+          <Amp.AmpState specName="amp-state" id="myState">
             {{ text: 'Hello, World!' }}
           </Amp.AmpState>
           <AmpHelpers.Bind text="myState.text">
@@ -213,7 +213,7 @@ describe('react-amphtml', () => {
         <AmpHelpers.Bind class="myState.class">
           {props => (
             <AmpHelpers.Bind {...props} text="myState.text">
-              {props1 => <Amp.AmpList src="" {...props1} />}
+              {props1 => <Amp.AmpList specName="default" src="" {...props1} />}
             </AmpHelpers.Bind>
           )}
         </AmpHelpers.Bind>
@@ -235,7 +235,14 @@ describe('react-amphtml', () => {
     const bodyContent = renderToStaticMarkup((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.AmpImg src="/" width={0} height={0} layout="responsive" alt="test" />
+          <Amp.AmpImg
+            specName="default"
+            src="/"
+            width={0}
+            height={0}
+            layout="responsive"
+            alt="test"
+          />
           <Amp.AmpAccordion />
         </div>
       </AmpScriptsManager>
