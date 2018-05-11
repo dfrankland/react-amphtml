@@ -4,10 +4,6 @@ interface AmpStateProps {
     src?: string
 }
 
-interface BindProps {
-    [boundAttribute: string]: string
-}
-
 interface ActionProps {
     events: {
         [eventName: string]: string[]
@@ -23,8 +19,8 @@ declare module 'react-amphtml' {
 declare module 'react-amphtml/helpers' {
     import { Component } from 'react';
 
-    export class Bind extends Component<BindProps, {}> { }
-    export class Action extends Component<ActionProps, {}> { }
+    export class Bind extends Component<any, any> { }
+    export class Action extends Component<ActionProps, any> { }
 }
 
 declare module 'react-amphtml/setup' {
@@ -42,7 +38,7 @@ declare module 'react-amphtml/setup' {
         ampScripts: AmpScripts[]
     }
 
-    export class AmpScriptsManager extends Component<AmpScriptsManagerProps, {}> {}
+    export class AmpScriptsManager extends Component<AmpScriptsManagerProps, any> {}
 
     export function headerBoilerplate(href: string)
 }
