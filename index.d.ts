@@ -5,33 +5,37 @@ interface AmpStateProps {
 }
 
 interface ActionProps {
+    children: (props) => void
     events: {
         [eventName: string]: string[]
     }
 }
 
-declare module 'react-amphtml' {
-    var types: any
+interface BindProps {
+    children: (props) => void
+    [bindName: string]: any
+}
 
-    export = types;
+declare module 'react-amphtml' {
+    const any: any
+    export = any
 }
 
 declare module 'react-amphtml/helpers' {
     import { Component } from 'react';
 
-    export class Bind extends Component<any, any> { }
-    export class Action extends Component<ActionProps, any> { }
+    export class Bind extends Component<BindProps, {}> { }
+    export class Action extends Component<ActionProps, {}> { }
 }
 
 declare module 'react-amphtml/setup' {
     import { Component } from 'react';
 
     export class AmpScripts {
-        constructor(defaultHtml: string)
+        constructor(defaultHtml?: string)
 
         addExtension(extension: string)
         getScriptElements(): Component[]
-
     }
 
     interface AmpScriptsManagerProps {
