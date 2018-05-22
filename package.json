@@ -7,7 +7,8 @@
     "dist/*",
     "index.js",
     "helpers.js",
-    "setup.js"
+    "setup.js",
+    "index.d.ts"
   ],
   "scripts": {
     "prebuild": "rimraf ./dist",
@@ -27,6 +28,7 @@
   "author": "Dylan Frankland",
   "license": "MIT",
   "devDependencies": {
+    "@types/react": "^16.3.14",
     "amphtml-validator": "^1.0.23",
     "amphtml-validator-rules": "^1.1.0",
     "babel-core": "^6.26.0",
@@ -120,5 +122,6 @@
         "statements": 90
       }
     }
-  }
+  },
+  "typings": "./index.d.ts"
 }
