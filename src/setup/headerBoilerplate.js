@@ -25,15 +25,12 @@ export default href => [
     />
   ),
   (
-    <noscript key={key('noscript')}>
-      <style
-        amp-boilerplate=""
-        dangerouslySetInnerHTML={{
-          __html: `
-            body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}
-          `,
-        }}
-      />
-    </noscript>
+    <noscript key={key('noscript')}
+      dangerouslySetInnerHTML={{
+        __html: `
+          <style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style>
+        `,
+      }}
+    />
   ),
 ];
