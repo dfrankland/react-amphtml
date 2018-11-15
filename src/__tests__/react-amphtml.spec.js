@@ -244,6 +244,9 @@ describe('react-amphtml', () => {
             alt="test"
           />
           <Amp.AmpAccordion />
+          <Amp.Template specName="default" type="amp-mustache">
+            Hello, {'{{world}}'}!
+          </Amp.Template>
         </div>
       </AmpScriptsManager>
     ));
