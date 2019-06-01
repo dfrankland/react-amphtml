@@ -62,23 +62,6 @@
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0"
   },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": "8"
-          }
-        }
-      ],
-      "stage-0",
-      "react"
-    ],
-    "plugins": [
-      "codegen"
-    ]
-  },
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": "airbnb",
