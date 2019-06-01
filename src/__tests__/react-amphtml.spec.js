@@ -68,7 +68,7 @@ describe('react-amphtml', () => {
       <Amp.AmpImg specName="default" className="cool" src="blah" />
     ));
 
-    expect(wrapper.dive().find('[class="cool"]').length).toEqual(1);
+    expect(wrapper.find('[class="cool"]').length).toBe(1);
   });
 
   it('renders amp-form, properly', () => {
@@ -122,10 +122,8 @@ describe('react-amphtml', () => {
     ));
 
     expect((
-      wrapper.props().on
-    )).toEqual((
-      'tap:AMP.setState({ myState: { text: "tap!" }}),print;change:AMP.setState({ myState: { input: event.value } })'
-    ));
+      wrapper.find('[on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]').exists()
+    )).toBe(true);
   });
 
   it('renders amp-action inside amp-bind properly', () => {
