@@ -104,9 +104,9 @@ describe('react-amphtml', () => {
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
-    expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
-    expect(wrapper.find('amp-state').length).toEqual(1);
+    expect(ampScriptElements.length).toBe(2);
+    expect(wrapper.find('[data-amp-bind-text="myState.text"]').length).toBe(1);
+    expect(wrapper.find('amp-state').length).toBe(1);
   });
 
   it('renders amphtml action `on` attribute properly', () => {
@@ -146,10 +146,8 @@ describe('react-amphtml', () => {
       </AmpHelpers.Bind>
     ));
 
-    const props = wrapper.dive().dive().props();
-
-    expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it('renders amp-bind inside amp-action properly', () => {
@@ -169,10 +167,8 @@ describe('react-amphtml', () => {
       </AmpHelpers.Action>
     ));
 
-    const props = wrapper.dive().dive().props();
-
-    expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it('renders amp-bind inside amp-bind properly', () => {
@@ -191,10 +187,8 @@ describe('react-amphtml', () => {
     ));
     /* eslint-enable */
 
-    const props = wrapper.dive().dive().dive().props();
-
-    expect(props['[class]']).toEqual(myStateClass);
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find(`[data-amp-bind-class="${myStateClass}"]`).exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it(
@@ -220,10 +214,8 @@ describe('react-amphtml', () => {
       ));
       /* eslint-enable */
 
-      const props = wrapper.find('amp-list').props();
-
-      expect(props['[class]']).toEqual(myStateClass);
-      expect(props['[text]']).toEqual(myStateText);
+      expect(wrapper.find(`[data-amp-bind-class="${myStateClass}"]`).exists()).toBe(true);
+      expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
     },
   );
 
