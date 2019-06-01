@@ -1,7 +1,7 @@
 const { readFileSync } = require('fs');
 const { resolve: resolvePath } = require('path');
 const newRules = require('../rules');
-const { COMPONENT_OVERRIDES, BLACKLIST } = require('../constants');
+const { MANDATORY_COMPONENT_OVERRIDES, COMPONENT_OVERRIDES, BLACKLIST } = require('../constants');
 const tagNameToComponentName = require('../tagNameToComponentName');
 
 const EXTENSION_TYPE_CUSTOM_TEMPLATE = 'CUSTOM_TEMPLATE';
@@ -126,6 +126,19 @@ module.exports = newRules.tags.reduce(
     );
 
     const contextArgument = `${requiresExtensionContext ? ', context' : ''}`;
+
+    const mandatoryComponentOverride = MANDATORY_COMPONENT_OVERRIDES[
+      tagNameToComponentName(tagName)
+    ];
+    if (mandatoryComponentOverride) {
+      return (
+        `
+        ${code}
+        import ${componentName}Override from './components/${tagNameToComponentName(tagName)}';
+        export const ${componentName} = ${componentName}Override;
+        `
+      );
+    }
 
     const componentOverride = COMPONENT_OVERRIDES[tagNameToComponentName(tagName)];
     if (!mandatory && componentOverride) {

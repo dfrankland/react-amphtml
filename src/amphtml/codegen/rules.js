@@ -2,7 +2,7 @@
 // `devDependencies`.
 // eslint-disable-next-line import/no-extraneous-dependencies
 const amphtmlValidatorRules = require('amphtml-validator-rules');
-const { BLACKLIST } = require('./constants');
+const { BLACKLIST, DUPES_BLACKLIST } = require('./constants');
 
 const rules = amphtmlValidatorRules.amp.validator.createRules();
 
@@ -35,10 +35,10 @@ module.exports = rules.tags.reduce(
       };
     }
 
-    if (!duplicateTags[tagName]) {
+    if (DUPES_BLACKLIST[tagName] || !duplicateTags[tagName]) {
       return {
         dupes,
-        tags: [...tags, tag],
+        tags: [...tags.filter(({ tagName: t }) => t !== tagName), tag],
         ...rest,
       };
     }
