@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 export const ON_ATTRIBUTE = 'on';
 
-const Action = ({ children: RenderProp, events, ...props }) => {
+const Action = ({ children, events }) => {
   const eventString = Object.entries(events).reduce(
     (entireEventString, [eventName, eventActions], eventIndex) => {
       const actionString = eventActions.reduce(
@@ -20,16 +20,7 @@ const Action = ({ children: RenderProp, events, ...props }) => {
     '',
   );
 
-  return (
-    <RenderProp
-      {...{
-        ...props,
-        // `' on'` is used here as a hack to get React to render the `on`
-        // attribute on the element
-        [ON_ATTRIBUTE]: eventString,
-      }}
-    />
-  );
+  return children({ [ON_ATTRIBUTE]: eventString });
 };
 
 Action.propTypes = {

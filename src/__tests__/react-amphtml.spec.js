@@ -1,6 +1,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import Enzyme, { render, shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
 import * as Amp from '../amphtml/amphtml';
@@ -16,7 +16,7 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('react-amphtml', () => {
   it('renders amp-html built-ins, and does not generate extra script tags', () => {
     const ampScripts = new AmpScripts();
-    render((
+    mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpImg specName="default" src="test" />
@@ -26,18 +26,21 @@ describe('react-amphtml', () => {
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
-    expect(ampScriptElements.length).toEqual(1);
+    expect(ampScriptElements.length).toBe(1);
   });
 
   it('renders amp-html extensions, and generates script tags', () => {
     const ampScripts = new AmpScripts();
-    render((
+    mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpYoutube something="blah" />
           <Amp.AmpAccordion something="blah" />
           <Amp.Template specName="default" type="amp-mustache">
-            Hello, {'{{world}}'}!
+            Hello,
+            {' '}
+            {'{{world}}'}
+            !
           </Amp.Template>
         </div>
       </AmpScriptsManager>
@@ -46,34 +49,34 @@ describe('react-amphtml', () => {
     const ampScriptElements = ampScripts.getScriptElements();
     const wrapper = mount(<div>{ampScriptElements}</div>);
 
-    expect(wrapper.find('[custom-element]').length).toEqual(2);
-    expect(wrapper.find('[custom-template]').length).toEqual(1);
-    expect(wrapper.find('script').length).toEqual(4);
+    expect(wrapper.find('[custom-element]').length).toBe(2);
+    expect(wrapper.find('[custom-template]').length).toBe(1);
+    expect(wrapper.find('script').length).toBe(4);
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
-    const wrapper = render((
+    const wrapper = mount((
       <div>
         <Amp.AmpYoutube something="blah" />
         <Amp.AmpAccordion something="blah" />
       </div>
     ));
 
-    expect(wrapper.find('amp-youtube').length).toEqual(1);
-    expect(wrapper.find('amp-accordion').length).toEqual(1);
+    expect(wrapper.find('amp-youtube').length).toBe(1);
+    expect(wrapper.find('amp-accordion').length).toBe(1);
   });
 
   it('renders amp-html, and passes `className` prop', () => {
-    const wrapper = shallow((
+    const wrapper = mount((
       <Amp.AmpImg specName="default" className="cool" src="blah" />
     ));
 
-    expect(wrapper.dive().find('[class="cool"]').length).toEqual(1);
+    expect(wrapper.find('[class="cool"]').length).toBe(1);
   });
 
   it('renders amp-form, properly', () => {
     const ampScripts = new AmpScripts();
-    const wrapper = render((
+    const wrapper = mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
@@ -83,13 +86,13 @@ describe('react-amphtml', () => {
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
-    expect(wrapper.find('form').length).toEqual(1);
+    expect(ampScriptElements.length).toBe(2);
+    expect(wrapper.find('form').length).toBe(1);
   });
 
   it('renders amp-state & amp-bind properly, and only appends the amp-bind script', () => {
     const ampScripts = new AmpScripts();
-    const wrapper = render((
+    const wrapper = mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpState specName="amp-state" id="myState">
@@ -104,13 +107,13 @@ describe('react-amphtml', () => {
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
-    expect(wrapper.find('[\\[text\\]="myState.text"]').length).toEqual(1);
-    expect(wrapper.find('amp-state').length).toEqual(1);
+    expect(ampScriptElements.length).toBe(2);
+    expect(wrapper.find('[data-amp-bind-text="myState.text"]').length).toBe(1);
+    expect(wrapper.find('amp-state').length).toBe(1);
   });
 
   it('renders amphtml action `on` attribute properly', () => {
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Action
         events={{
           tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
@@ -122,16 +125,14 @@ describe('react-amphtml', () => {
     ));
 
     expect((
-      wrapper.props().on
-    )).toEqual((
-      'tap:AMP.setState({ myState: { text: "tap!" }}),print;change:AMP.setState({ myState: { input: event.value } })'
-    ));
+      wrapper.find('[on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]').exists()
+    )).toBe(true);
   });
 
   it('renders amp-action inside amp-bind properly', () => {
     const myStateText = 'myState.text';
 
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Bind text={myStateText}>
         {props => (
           <AmpHelpers.Action
@@ -146,16 +147,14 @@ describe('react-amphtml', () => {
       </AmpHelpers.Bind>
     ));
 
-    const props = wrapper.dive().dive().props();
-
-    expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it('renders amp-bind inside amp-action properly', () => {
     const myStateText = 'myState.text';
 
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Action
         events={{
           tap: ['print'],
@@ -169,10 +168,8 @@ describe('react-amphtml', () => {
       </AmpHelpers.Action>
     ));
 
-    const props = wrapper.dive().dive().props();
-
-    expect(props.on).toEqual('tap:print');
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it('renders amp-bind inside amp-bind properly', () => {
@@ -180,7 +177,7 @@ describe('react-amphtml', () => {
     const myStateText = 'myState.text';
 
     /* eslint-disable react/no-unknown-property */
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Bind class={myStateClass}>
         {props => (
           <AmpHelpers.Bind {...props} text={myStateText}>
@@ -191,18 +188,16 @@ describe('react-amphtml', () => {
     ));
     /* eslint-enable */
 
-    const props = wrapper.dive().dive().dive().props();
-
-    expect(props['[class]']).toEqual(myStateClass);
-    expect(props['[text]']).toEqual(myStateText);
+    expect(wrapper.find(`[data-amp-bind-class="${myStateClass}"]`).exists()).toBe(true);
+    expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
   });
 
   it(
     (
-      'renders non-standard attributes on non-standard elements (this ' +
-      'shouldn\'t throw warnings, otherwise this won\'t work with React ' +
-      'normally even if this test passes; see ' +
-      'https://github.com/facebook/react/pull/12568)'
+      'renders non-standard attributes on non-standard elements (this '
+      + 'shouldn\'t throw warnings, otherwise this won\'t work with React '
+      + 'normally even if this test passes; see '
+      + 'https://github.com/facebook/react/pull/12568)'
     ),
     () => {
       const myStateClass = 'myState.class';
@@ -220,10 +215,8 @@ describe('react-amphtml', () => {
       ));
       /* eslint-enable */
 
-      const props = wrapper.find('amp-list').props();
-
-      expect(props['[class]']).toEqual(myStateClass);
-      expect(props['[text]']).toEqual(myStateText);
+      expect(wrapper.find(`[data-amp-bind-class="${myStateClass}"]`).exists()).toBe(true);
+      expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(true);
     },
   );
 
@@ -250,14 +243,17 @@ describe('react-amphtml', () => {
 
     /* eslint-disable react/no-danger */
     const html = renderToStaticMarkup((
-      <Amp.Html specName="html ⚡ for top-level html" lang="en">
+      // TODO: Should use `<Amp.Html />` component, but it currently tries to
+      // use `⚡` as a prop name. React throws that prop out since React
+      // considers it invalid.
+      <html amp="amp" lang="en">
         <head>
           {headerBoilerplate('/')}
           <title>react-amphtml</title>
           {ampScripts.getScriptElements()}
         </head>
         <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-      </Amp.Html>
+      </html>
     ));
     /* eslint-enable */
 
@@ -293,6 +289,6 @@ describe('react-amphtml', () => {
       ));
     });
 
-    expect(result.status).toEqual('PASS');
+    expect(result.status).toBe('PASS');
   });
 });

@@ -5,11 +5,13 @@ import { CONTEXT_KEY } from '../constants';
 
 const AmpScriptsManager = class extends Component {
   getChildContext() {
-    return { [CONTEXT_KEY]: this.props.ampScripts };
+    const { ampScripts } = this.props;
+    return { [CONTEXT_KEY]: ampScripts };
   }
 
   render() {
-    return React.Children.only(this.props.children);
+    const { children } = this.props;
+    return React.Children.only(children);
   }
 };
 
