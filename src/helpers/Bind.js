@@ -10,7 +10,7 @@ export const BLACKLIST = [
   ON_ATTRIBUTE,
 ];
 
-const boundAttributeRegExp = /^\[.*?\]$/;
+const boundAttributeRegExp = /^data-amp-.*?$/;
 
 const Bind = ({ children: RenderProp, ...props }, context) => {
   contextHelper({ context, extension: 'amp-bind' });
@@ -22,7 +22,7 @@ const Bind = ({ children: RenderProp, ...props }, context) => {
         BLACKLIST.includes(propsName) || boundAttributeRegExp.test(propsName) ? (
           propsName
         ) : (
-          `[${propsName}]`
+          `data-amp-bind-${propsName}`
         )
       )]: (
         propValue
