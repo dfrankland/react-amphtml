@@ -37,7 +37,10 @@ describe('react-amphtml', () => {
           <Amp.AmpYoutube something="blah" />
           <Amp.AmpAccordion something="blah" />
           <Amp.Template specName="default" type="amp-mustache">
-            Hello, {'{{world}}'}!
+            Hello,
+            {' '}
+            {'{{world}}'}
+            !
           </Amp.Template>
         </div>
       </AmpScriptsManager>
@@ -191,10 +194,10 @@ describe('react-amphtml', () => {
 
   it(
     (
-      'renders non-standard attributes on non-standard elements (this ' +
-      'shouldn\'t throw warnings, otherwise this won\'t work with React ' +
-      'normally even if this test passes; see ' +
-      'https://github.com/facebook/react/pull/12568)'
+      'renders non-standard attributes on non-standard elements (this '
+      + 'shouldn\'t throw warnings, otherwise this won\'t work with React '
+      + 'normally even if this test passes; see '
+      + 'https://github.com/facebook/react/pull/12568)'
     ),
     () => {
       const myStateClass = 'myState.class';
