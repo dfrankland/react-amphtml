@@ -12,7 +12,7 @@ export const BLACKLIST = [
 
 const boundAttributeRegExp = /^data-amp-.*?$/;
 
-const Bind = ({ children: RenderProp, ...props }, context) => {
+const Bind = ({ children, ...props }, context) => {
   contextHelper({ context, extension: 'amp-bind' });
 
   const boundAttributeProps = Object.entries(props).reduce(
@@ -31,7 +31,7 @@ const Bind = ({ children: RenderProp, ...props }, context) => {
     {},
   );
 
-  return <RenderProp {...boundAttributeProps} />;
+  return children(boundAttributeProps);
 };
 
 Bind.propTypes = {
