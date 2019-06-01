@@ -4,6 +4,8 @@ const newRules = require('../rules');
 const { COMPONENT_OVERRIDES, BLACKLIST } = require('../constants');
 const tagNameToComponentName = require('../tagNameToComponentName');
 
+const EXTENSION_TYPE_CUSTOM_TEMPLATE = 'CUSTOM_TEMPLATE';
+
 module.exports = newRules.tags.reduce(
   (
     code,
@@ -113,7 +115,7 @@ module.exports = newRules.tags.reduce(
     const extensionProps = extensionSpec && typeof extensionSpec === 'object' ? (
       {
         extension: extensionSpec.name,
-        isCustomTemplate: extensionSpec.isCustomTemplate,
+        isCustomTemplate: extensionSpec.extensionType === EXTENSION_TYPE_CUSTOM_TEMPLATE,
       }
     ) : (
       false
