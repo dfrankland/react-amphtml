@@ -26,7 +26,7 @@ describe('react-amphtml', () => {
     ));
 
     const ampScriptElements = ampScripts.getScriptElements();
-    expect(ampScriptElements.length).toEqual(1);
+    expect(ampScriptElements.length).toBe(1);
   });
 
   it('renders amp-html extensions, and generates script tags', () => {
@@ -49,9 +49,9 @@ describe('react-amphtml', () => {
     const ampScriptElements = ampScripts.getScriptElements();
     const wrapper = mount(<div>{ampScriptElements}</div>);
 
-    expect(wrapper.find('[custom-element]').length).toEqual(2);
-    expect(wrapper.find('[custom-template]').length).toEqual(1);
-    expect(wrapper.find('script').length).toEqual(4);
+    expect(wrapper.find('[custom-element]').length).toBe(2);
+    expect(wrapper.find('[custom-template]').length).toBe(1);
+    expect(wrapper.find('script').length).toBe(4);
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
@@ -62,8 +62,8 @@ describe('react-amphtml', () => {
       </div>
     ));
 
-    expect(wrapper.find('amp-youtube').length).toEqual(1);
-    expect(wrapper.find('amp-accordion').length).toEqual(1);
+    expect(wrapper.find('amp-youtube').length).toBe(1);
+    expect(wrapper.find('amp-accordion').length).toBe(1);
   });
 
   it('renders amp-html, and passes `className` prop', () => {
@@ -86,8 +86,8 @@ describe('react-amphtml', () => {
 
     const ampScriptElements = ampScripts.getScriptElements();
 
-    expect(ampScriptElements.length).toEqual(2);
-    expect(wrapper.find('form').length).toEqual(1);
+    expect(ampScriptElements.length).toBe(2);
+    expect(wrapper.find('form').length).toBe(1);
   });
 
   it('renders amp-state & amp-bind properly, and only appends the amp-bind script', () => {
@@ -286,6 +286,6 @@ describe('react-amphtml', () => {
       ));
     });
 
-    expect(result.status).toEqual('PASS');
+    expect(result.status).toBe('PASS');
   });
 });
