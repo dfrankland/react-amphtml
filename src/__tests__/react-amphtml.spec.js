@@ -243,14 +243,17 @@ describe('react-amphtml', () => {
 
     /* eslint-disable react/no-danger */
     const html = renderToStaticMarkup((
-      <Amp.Html specName="html ⚡ for top-level html" lang="en">
+      // TODO: Should use `<Amp.Html />` component, but it currently tries to
+      // use `⚡` as a prop name. React throws that prop out since React
+      // considers it invalid.
+      <html amp="amp" lang="en">
         <head>
           {headerBoilerplate('/')}
           <title>react-amphtml</title>
           {ampScripts.getScriptElements()}
         </head>
         <body dangerouslySetInnerHTML={{ __html: bodyContent }} />
-      </Amp.Html>
+      </html>
     ));
     /* eslint-enable */
 
