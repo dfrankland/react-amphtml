@@ -15,31 +15,9 @@ export default {
     format: 'cjs',
     sourcemap: true,
   },
-  experimentalCodeSplitting: true,
-  experimentalDynamicImport: true,
   plugins: [
     nodeResolve(),
-    babel({
-      babelrc: false,
-      presets: [
-        [
-          'env',
-          {
-            modules: false,
-            targets: {
-              node: '8',
-              browsers: ['last 2 versions', '> 1%'],
-            },
-          },
-        ],
-        'stage-0',
-        'react',
-      ],
-      plugins: [
-        'external-helpers',
-        'codegen',
-      ],
-    }),
+    babel({ babelrc: true }),
   ],
   external: [
     ...Object.keys(dependencies),
