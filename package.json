@@ -62,28 +62,5 @@
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0"
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": "airbnb",
-    "env": {
-      "browser": true,
-      "jest/globals": true
-    },
-    "rules": {
-      "react/jsx-filename-extension": "off",
-      "import/no-extraneous-dependencies": [
-        "error",
-        {
-          "devDependencies": [
-            "rollup.config.js",
-            "**/__tests__/**/*"
-          ]
-        }
-      ]
-    },
-    "plugins": [
-      "jest"
-    ]
-  },
   "typings": "./index.d.ts"
 }
