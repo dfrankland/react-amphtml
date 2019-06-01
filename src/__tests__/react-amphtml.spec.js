@@ -1,6 +1,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import Enzyme, { render, shallow, mount } from 'enzyme';
+import Enzyme, { mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
 import * as Amp from '../amphtml/amphtml';
@@ -16,7 +16,7 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('react-amphtml', () => {
   it('renders amp-html built-ins, and does not generate extra script tags', () => {
     const ampScripts = new AmpScripts();
-    render((
+    mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpImg specName="default" src="test" />
@@ -31,7 +31,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-html extensions, and generates script tags', () => {
     const ampScripts = new AmpScripts();
-    render((
+    mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpYoutube something="blah" />
@@ -52,7 +52,7 @@ describe('react-amphtml', () => {
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
-    const wrapper = render((
+    const wrapper = mount((
       <div>
         <Amp.AmpYoutube something="blah" />
         <Amp.AmpAccordion something="blah" />
@@ -64,7 +64,7 @@ describe('react-amphtml', () => {
   });
 
   it('renders amp-html, and passes `className` prop', () => {
-    const wrapper = shallow((
+    const wrapper = mount((
       <Amp.AmpImg specName="default" className="cool" src="blah" />
     ));
 
@@ -73,7 +73,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-form, properly', () => {
     const ampScripts = new AmpScripts();
-    const wrapper = render((
+    const wrapper = mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.Form specName="FORM [method=GET]" action="/" method="GET" target="self" />
@@ -89,7 +89,7 @@ describe('react-amphtml', () => {
 
   it('renders amp-state & amp-bind properly, and only appends the amp-bind script', () => {
     const ampScripts = new AmpScripts();
-    const wrapper = render((
+    const wrapper = mount((
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpState specName="amp-state" id="myState">
@@ -110,7 +110,7 @@ describe('react-amphtml', () => {
   });
 
   it('renders amphtml action `on` attribute properly', () => {
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Action
         events={{
           tap: ['AMP.setState({ myState: { text: "tap!" }})', 'print'],
@@ -131,7 +131,7 @@ describe('react-amphtml', () => {
   it('renders amp-action inside amp-bind properly', () => {
     const myStateText = 'myState.text';
 
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Bind text={myStateText}>
         {props => (
           <AmpHelpers.Action
@@ -155,7 +155,7 @@ describe('react-amphtml', () => {
   it('renders amp-bind inside amp-action properly', () => {
     const myStateText = 'myState.text';
 
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Action
         events={{
           tap: ['print'],
@@ -180,7 +180,7 @@ describe('react-amphtml', () => {
     const myStateText = 'myState.text';
 
     /* eslint-disable react/no-unknown-property */
-    const wrapper = shallow((
+    const wrapper = mount((
       <AmpHelpers.Bind class={myStateClass}>
         {props => (
           <AmpHelpers.Bind {...props} text={myStateText}>
