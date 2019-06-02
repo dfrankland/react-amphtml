@@ -4,8 +4,8 @@ module.exports = {
   collectCoverageFrom: [
     '<rootDir>/src/**/*.js',
     '<rootDir>/src/**/*.ts',
-    '!<rootDir>/src/amphtml/amphtml.js',
-    '!<rootDir>/src/amphtml/codegen/**/*.js',
+    '<rootDir>/src/**/*.tsx',
+    '!<rootDir>/src/amphtml/amphtml.tsx',
   ],
   coverageThreshold: {
     global: {
