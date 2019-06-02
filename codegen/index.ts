@@ -1,6 +1,6 @@
-const prettier = require('prettier');
-const componentCode = require('./componentCode');
-const duplicateWrapperComponentCode = require('./duplicateWrapperComponentCode');
+import prettier from 'prettier';
+import componentCode from './componentCode';
+import duplicateWrapperComponentCode from './duplicateWrapperComponentCode';
 
 const code = prettier.format(
   `

@@ -1,18 +1,18 @@
-const { readFileSync } = require('fs');
-const { resolve: resolvePath } = require('path');
-const newRules = require('../rules');
-const {
+import { readFileSync } from 'fs';
+import { resolve as resolvePath } from 'path';
+import newRules from '../rules';
+import {
   MANDATORY_COMPONENT_OVERRIDES,
   COMPONENT_OVERRIDES,
   BLACKLIST,
-} = require('../constants');
-const tagNameToComponentName = require('../tagNameToComponentName');
+} from '../constants';
+import tagNameToComponentName from '../tagNameToComponentName';
 
 const EXTENSION_TYPE_CUSTOM_TEMPLATE = 'CUSTOM_TEMPLATE';
 
-module.exports = newRules.tags.reduce(
+export default newRules.tags.reduce(
   (
-    code,
+    code: string,
     {
       tagName,
       dupeName,
@@ -20,10 +20,21 @@ module.exports = newRules.tags.reduce(
       attrLists,
       requiresExtension,
       extensionSpec,
-      mandatory,
       mandatoryAncestorSuggestedAlternative,
+    }: {
+      tagName: string;
+      dupeName: string;
+      attrs: number[];
+      attrLists: number[];
+      requiresExtension: string[] | null;
+      extensionSpec: {
+        name: string;
+        version: string[];
+        extensionType: string | null;
+      } | null;
+      mandatoryAncestorSuggestedAlternative: boolean;
     },
-  ) => {
+  ): string => {
     if (BLACKLIST[tagName] || mandatoryAncestorSuggestedAlternative)
       return code;
 
@@ -32,18 +43,35 @@ module.exports = newRules.tags.reduce(
     const propsCode = [
       ...attrs,
       ...attrLists.reduce(
-        (allAttrFromLists, list) => [
+        (allAttrFromLists: number[], list): number[] => [
           ...allAttrFromLists,
           ...newRules.directAttrLists[list],
         ],
         [],
       ),
     ]
-      .map(attr =>
-        attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr],
+      .map(
+        (
+          attr,
+        ):
+          | {
+              name: string;
+              mandatory: boolean;
+              value: string | string[];
+            }
+          | string
+          | null =>
+          attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr],
       )
       .reduce(
-        ({ propTypesCode, defaultPropsCode, propsInterfaceCode }, attr) => {
+        (
+          { propTypesCode, defaultPropsCode, propsInterfaceCode },
+          attr,
+        ): {
+          propTypesCode: { [key: string]: string };
+          defaultPropsCode: { [key: string]: any };
+          propsInterfaceCode: { [key: string]: string };
+        } => {
           if (!attr) {
             return {
               propTypesCode,
@@ -52,11 +80,9 @@ module.exports = newRules.tags.reduce(
             };
           }
 
-          const attrIsString = typeof attr === 'string';
-
-          const name = attrIsString ? attr : attr.name;
-          const mandatoryAttr = attrIsString ? false : attr.mandatory;
-          const value = attrIsString ? null : attr.value;
+          const name = typeof attr === 'string' ? attr : attr.name;
+          const mandatoryAttr = typeof attr === 'string' ? false : attr.mandatory;
+          const value = typeof attr === 'string' ? null : attr.value;
 
           const newPropTypesCode = {
             ...propTypesCode,
@@ -70,11 +96,13 @@ module.exports = newRules.tags.reduce(
               ? defaultPropsCode
               : {
                   ...defaultPropsCode,
-                  [JSON.stringify(name)]: (() => {
+                  [JSON.stringify(name)]: ((): any => {
                     if (!mandatoryAttr) return null;
 
                     const type =
-                      Array.isArray(value) && value.length > 0
+                      typeof value !== 'string' &&
+                      Array.isArray(value) &&
+                      value.length > 0
                         ? typeof value.slice(0, 1).pop()
                         : typeof value;
 
@@ -111,7 +139,7 @@ module.exports = newRules.tags.reduce(
         {
           propTypesCode: {},
           defaultPropsCode: {},
-          propsInterfaceCode: '',
+          propsInterfaceCode: {},
         },
       );
 
@@ -119,7 +147,7 @@ module.exports = newRules.tags.reduce(
       ? requiresExtension
       : []
     ).reduce(
-      (requiresExtensionContextCode, requiredExtension) =>
+      (requiresExtensionContextCode, requiredExtension): string =>
         `
         ${requiresExtensionContextCode}
         contextHelper({ context, extension: '${requiredExtension}', version: props.version });
@@ -168,7 +196,7 @@ module.exports = newRules.tags.reduce(
             extensionSpec && Array.isArray(extensionSpec.version)
               ? `
                 version?: ${extensionSpec.version
-                  .map(JSON.stringify)
+                  .map((v): string => JSON.stringify(v))
                   .join('|')},
               `
               : ''
@@ -208,7 +236,7 @@ module.exports = newRules.tags.reduce(
                 }
               : {}),
           }).reduce(
-            (acc, [key, value]) => `
+            (acc, [key, value]): string => `
               ${acc}
               ${key}: ${value},
             `,
@@ -221,14 +249,14 @@ module.exports = newRules.tags.reduce(
     return `
       ${code}
 
-      ${(() => {
+      ${((): string => {
         const propsInterfaceCodeEntries = Object.entries(
           propsCode.propsInterfaceCode,
         );
         return `
           export interface ${componentName}Props {
             ${propsInterfaceCodeEntries.reduce(
-              (acc, [key, value]) => `
+              (acc, [key, value]): string => `
               ${acc}
               ${key}${value}
             `,
@@ -247,13 +275,13 @@ module.exports = newRules.tags.reduce(
         );
       };
 
-      ${(() => {
+      ${((): string => {
         const propTypesEntries = Object.entries(propsCode.propTypesCode);
         if (propTypesEntries.length === 0) return '';
         return `
           ${componentName}.propTypes = {
             ${propTypesEntries.reduce(
-              (acc, [key, value]) => `
+              (acc, [key, value]): string => `
               ${acc}
               ${key}: ${value},
             `,
@@ -263,13 +291,13 @@ module.exports = newRules.tags.reduce(
         `;
       })()}
 
-      ${(() => {
+      ${((): string => {
         const defaultPropsEntries = Object.entries(propsCode.defaultPropsCode);
         if (defaultPropsEntries.length === 0) return '';
         return `
           ${componentName}.defaultProps = {
             ${defaultPropsEntries.reduce(
-              (acc, [key, value]) => `
+              (acc, [key, value]): string => `
               ${acc}
               ${key}: ${value},
             `,

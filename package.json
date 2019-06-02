@@ -12,14 +12,14 @@
     "index.d.ts"
   ],
   "scripts": {
-    "codegen": "babel-node ./codegen/index.js > ./src/amphtml/amphtml.tsx",
+    "codegen": "babel-node --extensions='.js,.ts,.tsx' ./codegen/index.ts > ./src/amphtml/amphtml.tsx",
     "prebuild": "rimraf ./dist",
     "build": "rollup -c ./rollup.config.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint -c ./package.json ./",
     "test": "jest --no-cache",
     "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -p ./tsconfig.base.json --noEmit",
     "ts-declarations": "tsc --emitDeclarationOnly --declaration"
   },
   "keywords": [
@@ -43,6 +43,7 @@
     "@types/enzyme": "^3.9.3",
     "@types/enzyme-adapter-react-16": "^1.0.5",
     "@types/jest": "^24.0.13",
+    "@types/prettier": "^1.16.4",
     "@types/react": "^16.8.19",
     "@types/react-dom": "^16.8.4",
     "@typescript-eslint/eslint-plugin": "^1.9.0",
