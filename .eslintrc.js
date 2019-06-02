@@ -35,7 +35,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.ts'],
+      files: ['*.ts', '*.tsx'],
       parser: '@typescript-eslint/parser',
       // NOTE: Workaround for no nested extends possible.
       // See https://github.com/eslint/eslint/issues/8813.
@@ -59,13 +59,13 @@ module.exports = {
       settings: {
         'import/resolver': {
           node: {
-            extensions: ['.js', '.ts'],
+            extensions: ['.js', '.ts', '.tsx'],
           },
         },
       },
     },
     {
-      files: ['setupTest.ts', '*.spec.ts'],
+      files: ['setupTest.js', 'setupTest.ts', '*.spec.ts', '*.spec.tsx'],
       env: {
         jest: true,
       },
