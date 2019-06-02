@@ -1,6 +1,8 @@
 import nodeResolve from 'rollup-plugin-node-resolve';
 import babel from 'rollup-plugin-babel';
 import { exec } from 'child_process';
+import globby from 'globby';
+import { rename } from 'fs';
 import { dependencies, peerDependencies } from './package.json';
 
 process.env.BABEL_DISABLE_CACHE = 1;
@@ -27,6 +29,28 @@ export default {
     }),
     {
       writeBundle: async () => {
+        // Rename .ts / .tsx => .js so we don't confuse tsc
+        await Promise.all(
+          (await globby([
+            './dist/**/*.ts',
+            './dist/**/*.tsx',
+            './dist/**/*.ts.map',
+            './dist/**/*.tsx.map',
+          ])).map(
+            file =>
+              new Promise((resolve, reject) => {
+                rename(
+                  file,
+                  file
+                    .replace(/\.tsx?$/, '.js')
+                    .replace(/\.tsx?\.map$/, '.js.map'),
+                  err => (err ? reject(err) : resolve()),
+                );
+              }),
+          ),
+        );
+
+        // Create type declarations
         await new Promise((resolve, reject) => {
           exec(
             'npm run ts-declarations',
