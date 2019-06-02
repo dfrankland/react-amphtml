@@ -7,8 +7,8 @@ process.env.BABEL_DISABLE_CACHE = 1;
 export default {
   input: [
     './src/amphtml/amphtml.js',
-    './src/helpers/helpers.js',
-    './src/setup/setup.js',
+    './src/helpers/helpers.ts',
+    './src/setup/setup.ts',
   ],
   output: {
     dir: './dist',

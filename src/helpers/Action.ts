@@ -1,15 +1,33 @@
-// TODO: Remove `{ Component }` when Rollup fixes its code splitting.
-// Currently, this fixes an `React__default is undefined` error.
-import React, { Component } from 'react'; // eslint-disable-line no-unused-vars
+import { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
 export const ON_ATTRIBUTE = 'on';
 
-const Action = ({ children, events }) => {
+export interface ActionOnProps {
+  [ON_ATTRIBUTE]: string;
+}
+
+const Action = ({
+  children,
+  events,
+}: {
+  children: (props: ActionOnProps) => ReactElement;
+  events: {
+    [eventName: string]: string[];
+  };
+}): ReactElement => {
   const eventString = Object.entries(events).reduce(
-    (entireEventString, [eventName, eventActions], eventIndex) => {
+    (
+      entireEventString: string,
+      [eventName, eventActions]: [string, string[]],
+      eventIndex: number,
+    ): string => {
       const actionString = eventActions.reduce(
-        (entireActionString, nextAction, actionIndex) =>
+        (
+          entireActionString: string,
+          nextAction: string,
+          actionIndex: number,
+        ): string =>
           `${entireActionString}${actionIndex > 0 ? ',' : ''}${nextAction}`,
         '',
       );

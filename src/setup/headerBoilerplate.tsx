@@ -1,9 +1,10 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
 
-const key = suffix => `react-amphtml-header-boilerplate-${suffix}`;
+const key = (suffix: string): string =>
+  `react-amphtml-header-boilerplate-${suffix}`;
 
-export default href => [
+export default (href: string): ReactElement[] => [
   <meta key={key('meta-charset')} charSet="utf-8" />,
   <meta
     key={key('meta-viewport')}

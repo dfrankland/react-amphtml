@@ -1,15 +1,19 @@
-import React, { Component } from 'react';
+import React, { ReactElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import AmpScripts from './AmpScripts';
 import { CONTEXT_KEY } from '../constants';
 
+export interface AmpScriptsManagerContext {
+  [CONTEXT_KEY]: AmpScripts;
+}
+
 const AmpScriptsManager = class extends Component {
-  getChildContext() {
+  public getChildContext(): AmpScriptsManagerContext {
     const { ampScripts } = this.props;
     return { [CONTEXT_KEY]: ampScripts };
   }
 
-  render() {
+  public render(): ReactElement {
     const { children } = this.props;
     return React.Children.only(children);
   }

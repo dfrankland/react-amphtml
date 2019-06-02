@@ -1,14 +1,12 @@
-import AmpScripts from '../setup/AmpScripts';
 import { CONTEXT_KEY } from '../constants';
+import AmpScriptsManagerContext from '../setup/AmpScriptsManager';
 
 export default ({
   context,
   extension,
   version,
 }: {
-  context: {
-    [key: string]: AmpScripts;
-  };
+  context: AmpScriptsManagerContext;
   extension: string;
   version: string;
 }): void => {
