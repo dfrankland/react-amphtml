@@ -1,6 +1,5 @@
 import React from 'react';
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme, { mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
 import * as Amp from '../amphtml/amphtml';
@@ -10,8 +9,6 @@ import {
   AmpScriptsManager,
   headerBoilerplate,
 } from '../setup/setup';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('react-amphtml', () => {
   it('renders amp-html built-ins, and does not generate extra script tags', () => {
