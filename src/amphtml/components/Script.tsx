@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
-const Script = ({ extension, isCustomTemplate, version }) => (
+export interface ScriptProps {
+  extension: string;
+  isCustomTemplate?: boolean;
+  version?: string;
+}
+
+const Script: React.SFC<ScriptProps> = ({
+  extension,
+  isCustomTemplate,
+  version,
+}): ReactElement => (
   <script
     async
     {...{ [`custom-${isCustomTemplate ? 'template' : 'element'}`]: extension }}

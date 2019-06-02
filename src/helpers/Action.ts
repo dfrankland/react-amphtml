@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
 export const ON_ATTRIBUTE = 'on';
@@ -7,15 +7,17 @@ export interface ActionOnProps {
   [ON_ATTRIBUTE]: string;
 }
 
-const Action = ({
-  children,
-  events,
-}: {
+export interface ActionProps {
   children: (props: ActionOnProps) => ReactElement;
   events: {
     [eventName: string]: string[];
   };
-}): ReactElement => {
+}
+
+const Action: React.SFC<ActionProps> = ({
+  children,
+  events,
+}: ActionProps): ReactElement => {
   const eventString = Object.entries(events).reduce(
     (
       entireEventString: string,
@@ -44,7 +46,9 @@ const Action = ({
 
 Action.propTypes = {
   children: PropTypes.func.isRequired,
-  events: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
+  events: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  ).isRequired,
 };
 
 export default Action;

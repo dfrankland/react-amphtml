@@ -1,5 +1,5 @@
 import { CONTEXT_KEY } from '../constants';
-import AmpScriptsManagerContext from '../setup/AmpScriptsManager';
+import { AmpScriptsManagerContext } from '../setup/AmpScriptsManager';
 
 export default ({
   context,
@@ -8,7 +8,7 @@ export default ({
 }: {
   context: AmpScriptsManagerContext;
   extension: string;
-  version: string;
+  version?: string;
 }): void => {
   if (
     typeof context === 'object' &&

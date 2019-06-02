@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { mount } from 'enzyme';
 import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
@@ -10,8 +10,8 @@ import {
   headerBoilerplate,
 } from '../setup/setup';
 
-describe('react-amphtml', () => {
-  it('renders amp-html built-ins, and does not generate extra script tags', () => {
+describe('react-amphtml', (): void => {
+  it('renders amp-html built-ins, and does not generate extra script tags', (): void => {
     const ampScripts = new AmpScripts();
     mount(
       <AmpScriptsManager ampScripts={ampScripts}>
@@ -26,7 +26,7 @@ describe('react-amphtml', () => {
     expect(ampScriptElements.length).toBe(1);
   });
 
-  it('renders amp-html extensions, and generates script tags', () => {
+  it('renders amp-html extensions, and generates script tags', (): void => {
     const ampScripts = new AmpScripts();
     mount(
       <AmpScriptsManager ampScripts={ampScripts}>
@@ -48,7 +48,7 @@ describe('react-amphtml', () => {
     expect(wrapper.find('script').length).toBe(4);
   });
 
-  it('can specify versions of script tags', () => {
+  it('can specify versions of script tags', (): void => {
     const ampScripts = new AmpScripts();
     mount(
       <AmpScriptsManager ampScripts={ampScripts}>
@@ -70,7 +70,7 @@ describe('react-amphtml', () => {
     ).toBe(true);
   });
 
-  it('warns on invalid versions of script tags', () => {
+  it('warns on invalid versions of script tags', (): void => {
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
     const ampScripts = new AmpScripts();
     mount(
@@ -88,7 +88,7 @@ describe('react-amphtml', () => {
     consoleSpy.mockRestore();
   });
 
-  it('renders amp-html, and works without context from AmpScriptsManager', () => {
+  it('renders amp-html, and works without context from AmpScriptsManager', (): void => {
     const wrapper = mount(
       <div>
         <Amp.AmpYoutube something="blah" />
@@ -100,7 +100,7 @@ describe('react-amphtml', () => {
     expect(wrapper.find('amp-accordion').length).toBe(1);
   });
 
-  it('renders amp-html, and passes `className` prop', () => {
+  it('renders amp-html, and passes `className` prop', (): void => {
     const wrapper = mount(
       <Amp.AmpImg specName="default" className="cool" src="blah" />,
     );
@@ -108,7 +108,7 @@ describe('react-amphtml', () => {
     expect(wrapper.find('[class="cool"]').length).toBe(1);
   });
 
-  it('renders amp-form, properly', () => {
+  it('renders amp-form, properly', (): void => {
     const ampScripts = new AmpScripts();
     const wrapper = mount(
       <AmpScriptsManager ampScripts={ampScripts}>
@@ -129,7 +129,7 @@ describe('react-amphtml', () => {
     expect(wrapper.find('form').length).toBe(1);
   });
 
-  it('renders amp-state & amp-bind properly, and only appends the amp-bind script', () => {
+  it('renders amp-state & amp-bind properly, and only appends the amp-bind script', (): void => {
     const ampScripts = new AmpScripts();
     const wrapper = mount(
       <AmpScriptsManager ampScripts={ampScripts}>
@@ -138,7 +138,7 @@ describe('react-amphtml', () => {
             {{ text: 'Hello, World!' }}
           </Amp.AmpState>
           <AmpHelpers.Bind text="myState.text">
-            {props => <div {...props} />}
+            {(props): ReactElement => <div {...props} />}
           </AmpHelpers.Bind>
         </div>
       </AmpScriptsManager>,
@@ -151,7 +151,7 @@ describe('react-amphtml', () => {
     expect(wrapper.find('amp-state').length).toBe(1);
   });
 
-  it('renders amphtml action `on` attribute properly', () => {
+  it('renders amphtml action `on` attribute properly', (): void => {
     const wrapper = mount(
       <AmpHelpers.Action
         events={{
@@ -159,7 +159,7 @@ describe('react-amphtml', () => {
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        {props => <input {...props} />}
+        {(props: any): ReactElement => <input {...props} />}
       </AmpHelpers.Action>,
     );
 
@@ -172,19 +172,19 @@ describe('react-amphtml', () => {
     ).toBe(true);
   });
 
-  it('renders amp-action inside amp-bind properly', () => {
+  it('renders amp-action inside amp-bind properly', (): void => {
     const myStateText = 'myState.text';
 
     const wrapper = mount(
       <AmpHelpers.Bind text={myStateText}>
-        {props => (
+        {(props): ReactElement => (
           <AmpHelpers.Action
             {...props}
             events={{
               tap: ['print'],
             }}
           >
-            {props1 => <input {...props1} />}
+            {(props1: any): ReactElement => <input {...props1} />}
           </AmpHelpers.Action>
         )}
       </AmpHelpers.Bind>,
@@ -196,7 +196,7 @@ describe('react-amphtml', () => {
     );
   });
 
-  it('renders amp-bind inside amp-action properly', () => {
+  it('renders amp-bind inside amp-action properly', (): void => {
     const myStateText = 'myState.text';
 
     const wrapper = mount(
@@ -205,9 +205,11 @@ describe('react-amphtml', () => {
           tap: ['print'],
         }}
       >
-        {props => (
+        {(props): ReactElement => (
           <AmpHelpers.Bind {...props} text={myStateText}>
-            {props1 => <input {...props1} />}
+            {(props1): ReactElement => (
+              <input {...props1} />
+            )}
           </AmpHelpers.Bind>
         )}
       </AmpHelpers.Action>,
@@ -219,16 +221,18 @@ describe('react-amphtml', () => {
     );
   });
 
-  it('renders amp-bind inside amp-bind properly', () => {
+  it('renders amp-bind inside amp-bind properly', (): void => {
     const myStateClass = 'myState.class';
     const myStateText = 'myState.text';
 
     /* eslint-disable react/no-unknown-property */
     const wrapper = mount(
       <AmpHelpers.Bind class={myStateClass}>
-        {props => (
+        {(props): ReactElement => (
           <AmpHelpers.Bind {...props} text={myStateText}>
-            {props1 => <input {...props1} />}
+            {(props1): ReactElement => (
+              <input {...props1} />
+            )}
           </AmpHelpers.Bind>
         )}
       </AmpHelpers.Bind>,
@@ -248,16 +252,18 @@ describe('react-amphtml', () => {
       "shouldn't throw warnings, otherwise this won't work with React " +
       'normally even if this test passes; see ' +
       'https://github.com/facebook/react/pull/12568)',
-    () => {
+    (): void => {
       const myStateClass = 'myState.class';
       const myStateText = 'myState.text';
 
       /* eslint-disable react/no-unknown-property */
       const wrapper = mount(
         <AmpHelpers.Bind class="myState.class">
-          {props => (
+          {(props): ReactElement => (
             <AmpHelpers.Bind {...props} text="myState.text">
-              {props1 => <Amp.AmpList specName="default" src="" {...props1} />}
+              {(props1): ReactElement => (
+                <Amp.AmpList specName="default" src="" {...props1} />
+              )}
             </AmpHelpers.Bind>
           )}
         </AmpHelpers.Bind>,
@@ -273,7 +279,7 @@ describe('react-amphtml', () => {
     },
   );
 
-  it('can server-side render valid html', async () => {
+  it('can server-side render valid html', async (): Promise<void> => {
     expect.assertions(2);
 
     const ampScripts = new AmpScripts();
@@ -317,15 +323,17 @@ describe('react-amphtml', () => {
     const validator = await amphtmlValidator.getInstance();
     const result = validator.validateString(htmlPage);
 
-    result.errors.forEach(({ line, col, message, specUrl, severity }) => {
-      // eslint-disable-next-line no-console
-      (severity === 'ERROR' ? console.error : console.warn)(
-        // eslint-disable-line no-console
-        `line ${line}, col ${col}: ${message} ${
-          specUrl ? ` (see ${specUrl})` : ''
-        }`,
-      );
-    });
+    result.errors.forEach(
+      ({ line, col, message, specUrl, severity }): void => {
+        // eslint-disable-next-line no-console
+        (severity === 'ERROR' ? console.error : console.warn)(
+          // eslint-disable-line no-console
+          `line ${line}, col ${col}: ${message} ${
+            specUrl ? ` (see ${specUrl})` : ''
+          }`,
+        );
+      },
+    );
 
     expect(result.status).toBe('PASS');
   });

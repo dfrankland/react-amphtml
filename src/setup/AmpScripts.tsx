@@ -16,7 +16,7 @@ export default class AmpScripts {
     version,
   }: {
     extension: string;
-    version: string;
+    version?: string;
   }): void {
     this.scripts.set(
       extension,

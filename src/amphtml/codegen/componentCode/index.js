@@ -218,5 +218,5 @@ module.exports = newRules.tags.reduce(
       ${dupeName ? '' : `export { ${componentName} };`}
       `;
   },
-  readFileSync(resolvePath(__dirname, './preamble.js')).toString('utf8'),
+  readFileSync(resolvePath(__dirname, './preamble.tsx')).toString('utf8'),
 );

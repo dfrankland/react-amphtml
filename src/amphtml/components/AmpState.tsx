@@ -1,24 +1,36 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 import contextHelper from '../../lib/contextHelper';
 import { CONTEXT_KEY } from '../../constants';
 
-const AmpState = ({ children, id, src }, context) => {
+export interface AmpStateProps {
+  children?: any;
+  id: string;
+  src?: string;
+}
+
+const AmpState: React.SFC<AmpStateProps> = (
+  { children, id, src },
+  context,
+): ReactElement => {
   contextHelper({ context, extension: 'amp-bind' });
 
   if (src) {
+    // @ts-ignore
     return <amp-state id={id} src={src} />;
   }
 
   return (
+    // @ts-ignore
     <amp-state id={id}>
       <script
         type="application/json"
+        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{
-          // eslint-disable-line react/no-danger
           __html: JSON.stringify(children),
         }}
       />
+      // @ts-ignore
     </amp-state>
   );
 };
@@ -37,7 +49,7 @@ AmpState.contextTypes = {
 
 AmpState.defaultProps = {
   children: null,
-  src: null,
+  src: undefined,
 };
 
 export default AmpState;

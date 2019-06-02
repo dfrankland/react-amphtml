@@ -1,5 +1,5 @@
 /* eslint-disable react/no-danger */
-import React from 'react';
+import React, { ReactElement } from 'react';
 
 const key = (suffix: string): string =>
   `react-amphtml-header-boilerplate-${suffix}`;

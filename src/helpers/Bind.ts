@@ -1,4 +1,4 @@
-import { ReactElement } from 'react'; // eslint-disable-line no-unused-vars
+import React, { ReactElement } from 'react'; // eslint-disable-line no-unused-vars
 import PropTypes from 'prop-types';
 import contextHelper from '../lib/contextHelper';
 import { CONTEXT_KEY } from '../constants';
@@ -13,11 +13,17 @@ export interface AmpBindProps {
   [boundAttribute: string]: string;
 }
 
-const Bind = (
-  { children, ...props }: { children: (props: AmpBindProps) => ReactElement },
+export interface BindProps {
+  children: (props: AmpBindProps) => ReactElement;
+  version?: string;
+  [prop: string]: string | undefined | any;
+}
+
+const Bind: React.SFC<BindProps> = (
+  { children, version, ...props }: BindProps,
   context: AmpScriptsManagerContext,
 ): ReactElement => {
-  contextHelper({ context, extension: 'amp-bind' });
+  contextHelper({ context, extension: 'amp-bind', version });
 
   const boundAttributeProps = Object.entries(props).reduce(
     (
@@ -35,8 +41,13 @@ const Bind = (
   return children(boundAttributeProps);
 };
 
+Bind.defaultProps = {
+  version: 'latest',
+};
+
 Bind.propTypes = {
   children: PropTypes.func.isRequired,
+  version: PropTypes.string,
 };
 
 Bind.contextTypes = {
