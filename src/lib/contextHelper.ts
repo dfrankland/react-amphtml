@@ -1,5 +1,6 @@
 import { CONTEXT_KEY } from '../constants';
 import { AmpScriptsManagerContext } from '../setup/AmpScriptsManager';
+import { ScriptProps } from '../amphtml/amphtml';
 
 export default ({
   context,
@@ -7,7 +8,7 @@ export default ({
   version,
 }: {
   context: AmpScriptsManagerContext;
-  extension: string;
+  extension: ScriptProps['specName'];
   version?: string;
 }): void => {
   if (

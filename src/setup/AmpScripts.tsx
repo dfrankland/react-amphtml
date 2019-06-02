@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react';
-import { Script } from '../amphtml/amphtml';
-import { AMP } from '../constants';
+import { Script, ScriptProps } from '../amphtml/amphtml';
+import { AMP, Formats } from '../constants';
 
 export default class AmpScripts {
   private scripts: Map<string, ReactElement>;
 
-  public constructor(htmlFormat = AMP) {
+  public constructor(htmlFormat: Formats = AMP) {
     this.scripts = new Map([
       [htmlFormat, <Script key={htmlFormat} specName={htmlFormat} />],
     ]);
@@ -15,8 +15,8 @@ export default class AmpScripts {
     extension,
     version,
   }: {
-    extension: string;
-    version?: string;
+    extension: ScriptProps['specName'];
+    version?: Script['version'];
   }): void {
     this.scripts.set(
       extension,

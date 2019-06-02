@@ -14,7 +14,7 @@ export interface ActionProps {
   };
 }
 
-const Action: React.SFC<ActionProps> = ({
+const Action: React.FunctionComponent<ActionProps> = ({
   children,
   events,
 }: ActionProps): ReactElement => {

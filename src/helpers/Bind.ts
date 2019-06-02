@@ -19,7 +19,7 @@ export interface BindProps {
   [prop: string]: string | undefined | any;
 }
 
-const Bind: React.SFC<BindProps> = (
+const Bind: React.FunctionComponent<BindProps> = (
   { children, version, ...props }: BindProps,
   context: AmpScriptsManagerContext,
 ): ReactElement => {
