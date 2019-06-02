@@ -58,44 +58,49 @@ module.exports = newRules.tags.reduce(
           const mandatoryAttr = attrIsString ? false : attr.mandatory;
           const value = attrIsString ? null : attr.value;
 
-          const newPropTypesCode = `
-          ${propTypesCode}
-          '${name}': PropTypes.any${mandatoryAttr ? '.isRequired' : ''},
-          `;
+          const newPropTypesCode = {
+            ...propTypesCode,
+            [JSON.stringify(name)]: `PropTypes.any${
+              mandatoryAttr ? '.isRequired' : ''
+            }`,
+          };
 
           const newDefaultPropsCode =
             value === null || typeof value === 'undefined'
               ? defaultPropsCode
-              : `
-          ${defaultPropsCode}
-          '${name}': ${(() => {
-                  if (!mandatoryAttr) return null;
+              : {
+                  ...defaultPropsCode,
+                  [JSON.stringify(name)]: (() => {
+                    if (!mandatoryAttr) return null;
 
-                  const type = typeof value;
+                    const type =
+                      Array.isArray(value) && value.length > 0
+                        ? typeof value.slice(0, 1).pop()
+                        : typeof value;
 
-                  if (type === 'string') {
-                    // React is weird, it removes `async` props that are empty strings
-                    if (name === 'async') return true;
+                    if (type === 'string') {
+                      // React is weird, it removes `async` props that are empty strings
+                      if (name === 'async') return true;
 
-                    return `'${value}'`;
-                  }
+                      return `'${value}'`;
+                    }
 
-                  if (type === 'number' || type === 'boolean') return value;
+                    if (type === 'number' || type === 'boolean') return value;
 
-                  try {
-                    if (type === 'object') return JSON.stringify(value);
-                  } catch (err) {
-                    // Do nothing, return `null`.
-                  }
+                    try {
+                      if (type === 'object') return JSON.stringify(value);
+                    } catch (err) {
+                      // Do nothing, return `null`.
+                    }
 
-                  return null;
-                })()},
-          `;
+                    return null;
+                  })(),
+                };
 
-          const newPropsInterfaceCode = `
-          ${propsInterfaceCode}
-          '${name}'${mandatoryAttr ? '' : '?'}: any;
-          `;
+          const newPropsInterfaceCode = {
+            ...propsInterfaceCode,
+            [JSON.stringify(name)]: `${mandatoryAttr ? '' : '?'}: any;`,
+          };
 
           return {
             propTypesCode: newPropTypesCode,
@@ -104,8 +109,8 @@ module.exports = newRules.tags.reduce(
           };
         },
         {
-          propTypesCode: '',
-          defaultPropsCode: '',
+          propTypesCode: {},
+          defaultPropsCode: {},
           propsInterfaceCode: '',
         },
       );
@@ -129,11 +134,11 @@ module.exports = newRules.tags.reduce(
             isCustomTemplate:
               extensionSpec.extensionType === EXTENSION_TYPE_CUSTOM_TEMPLATE,
           }
-        : false;
+        : {};
 
-    const propsSpread = `{...propsHelper(props${
-      extensionProps ? `, ${JSON.stringify(extensionProps)}` : ''
-    })}`;
+    const propsSpread = `{...propsHelper(props, ${JSON.stringify(
+      extensionProps,
+    )})}`;
 
     const contextArgument = `${requiresExtensionContext ? ', context' : ''}`;
 
@@ -151,16 +156,30 @@ module.exports = newRules.tags.reduce(
 
     const componentOverride =
       COMPONENT_OVERRIDES[tagNameToComponentName(tagName)];
-    if (!mandatory && componentOverride) {
+    if (componentOverride) {
       return `
         ${code}
         import ${componentName}Override from './components/${tagNameToComponentName(
         tagName,
       )}';
 
+        export interface ${componentName}Props {
+          ${
+            extensionSpec && Array.isArray(extensionSpec.version)
+              ? `
+                version?: ${extensionSpec.version
+                  .map(JSON.stringify)
+                  .join('|')},
+              `
+              : ''
+          }
+          [prop: string]: any;
+        }
+
+        // @ts-ignore
         ${
           dupeName ? '' : 'export'
-        } const ${componentName}: React.SFC<${componentName}Props> = (props${contextArgument}): ReactElement => {
+        } const ${componentName}: React.FunctionComponent<${componentName}Props> = (props${contextArgument}): ReactNode => {
           ${requiresExtensionContext}
           return (
             <${componentName}Override ${propsSpread} />
@@ -170,56 +189,95 @@ module.exports = newRules.tags.reduce(
         ${
           extensionSpec && Array.isArray(extensionSpec.version)
             ? `
-          export interface ${componentName}Props {
-            version: ${extensionSpec.version.map(JSON.stringify).join('|')},
-          }
-
           ${componentName}.propTypes = {
             version: PropTypes.oneOf(${JSON.stringify(extensionSpec.version)}),
-          };
-
-          ${componentName}.defaultPropTypes = {
-            version: ${JSON.stringify(extensionSpec.version.slice().pop())},
           };
           `
             : ''
         }
+
+        // @ts-ignore
+        ${componentName}.defaultProps = {
+          ${Object.entries({
+            ...propsCode.defaultPropsCode,
+            ...(extensionSpec && Array.isArray(extensionSpec.version)
+              ? {
+                  [JSON.stringify('version')]: JSON.stringify(
+                    extensionSpec.version.slice().pop(),
+                  ),
+                }
+              : {}),
+          }).reduce(
+            (acc, [key, value]) => `
+              ${acc}
+              ${key}: ${value},
+            `,
+            '',
+          )}
+        };
         `;
     }
 
     return `
       ${code}
 
-      export interface ${componentName}Props {
+      ${(() => {
+        const propsInterfaceCodeEntries = Object.entries(
+          propsCode.propsInterfaceCode,
+        );
+        return `
+          export interface ${componentName}Props {
+            ${propsInterfaceCodeEntries.reduce(
+              (acc, [key, value]) => `
+              ${acc}
+              ${key}${value}
+            `,
+              '',
+            )}
+            [prop: string]: any;
+          }
+        `;
+      })()}
 
-      }
-
-      const ${componentName}: React.SFC<${componentName}Props> = (props${contextArgument}) => {
+      const ${componentName}: React.FunctionComponent<${componentName}Props> = (props${contextArgument}) => {
         ${requiresExtensionContext}
         return (
+          // @ts-ignore
           <${tagName.toLowerCase()} ${propsSpread} />
         );
       };
 
-      ${
-        propsCode.propTypesCode
-          ? `
-        ${componentName}.propTypes = {
-          ${propsCode.propTypesCode}
-        };
-        `
-          : ''
-      }
+      ${(() => {
+        const propTypesEntries = Object.entries(propsCode.propTypesCode);
+        if (propTypesEntries.length === 0) return '';
+        return `
+          ${componentName}.propTypes = {
+            ${propTypesEntries.reduce(
+              (acc, [key, value]) => `
+              ${acc}
+              ${key}: ${value},
+            `,
+              '',
+            )}
+          };
+        `;
+      })()}
 
-      ${
-        propsCode.defaultPropsCode
-          ? `
-        ${componentName}.defaultProps = {
-          ${propsCode.defaultPropsCode}
-        };
-        `
-          : ''
-      }
+      ${(() => {
+        const defaultPropsEntries = Object.entries(propsCode.defaultPropsCode);
+        if (defaultPropsEntries.length === 0) return '';
+        return `
+          ${componentName}.defaultProps = {
+            ${defaultPropsEntries.reduce(
+              (acc, [key, value]) => `
+              ${acc}
+              ${key}: ${value},
+            `,
+              '',
+            )}
+          };
+        `;
+      })()}
 
       ${
         requiresExtensionContext

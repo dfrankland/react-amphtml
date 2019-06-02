@@ -5,11 +5,11 @@ import { CONTEXT_KEY } from '../../constants';
 
 export interface AmpStateProps {
   children?: any;
-  id: string;
+  id?: string;
   src?: string;
 }
 
-const AmpState: React.SFC<AmpStateProps> = (
+const AmpState: React.FunctionComponent<AmpStateProps> = (
   { children, id, src },
   context,
 ): ReactElement => {
@@ -36,7 +36,7 @@ const AmpState: React.SFC<AmpStateProps> = (
 };
 
 AmpState.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   children: PropTypes.object, // eslint-disable-line react/forbid-prop-types
   src: PropTypes.string,
 };
@@ -48,6 +48,7 @@ AmpState.contextTypes = {
 };
 
 AmpState.defaultProps = {
+  id: '',
   children: null,
   src: undefined,
 };

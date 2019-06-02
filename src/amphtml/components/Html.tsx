@@ -7,7 +7,7 @@ export interface HtmlProps {
   lang?: string;
 }
 
-const Html: React.SFC<HtmlProps> = ({
+const Html: React.FunctionComponent<HtmlProps> = ({
   children,
   format,
   lang,

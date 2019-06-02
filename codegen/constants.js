@@ -16,3 +16,9 @@ module.exports.BLACKLIST = {
 module.exports.DUPES_BLACKLIST = {
   HTML: true,
 };
+
+module.exports.MISSING_SCRIPT_EXTENSIONS = [
+  'amp-video',
+  'amp-ad',
+  'amp-ad-custom'
+];
