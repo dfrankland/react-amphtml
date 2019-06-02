@@ -16,11 +16,13 @@ export default {
     sourcemap: true,
   },
   plugins: [
-    nodeResolve(),
-    babel({ babelrc: true }),
+    nodeResolve({
+      extensions: ['.js', '.ts', '.tsx'],
+    }),
+    babel({
+      extensions: ['.js', '.ts', '.tsx'],
+      exclude: 'node_modules/**',
+    }),
   ],
-  external: [
-    ...Object.keys(dependencies),
-    ...Object.keys(peerDependencies),
-  ],
+  external: [...Object.keys(dependencies), ...Object.keys(peerDependencies)],
 };

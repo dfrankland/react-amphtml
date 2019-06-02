@@ -1,6 +1,6 @@
 module.exports = {
-  babelrc: false,
   presets: [
+    '@babel/preset-typescript',
     [
       '@babel/preset-env',
       {
