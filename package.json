@@ -3,6 +3,7 @@
   "version": "3.1.1",
   "description": "Use amphtml components inside your React apps easily!",
   "main": "./index.js",
+  "typings": "./index.d.ts",
   "files": [
     "dist/*",
     "index.js",
@@ -11,11 +12,15 @@
     "index.d.ts"
   ],
   "scripts": {
+    "codegen": "babel-node --extensions='.js,.ts,.tsx' ./codegen/index.ts > ./src/amphtml/amphtml.tsx",
     "prebuild": "rimraf ./dist",
     "build": "rollup -c ./rollup.config.js",
     "prepublishOnly": "npm run build",
     "lint": "eslint -c ./package.json ./",
-    "test": "jest --no-cache"
+    "test": "jest --no-cache",
+    "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'",
+    "typecheck": "tsc -p ./tsconfig.base.json --noEmit",
+    "ts-declarations": "tsc --emitDeclarationOnly --declaration"
   },
   "keywords": [
     "react",
@@ -29,10 +34,20 @@
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.4.5",
+    "@babel/node": "^7.4.5",
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/amphtml-validator": "^1.0.0",
+    "@types/enzyme": "^3.9.3",
+    "@types/enzyme-adapter-react-16": "^1.0.5",
+    "@types/jest": "^24.0.13",
+    "@types/prettier": "^1.16.4",
     "@types/react": "^16.8.19",
+    "@types/react-dom": "^16.8.4",
+    "@typescript-eslint/eslint-plugin": "^1.9.0",
+    "@typescript-eslint/parser": "^1.9.0",
     "amphtml-validator": "^1.0.23",
     "amphtml-validator-rules": "^2.0.0",
     "babel-eslint": "^10.0.1",
@@ -42,25 +57,28 @@
     "enzyme-adapter-react-16": "^1.13.2",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^4.3.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jest": "^22.6.4",
     "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.13.0",
+    "globby": "^9.2.0",
     "jest": "^24.8.0",
+    "prettier": "^1.17.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
     "rimraf": "^2.6.3",
     "rollup": "^1.13.0",
     "rollup-plugin-babel": "^4.3.2",
-    "rollup-plugin-node-resolve": "^5.0.1"
+    "rollup-plugin-node-resolve": "^5.0.1",
+    "typescript": "^3.5.1"
   },
   "dependencies": {
     "prop-types": "^15.7.2"
   },
   "peerDependencies": {
-    "react": "^15.0.0 || ^16.0.0",
-    "react-dom": "^15.0.0 || ^16.0.0"
-  },
-  "typings": "./index.d.ts"
+    "react": "^15.0.0 || ^16.0.0"
+  }
 }

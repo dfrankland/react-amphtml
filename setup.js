@@ -1,1 +1,1 @@
-module.exports = require('./dist/setup');
+module.exports = require('./dist/setup/setup');

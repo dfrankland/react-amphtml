@@ -1,13 +1,11 @@
 module.exports = {
-  setupFilesAfterEnv: ['./setupTest.js'],
-  roots: [
-    '<rootDir>/src/',
-  ],
+  setupFilesAfterEnv: ['./setupTest.ts'],
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.js',
-    '!<rootDir>/src/amphtml/amphtml.js',
-    '!<rootDir>/src/amphtml/codegen/**/*.js',
+    '<rootDir>/src/**/*.ts',
+    '<rootDir>/src/**/*.tsx',
+    '!<rootDir>/src/amphtml/amphtml.tsx',
   ],
   coverageThreshold: {
     global: {
