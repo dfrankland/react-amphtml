@@ -6,19 +6,17 @@ module.exports = Object.entries(newRules.dupes).reduce(
     const componentName = tagNameToComponentName(tagName);
 
     const dupeComponentCode = Object.entries(dupes).reduce(
-      (dupeCode, [dupeTagName, specName]) => (
+      (dupeCode, [dupeTagName, specName]) =>
         `
         ${dupeCode}
         if (props.specName === '${specName}') {
           return <${tagNameToComponentName(dupeTagName)} {...props} />
         };
-        `
-      ),
+        `,
       '',
     );
 
-    return (
-      `
+    return `
       ${code}
       const ${componentName} = (props) => {
         ${dupeComponentCode}
@@ -26,12 +24,13 @@ module.exports = Object.entries(newRules.dupes).reduce(
       };
 
       ${componentName}.propTypes = {
-        specName: PropTypes.oneOf(${JSON.stringify(Object.values(dupes))}).isRequired,
+        specName: PropTypes.oneOf(${JSON.stringify(
+          Object.values(dupes),
+        )}).isRequired,
       };
 
       export { ${componentName} };
-      `
-    );
+      `;
   },
   '',
 );

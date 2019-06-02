@@ -17,22 +17,14 @@ import contextHelper from '../lib/contextHelper';
 //
 // Also, `specName` is only necessary for wrapping components.
 const propsHelper = (props, additionalProps) => {
-  let newProps = Object.assign(
-    {},
-    props,
-    additionalProps,
-  );
+  let newProps = Object.assign({}, props, additionalProps);
 
   delete newProps.specName;
 
   if (newProps.className) {
     delete newProps.className;
 
-    newProps = Object.assign(
-      {},
-      newProps,
-      { class: props.className },
-    );
+    newProps = Object.assign({}, newProps, { class: props.className });
   }
 
   return newProps;

@@ -6,9 +6,7 @@ import contextHelper from '../lib/contextHelper';
 import { CONTEXT_KEY } from '../constants';
 import { ON_ATTRIBUTE } from './Action';
 
-export const BLACKLIST = [
-  ON_ATTRIBUTE,
-];
+export const BLACKLIST = [ON_ATTRIBUTE];
 
 const boundAttributeRegExp = /^data-amp-.*?$/;
 
@@ -18,15 +16,9 @@ const Bind = ({ children, ...props }, context) => {
   const boundAttributeProps = Object.entries(props).reduce(
     (allProps, [propsName, propValue]) => ({
       ...allProps,
-      [(
-        BLACKLIST.includes(propsName) || boundAttributeRegExp.test(propsName) ? (
-          propsName
-        ) : (
-          `data-amp-bind-${propsName}`
-        )
-      )]: (
-        propValue
-      ),
+      [BLACKLIST.includes(propsName) || boundAttributeRegExp.test(propsName)
+        ? propsName
+        : `data-amp-bind-${propsName}`]: propValue,
     }),
     {},
   );

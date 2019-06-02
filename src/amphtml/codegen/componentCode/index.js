@@ -1,7 +1,11 @@
 const { readFileSync } = require('fs');
 const { resolve: resolvePath } = require('path');
 const newRules = require('../rules');
-const { MANDATORY_COMPONENT_OVERRIDES, COMPONENT_OVERRIDES, BLACKLIST } = require('../constants');
+const {
+  MANDATORY_COMPONENT_OVERRIDES,
+  COMPONENT_OVERRIDES,
+  BLACKLIST,
+} = require('../constants');
 const tagNameToComponentName = require('../tagNameToComponentName');
 
 const EXTENSION_TYPE_CUSTOM_TEMPLATE = 'CUSTOM_TEMPLATE';
@@ -20,7 +24,8 @@ module.exports = newRules.tags.reduce(
       mandatoryAncestorSuggestedAlternative,
     },
   ) => {
-    if (BLACKLIST[tagName] || mandatoryAncestorSuggestedAlternative) return code;
+    if (BLACKLIST[tagName] || mandatoryAncestorSuggestedAlternative)
+      return code;
 
     const componentName = tagNameToComponentName(dupeName || tagName);
 
@@ -33,128 +38,129 @@ module.exports = newRules.tags.reduce(
         ],
         [],
       ),
-    ].map((
-      attr => (attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr])
-    )).reduce(
-      ({ propTypesCode, defaultPropsCode }, attr) => {
-        if (!attr) {
-          return {
-            propTypesCode,
-            defaultPropsCode,
-          };
-        }
+    ]
+      .map(attr =>
+        attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr],
+      )
+      .reduce(
+        ({ propTypesCode, defaultPropsCode }, attr) => {
+          if (!attr) {
+            return {
+              propTypesCode,
+              defaultPropsCode,
+            };
+          }
 
-        const attrIsString = typeof attr === 'string';
+          const attrIsString = typeof attr === 'string';
 
-        const name = attrIsString ? attr : attr.name;
-        const mandatoryAttr = attrIsString ? false : attr.mandatory;
-        const value = attrIsString ? null : attr.value;
+          const name = attrIsString ? attr : attr.name;
+          const mandatoryAttr = attrIsString ? false : attr.mandatory;
+          const value = attrIsString ? null : attr.value;
 
-        const newPropTypesCode = (
-          `
+          const newPropTypesCode = `
           ${propTypesCode}
           '${name}': PropTypes.any${mandatoryAttr ? '.isRequired' : ''},
-          `
-        );
+          `;
 
-        const newDefaultPropsCode = value === null || typeof value === 'undefined' ? (
-          defaultPropsCode
-        ) : (
-          `
+          const newDefaultPropsCode =
+            value === null || typeof value === 'undefined'
+              ? defaultPropsCode
+              : `
           ${defaultPropsCode}
-          '${name}': ${(
-            (() => {
-              if (!mandatoryAttr) return null;
+          '${name}': ${(() => {
+                  if (!mandatoryAttr) return null;
 
-              const type = typeof value;
+                  const type = typeof value;
 
-              if (type === 'string') {
-                // React is weird, it removes `async` props that are empty strings
-                if (name === 'async') return true;
+                  if (type === 'string') {
+                    // React is weird, it removes `async` props that are empty strings
+                    if (name === 'async') return true;
 
-                return `'${value}'`;
-              }
+                    return `'${value}'`;
+                  }
 
-              if (type === 'number' || type === 'boolean') return value;
+                  if (type === 'number' || type === 'boolean') return value;
 
-              try {
-                if (type === 'object') return JSON.stringify(value);
-              } catch (err) {
-                // Do nothing, return `null`.
-              }
+                  try {
+                    if (type === 'object') return JSON.stringify(value);
+                  } catch (err) {
+                    // Do nothing, return `null`.
+                  }
 
-              return null;
-            })()
-          )},
-          `
-        );
+                  return null;
+                })()},
+          `;
 
-        return {
-          propTypesCode: newPropTypesCode,
-          defaultPropsCode: newDefaultPropsCode,
-        };
-      },
-      {
-        propTypesCode: '',
-        defaultPropsCode: '',
-      },
-    );
+          return {
+            propTypesCode: newPropTypesCode,
+            defaultPropsCode: newDefaultPropsCode,
+          };
+        },
+        {
+          propTypesCode: '',
+          defaultPropsCode: '',
+        },
+      );
 
-    const requiresExtensionContext = (
-      Array.isArray(requiresExtension) ? requiresExtension : []
+    const requiresExtensionContext = (Array.isArray(requiresExtension)
+      ? requiresExtension
+      : []
     ).reduce(
-      (requiresExtensionContextCode, requiredExtension) => (
+      (requiresExtensionContextCode, requiredExtension) =>
         `
         ${requiresExtensionContextCode}
         contextHelper({ context, extension: '${requiredExtension}', version: props.version });
-        `
-      ),
+        `,
       '',
     );
 
-    const extensionProps = extensionSpec && typeof extensionSpec === 'object' ? (
-      {
-        extension: extensionSpec.name,
-        isCustomTemplate: extensionSpec.extensionType === EXTENSION_TYPE_CUSTOM_TEMPLATE,
-      }
-    ) : (
-      false
-    );
+    const extensionProps =
+      extensionSpec && typeof extensionSpec === 'object'
+        ? {
+            extension: extensionSpec.name,
+            isCustomTemplate:
+              extensionSpec.extensionType === EXTENSION_TYPE_CUSTOM_TEMPLATE,
+          }
+        : false;
 
-    const propsSpread = (
-      `{...propsHelper(props${extensionProps ? `, ${JSON.stringify(extensionProps)}` : ''})}`
-    );
+    const propsSpread = `{...propsHelper(props${
+      extensionProps ? `, ${JSON.stringify(extensionProps)}` : ''
+    })}`;
 
     const contextArgument = `${requiresExtensionContext ? ', context' : ''}`;
 
-    const mandatoryComponentOverride = MANDATORY_COMPONENT_OVERRIDES[
-      tagNameToComponentName(tagName)
-    ];
+    const mandatoryComponentOverride =
+      MANDATORY_COMPONENT_OVERRIDES[tagNameToComponentName(tagName)];
     if (mandatoryComponentOverride) {
-      return (
-        `
+      return `
         ${code}
-        import ${componentName}Override from './components/${tagNameToComponentName(tagName)}';
+        import ${componentName}Override from './components/${tagNameToComponentName(
+        tagName,
+      )}';
         export const ${componentName} = ${componentName}Override;
-        `
-      );
+        `;
     }
 
-    const componentOverride = COMPONENT_OVERRIDES[tagNameToComponentName(tagName)];
+    const componentOverride =
+      COMPONENT_OVERRIDES[tagNameToComponentName(tagName)];
     if (!mandatory && componentOverride) {
-      return (
-        `
+      return `
         ${code}
-        import ${componentName}Override from './components/${tagNameToComponentName(tagName)}';
-        ${dupeName ? '' : 'export'} const ${componentName} = (props${contextArgument}) => {
+        import ${componentName}Override from './components/${tagNameToComponentName(
+        tagName,
+      )}';
+        ${
+          dupeName ? '' : 'export'
+        } const ${componentName} = (props${contextArgument}) => {
           ${requiresExtensionContext}
           return (
             <${componentName}Override ${propsSpread} />
           );
         };
 
-        ${extensionSpec && Array.isArray(extensionSpec.version)
-          ? `
+        ${
+          extensionSpec && Array.isArray(extensionSpec.version)
+            ? `
           ${componentName}.propTypes = {
             version: PropTypes.oneOf(${JSON.stringify(extensionSpec.version)}),
           };
@@ -163,13 +169,12 @@ module.exports = newRules.tags.reduce(
             version: ${JSON.stringify(extensionSpec.version.slice().pop())},
           };
           `
-          : ''}
-        `
-      );
+            : ''
+        }
+        `;
     }
 
-    return (
-      `
+    return `
       ${code}
       const ${componentName} = (props${contextArgument}) => {
         ${requiresExtensionContext}
@@ -178,35 +183,40 @@ module.exports = newRules.tags.reduce(
         );
       };
 
-      ${propsCode.propTypesCode ? (
-        `
+      ${
+        propsCode.propTypesCode
+          ? `
         ${componentName}.propTypes = {
           ${propsCode.propTypesCode}
         };
         `
-      ) : ''}
+          : ''
+      }
 
-      ${propsCode.defaultPropsCode ? (
-        `
+      ${
+        propsCode.defaultPropsCode
+          ? `
         ${componentName}.defaultProps = {
           ${propsCode.defaultPropsCode}
         };
         `
-      ) : ''}
+          : ''
+      }
 
-      ${requiresExtensionContext ? (
-        `
+      ${
+        requiresExtensionContext
+          ? `
         ${componentName}.contextTypes = {
           [CONTEXT_KEY]: PropTypes.shape({
             addExtension: PropTypes.func.isRequired,
           }),
         };
         `
-      ) : ''}
+          : ''
+      }
 
       ${dupeName ? '' : `export { ${componentName} };`}
-      `
-    );
+      `;
   },
   readFileSync(resolvePath(__dirname, './preamble.js')).toString('utf8'),
 );

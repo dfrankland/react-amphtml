@@ -1,3 +1,3 @@
-global.requestAnimationFrame = (cb) => {
+global.requestAnimationFrame = cb => {
   cb();
 };

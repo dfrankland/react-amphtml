@@ -14,7 +14,8 @@ const AmpState = ({ children, id, src }, context) => {
     <amp-state id={id}>
       <script
         type="application/json"
-        dangerouslySetInnerHTML={{ // eslint-disable-line react/no-danger
+        dangerouslySetInnerHTML={{
+          // eslint-disable-line react/no-danger
           __html: JSON.stringify(children),
         }}
       />

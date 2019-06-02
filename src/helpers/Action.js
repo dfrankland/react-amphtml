@@ -9,13 +9,14 @@ const Action = ({ children, events }) => {
   const eventString = Object.entries(events).reduce(
     (entireEventString, [eventName, eventActions], eventIndex) => {
       const actionString = eventActions.reduce(
-        (entireActionString, nextAction, actionIndex) => (
-          `${entireActionString}${actionIndex > 0 ? ',' : ''}${nextAction}`
-        ),
+        (entireActionString, nextAction, actionIndex) =>
+          `${entireActionString}${actionIndex > 0 ? ',' : ''}${nextAction}`,
         '',
       );
 
-      return `${entireEventString}${eventIndex > 0 ? ';' : ''}${eventName}:${actionString}`;
+      return `${entireEventString}${
+        eventIndex > 0 ? ';' : ''
+      }${eventName}:${actionString}`;
     },
     '',
   );
@@ -25,9 +26,7 @@ const Action = ({ children, events }) => {
 
 Action.propTypes = {
   children: PropTypes.func.isRequired,
-  events: PropTypes.objectOf((
-    PropTypes.arrayOf(PropTypes.string)
-  )).isRequired,
+  events: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 };
 
 export default Action;

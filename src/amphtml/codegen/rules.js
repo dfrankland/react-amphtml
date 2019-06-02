@@ -25,7 +25,8 @@ module.exports = rules.tags.reduce(
     } = tag;
 
     const extensionSpec = possibleExtensionSpec || {};
-    const specName = possibleSpecName || extensionSpec.name || DUPLICATE_SPEC_NAME;
+    const specName =
+      possibleSpecName || extensionSpec.name || DUPLICATE_SPEC_NAME;
 
     if (BLACKLIST[tagName]) {
       return {
