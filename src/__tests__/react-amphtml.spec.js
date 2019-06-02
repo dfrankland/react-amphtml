@@ -54,6 +54,42 @@ describe('react-amphtml', () => {
     expect(wrapper.find('script').length).toBe(4);
   });
 
+  it('can specify versions of script tags', () => {
+    const ampScripts = new AmpScripts();
+    mount((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.Template specName="default" type="amp-mustache" version="0.2">
+            Hello
+          </Amp.Template>
+        </div>
+      </AmpScriptsManager>
+    ));
+
+    const ampScriptElements = ampScripts.getScriptElements();
+    const wrapper = mount(<div>{ampScriptElements}</div>);
+
+    expect(wrapper.find('script[src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"]').exists()).toBe(true);
+  });
+
+  it('warns on invalid versions of script tags', () => {
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation();
+    const ampScripts = new AmpScripts();
+    mount((
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.Template specName="default" type="amp-mustache" version="bad">
+            Hello
+          </Amp.Template>
+        </div>
+      </AmpScriptsManager>
+    ));
+
+    mount(<div>{ampScripts.getScriptElements()}</div>);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    consoleSpy.mockRestore();
+  });
+
   it('renders amp-html, and works without context from AmpScriptsManager', () => {
     const wrapper = mount((
       <div>

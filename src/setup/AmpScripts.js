@@ -12,10 +12,10 @@ const AmpScripts = class {
     ]);
   }
 
-  addExtension(extension) {
+  addExtension({ extension, version }) {
     this.scripts.set(
       extension,
-      <Script key={extension} specName={extension} />,
+      <Script key={extension} specName={extension} version={version} />,
     );
   }
 

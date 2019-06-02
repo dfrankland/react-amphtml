@@ -106,7 +106,7 @@ module.exports = newRules.tags.reduce(
       (requiresExtensionContextCode, requiredExtension) => (
         `
         ${requiresExtensionContextCode}
-        contextHelper({ context, extension: '${requiredExtension}' });
+        contextHelper({ context, extension: '${requiredExtension}', version: props.version });
         `
       ),
       '',
@@ -152,6 +152,18 @@ module.exports = newRules.tags.reduce(
             <${componentName}Override ${propsSpread} />
           );
         };
+
+        ${extensionSpec && Array.isArray(extensionSpec.version)
+          ? `
+          ${componentName}.propTypes = {
+            version: PropTypes.oneOf(${JSON.stringify(extensionSpec.version)}),
+          };
+
+          ${componentName}.defaultPropTypes = {
+            version: ${JSON.stringify(extensionSpec.version.slice().pop())},
+          };
+          `
+          : ''}
         `
       );
     }
