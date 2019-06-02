@@ -18,7 +18,8 @@
     "lint": "eslint -c ./package.json ./",
     "test": "jest --no-cache",
     "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "ts-declarations": "tsc --emitDeclarationOnly --declaration"
   },
   "keywords": [
     "react",
