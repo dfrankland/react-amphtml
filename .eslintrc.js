@@ -20,7 +20,7 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['rollup.config.js', '**/__tests__/**/*'],
+        devDependencies: ['rollup.config.js', '**/__tests__/**/*', 'setupTest.ts'],
       },
     ],
     '@typescript-eslint/no-unused-vars': [
