@@ -1,24 +1,30 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Script } from '../amphtml/amphtml';
 import { AMP } from '../constants';
 
-const AmpScripts = class {
-  constructor(htmlFormat = AMP) {
+export default class AmpScripts {
+  private scripts: Map<string, ReactElement>;
+
+  public constructor(htmlFormat = AMP) {
     this.scripts = new Map([
       [htmlFormat, <Script key={htmlFormat} specName={htmlFormat} />],
     ]);
   }
 
-  addExtension({ extension, version }) {
+  public addExtension({
+    extension,
+    version,
+  }: {
+    extension: string;
+    version: string;
+  }): void {
     this.scripts.set(
       extension,
       <Script key={extension} specName={extension} version={version} />,
     );
   }
 
-  getScriptElements() {
+  public getScriptElements(): ReactElement[] {
     return [...this.scripts.values()];
   }
-};
-
-export default AmpScripts;
+}
