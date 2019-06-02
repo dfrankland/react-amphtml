@@ -4,6 +4,7 @@ import contextHelper from '../lib/contextHelper';
 import { CONTEXT_KEY } from '../constants';
 import { ON_ATTRIBUTE } from './Action';
 import { AmpScriptsManagerContext } from '../setup/AmpScriptsManager';
+import { Script, ScriptProps } from '../amphtml/amphtml';
 
 export const BLACKLIST = [ON_ATTRIBUTE];
 
@@ -15,7 +16,7 @@ export interface AmpBindProps {
 
 export interface BindProps {
   children: (props: AmpBindProps) => ReactElement;
-  version?: string;
+  version?: ScriptProps['version'];
   [prop: string]: string | undefined | any;
 }
 
@@ -47,7 +48,7 @@ Bind.defaultProps = {
 
 Bind.propTypes = {
   children: PropTypes.func.isRequired,
-  version: PropTypes.string,
+  version: Script.propTypes && Script.propTypes.version,
 };
 
 Bind.contextTypes = {

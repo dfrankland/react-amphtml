@@ -9,7 +9,7 @@ export default ({
 }: {
   context: AmpScriptsManagerContext;
   extension: ScriptProps['specName'];
-  version?: string;
+  version?: ScriptProps['version'];
 }): void => {
   if (
     typeof context === 'object' &&

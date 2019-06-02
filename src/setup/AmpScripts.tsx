@@ -16,7 +16,7 @@ export default class AmpScripts {
     version,
   }: {
     extension: ScriptProps['specName'];
-    version?: Script['version'];
+    version?: ScriptProps['version'];
   }): void {
     this.scripts.set(
       extension,
