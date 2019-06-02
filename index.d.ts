@@ -1,50 +1,30 @@
-interface AmpStateProps {
-  id: string;
-  src?: string;
-}
-
-interface ActionProps {
-  children: (props) => void;
-  events: {
-    [eventName: string]: string[];
-  };
-}
-
-interface BindProps {
-  children: (props) => void;
-  [bindName: string]: any;
-}
-
 declare module 'react-amphtml' {
-  const any: any;
-  export = any;
+  import * as amphtml from './dist/amphtml/amphtml';
+
+  export default amphtml;
 }
 
 declare module 'react-amphtml/helpers' {
-  import { Component } from 'react';
+  import { Action, ActionProps, ActionOnProps } from './dist/helpers/Action';
+  import { AmpBindProps, BindProps, Bind } from './dist/helpers/Bind';
 
-  export class Bind extends Component<BindProps, {}> {}
-  export class Action extends Component<ActionProps, {}> {}
+  export { Action, ActionProps, ActionOnProps, AmpBindProps, BindProps, Bind };
 }
 
 declare module 'react-amphtml/setup' {
-  import { Component } from 'react';
-
-  export class AmpScripts {
-    constructor(defaultHtml?: string);
-
-    addExtension(extension: string);
-    getScriptElements(): Component[];
-  }
-
-  interface AmpScriptsManagerProps {
-    ampScripts: AmpScripts[];
-  }
-
-  export class AmpScriptsManager extends Component<
+  import { AmpScripts } from './dist/setup/AmpScripts';
+  import {
+    AmpScriptsManagerContext,
     AmpScriptsManagerProps,
-    any
-  > {}
+    AmpScriptsManager,
+  } from './dist/setup/AmpScriptsManager';
+  import headerBoilerPlate from './dist/setup/headerBoilerplate';
 
-  export function headerBoilerplate(href: string);
+  export {
+    AmpScripts,
+    AmpScriptsManagerContext,
+    AmpScriptsManagerProps,
+    AmpScriptsManager,
+    headerBoilerPlate,
+  };
 }
