@@ -16,7 +16,8 @@
     "prepublishOnly": "npm run build",
     "lint": "eslint -c ./package.json ./",
     "test": "jest --no-cache",
-    "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'"
+    "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'",
+    "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "react",
