@@ -318,6 +318,7 @@ describe('react-amphtml', () => {
     const result = validator.validateString(htmlPage);
 
     result.errors.forEach(({ line, col, message, specUrl, severity }) => {
+      // eslint-disable-next-line no-console
       (severity === 'ERROR' ? console.error : console.warn)(
         // eslint-disable-line no-console
         `line ${line}, col ${col}: ${message} ${
