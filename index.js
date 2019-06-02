@@ -1,1 +1,1 @@
-module.exports = require('./dist/amphtml');
+module.exports = require('./dist/amphtml/amphtml');
