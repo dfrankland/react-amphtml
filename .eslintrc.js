@@ -10,6 +10,7 @@ module.exports = {
     'airbnb',
     'plugin:@typescript-eslint/recommended',
     'prettier',
+    'prettier/react',
     'prettier/@typescript-eslint',
   ],
   plugins: ['prettier'],
@@ -32,6 +33,13 @@ module.exports = {
         ],
       },
     ],
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts', '.tsx'],
+      },
+    },
   },
   overrides: [
     {
@@ -56,16 +64,15 @@ module.exports = {
           '@typescript-eslint/explicit-function-return-type': 'error',
         },
       ),
-      settings: {
-        'import/resolver': {
-          node: {
-            extensions: ['.js', '.ts', '.tsx'],
-          },
-        },
-      },
     },
     {
-      files: ['setupTest.js', 'setupTest.ts', '*.spec.ts', '*.spec.tsx'],
+      files: [
+        'setupTest.js',
+        'setupTest.ts',
+        '*.spec.js',
+        '*.spec.ts',
+        '*.spec.tsx',
+      ],
       env: {
         jest: true,
       },

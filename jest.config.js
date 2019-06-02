@@ -4,6 +4,7 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: [
     '<rootDir>/src/**/*.js',
+    '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/amphtml/amphtml.js',
     '!<rootDir>/src/amphtml/codegen/**/*.js',
   ],
