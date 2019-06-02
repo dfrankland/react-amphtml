@@ -16,17 +16,23 @@ module.exports = Object.entries(newRules.dupes).reduce(
       '',
     );
 
+    const specNames = Object.values(dupes);
+
     return `
       ${code}
-      const ${componentName} = (props) => {
+      export interface ${componentName}Props {
+        specName: ${Object.values(dupes)
+          .map(JSON.stringify)
+          .join('|')};
+      }
+
+      const ${componentName}: React.SFC<${componentName}Props> = (props): ReactElement => {
         ${dupeComponentCode}
         return null;
       };
 
       ${componentName}.propTypes = {
-        specName: PropTypes.oneOf(${JSON.stringify(
-          Object.values(dupes),
-        )}).isRequired,
+        specName: PropTypes.oneOf(${JSON.stringify(specNames)}).isRequired,
       };
 
       export { ${componentName} };

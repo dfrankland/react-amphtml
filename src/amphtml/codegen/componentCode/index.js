@@ -43,11 +43,12 @@ module.exports = newRules.tags.reduce(
         attr > 0 ? newRules.attrs[attr] : newRules.internedStrings[-1 * attr],
       )
       .reduce(
-        ({ propTypesCode, defaultPropsCode }, attr) => {
+        ({ propTypesCode, defaultPropsCode, propsInterfaceCode }, attr) => {
           if (!attr) {
             return {
               propTypesCode,
               defaultPropsCode,
+              propsInterfaceCode,
             };
           }
 
@@ -91,14 +92,21 @@ module.exports = newRules.tags.reduce(
                 })()},
           `;
 
+          const newPropsInterfaceCode = `
+          ${propsInterfaceCode}
+          '${name}'${mandatoryAttr ? '' : '?'}: any;
+          `;
+
           return {
             propTypesCode: newPropTypesCode,
             defaultPropsCode: newDefaultPropsCode,
+            propsInterfaceCode: newPropsInterfaceCode,
           };
         },
         {
           propTypesCode: '',
           defaultPropsCode: '',
+          propsInterfaceCode: '',
         },
       );
 
@@ -149,9 +157,10 @@ module.exports = newRules.tags.reduce(
         import ${componentName}Override from './components/${tagNameToComponentName(
         tagName,
       )}';
+
         ${
           dupeName ? '' : 'export'
-        } const ${componentName} = (props${contextArgument}) => {
+        } const ${componentName}: React.SFC<${componentName}Props> = (props${contextArgument}): ReactElement => {
           ${requiresExtensionContext}
           return (
             <${componentName}Override ${propsSpread} />
@@ -161,6 +170,10 @@ module.exports = newRules.tags.reduce(
         ${
           extensionSpec && Array.isArray(extensionSpec.version)
             ? `
+          export interface ${componentName}Props {
+            version: ${extensionSpec.version.map(JSON.stringify).join('|')},
+          }
+
           ${componentName}.propTypes = {
             version: PropTypes.oneOf(${JSON.stringify(extensionSpec.version)}),
           };
@@ -176,7 +189,12 @@ module.exports = newRules.tags.reduce(
 
     return `
       ${code}
-      const ${componentName} = (props${contextArgument}) => {
+
+      export interface ${componentName}Props {
+
+      }
+
+      const ${componentName}: React.SFC<${componentName}Props> = (props${contextArgument}) => {
         ${requiresExtensionContext}
         return (
           <${tagName.toLowerCase()} ${propsSpread} />
