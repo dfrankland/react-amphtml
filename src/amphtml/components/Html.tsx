@@ -25,7 +25,7 @@ Html.defaultProps = {
 
 Html.propTypes = {
   children: PropTypes.node,
-  format: PropTypes.oneOf(['amp', 'amp4ads', 'amp4email']),
+  format: PropTypes.oneOf<HtmlProps['format']>(['amp', 'amp4ads', 'amp4email']),
   lang: PropTypes.string,
 };
 

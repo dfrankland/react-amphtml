@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
 
-export const ON_ATTRIBUTE = 'on';
+export const ON_ATTRIBUTE = 'data-on';
 
 export interface ActionOnProps {
   [ON_ATTRIBUTE]: string;

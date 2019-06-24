@@ -6,6 +6,9 @@ export interface ScriptProps {
   extension?: string;
   version?: string;
   isCustomTemplate?: boolean;
+  id?: string;
+  nonce?: string;
+  type?: string;
 }
 
 const Script: React.FunctionComponent<ScriptProps> = ({
@@ -34,6 +37,9 @@ Script.defaultProps = {
   extension: '',
   version: 'latest',
   isCustomTemplate: false,
+  id: undefined,
+  nonce: undefined,
+  type: undefined,
 };
 
 Script.propTypes = {
@@ -41,6 +47,9 @@ Script.propTypes = {
   extension: PropTypes.string,
   version: PropTypes.string,
   isCustomTemplate: PropTypes.bool,
+  id: PropTypes.string,
+  nonce: PropTypes.string,
+  type: PropTypes.string,
 };
 
 export default Script;

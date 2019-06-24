@@ -90,8 +90,18 @@ export default Object.entries(newRules.dupes).reduce(
 
       // @ts-ignore
       ${componentName}.propTypes = {
-        specName: PropTypes.oneOf(${JSON.stringify(specNames)}).isRequired,
-        ${dupeComponentVersions.size > 0 ? 'version: PropTypes.string,' : ''}
+        specName: PropTypes.oneOf<'${specNames.join(
+          "' | '",
+        )}'>(${JSON.stringify(specNames)}).isRequired,
+        ${
+          dupeComponentVersions.size > 0
+            ? `version: PropTypes.oneOf<${[...dupeComponentVersions.values()]
+                .map((v): string => JSON.stringify(v))
+                .join('|')}>(${JSON.stringify([
+                ...dupeComponentVersions.values(),
+              ])}),`
+            : ''
+        }
       };
 
       // @ts-ignore
