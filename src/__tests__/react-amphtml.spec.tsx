@@ -159,14 +159,14 @@ describe('react-amphtml', (): void => {
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        {(props: ActionOnProps): ReactElement => <input {...props} />}
+        {(props: ActionOnProps): ReactElement => <input {...props as any} />}
       </AmpHelpers.Action>,
     );
 
     expect(
       wrapper
         .find(
-          '[data-on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]',
+          '[on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]',
         )
         .exists(),
     ).toBe(true);
@@ -184,13 +184,15 @@ describe('react-amphtml', (): void => {
               tap: ['print'],
             }}
           >
-            {(props1: ActionOnProps): ReactElement => <input {...props1} />}
+            {(props1: ActionOnProps): ReactElement => (
+              <input {...props1 as any} />
+            )}
           </AmpHelpers.Action>
         )}
       </AmpHelpers.Bind>,
     );
 
-    expect(wrapper.find('[data-on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
     expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(
       true,
     );
@@ -213,7 +215,7 @@ describe('react-amphtml', (): void => {
       </AmpHelpers.Action>,
     );
 
-    expect(wrapper.find('[data-on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
     expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(
       true,
     );

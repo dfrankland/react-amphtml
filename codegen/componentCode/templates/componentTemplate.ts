@@ -31,6 +31,7 @@ const propsInterfaceReducer = ({
         ${propsInterfaceProperties}
         ${classProperty}
         version?: ScriptProps['version'];
+        on?: string;
       }
     `;
   }
@@ -40,6 +41,7 @@ const propsInterfaceReducer = ({
       ${propsInterfaceProperties}
       ${classProperty}
       version?: ScriptProps['version'];
+      on?: string;
     } & JSXIntrinsicElements${camelCasedTagName};
   `;
 };
@@ -68,6 +70,7 @@ const propTypesReducer = ({
     ${componentName}.propTypes = {
       ${propTypesProperties}
       version: PropTypes.string as PropTypes.Requireable<Script['version']>,
+      on: PropTypes.string,
     };
   `;
 };

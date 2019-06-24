@@ -27,6 +27,7 @@ const propsInterfaceReducer = ({
     export interface ${componentName} {
       ${propsInterfaceProperties}
       version?: ${versionProperty};
+      on?: string;
     }
   `;
 };
@@ -60,6 +61,7 @@ const propTypesReducer = ({
     ${componentName}.propTypes = {
       ${propTypesProperties}
       version: ${versionProperty},
+      on: PropTypes.string,
     };
   `;
 };
