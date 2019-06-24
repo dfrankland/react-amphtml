@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import amphtmlValidator from 'amphtml-validator';
 import * as Amp from '../amphtml/amphtml';
 import * as AmpHelpers from '../helpers/helpers';
+import { ActionOnProps } from '../helpers/Action';
 import {
   AmpScripts,
   AmpScriptsManager,
@@ -31,8 +32,8 @@ describe('react-amphtml', (): void => {
     mount(
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
-          <Amp.AmpYoutube something="blah" />
-          <Amp.AmpAccordion something="blah" />
+          <Amp.AmpYoutube />
+          <Amp.AmpAccordion />
           <Amp.Template specName="default" type="amp-mustache">
             Hello, {'{{world}}'}!
           </Amp.Template>
@@ -62,7 +63,6 @@ describe('react-amphtml', (): void => {
 
     const ampScriptElements = ampScripts.getScriptElements();
     const wrapper = mount(<div>{ampScriptElements}</div>);
-
     expect(
       wrapper
         .find('script[src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"]')
@@ -84,15 +84,15 @@ describe('react-amphtml', (): void => {
     );
 
     mount(<div>{ampScripts.getScriptElements()}</div>);
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    expect(consoleSpy).toHaveBeenCalledTimes(2);
     consoleSpy.mockRestore();
   });
 
   it('renders amp-html, and works without context from AmpScriptsManager', (): void => {
     const wrapper = mount(
       <div>
-        <Amp.AmpYoutube something="blah" />
-        <Amp.AmpAccordion something="blah" />
+        <Amp.AmpYoutube />
+        <Amp.AmpAccordion />
       </div>,
     );
 
@@ -159,14 +159,14 @@ describe('react-amphtml', (): void => {
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        {(props: any): ReactElement => <input {...props} />}
+        {(props: ActionOnProps): ReactElement => <input {...props} />}
       </AmpHelpers.Action>,
     );
 
     expect(
       wrapper
         .find(
-          '[on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]',
+          '[data-on="tap:AMP.setState({ myState: { text: \\"tap!\\" }}),print;change:AMP.setState({ myState: { input: event.value } })"]',
         )
         .exists(),
     ).toBe(true);
@@ -184,13 +184,13 @@ describe('react-amphtml', (): void => {
               tap: ['print'],
             }}
           >
-            {(props1: any): ReactElement => <input {...props1} />}
+            {(props1: ActionOnProps): ReactElement => <input {...props1} />}
           </AmpHelpers.Action>
         )}
       </AmpHelpers.Bind>,
     );
 
-    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find('[data-on="tap:print"]').exists()).toBe(true);
     expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(
       true,
     );
@@ -207,15 +207,13 @@ describe('react-amphtml', (): void => {
       >
         {(props): ReactElement => (
           <AmpHelpers.Bind {...props} text={myStateText}>
-            {(props1): ReactElement => (
-              <input {...props1} />
-            )}
+            {(props1): ReactElement => <input {...props1} />}
           </AmpHelpers.Bind>
         )}
       </AmpHelpers.Action>,
     );
 
-    expect(wrapper.find('[on="tap:print"]').exists()).toBe(true);
+    expect(wrapper.find('[data-on="tap:print"]').exists()).toBe(true);
     expect(wrapper.find(`[data-amp-bind-text="${myStateText}"]`).exists()).toBe(
       true,
     );
@@ -230,9 +228,7 @@ describe('react-amphtml', (): void => {
       <AmpHelpers.Bind class={myStateClass}>
         {(props): ReactElement => (
           <AmpHelpers.Bind {...props} text={myStateText}>
-            {(props1): ReactElement => (
-              <input {...props1} />
-            )}
+            {(props1): ReactElement => <input {...props1} />}
           </AmpHelpers.Bind>
         )}
       </AmpHelpers.Bind>,
