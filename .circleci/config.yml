@@ -7,25 +7,17 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          name: Restore node_modules cache
           keys:
             - v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}
             - v1-node-{{ arch }}-{{ .Branch }}-
             - v1-node-{{ arch }}-
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build
-          command: npm run build
-      - run:
-          name: Test
-          command: npm run test
-      - run:
-          name: Lint
-          command: npm run lint
+      - run: npm install
+      - run: npm run codegen
+      - run: npm run build
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test
       - save_cache:
-          name: Save node_modules cache
           key: v1-node-{{ arch }}-{{ .Branch }}-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
