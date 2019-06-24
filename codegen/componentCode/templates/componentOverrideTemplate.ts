@@ -4,10 +4,12 @@ import { PropsCode } from '../lib/propsCodeReducer';
 
 const propsInterfaceReducer = ({
   componentName,
+  dupeName,
   propsCode,
   extensionSpec,
 }: {
   componentName: string;
+  dupeName?: string;
   propsCode: PropsCode;
   extensionSpec: NewTag['extensionSpec'];
 }): string => {
@@ -23,8 +25,9 @@ const propsInterfaceReducer = ({
   const versionProperty = extensionSpec
     ? extensionSpec.version.map((v): string => JSON.stringify(v)).join('|')
     : "ScriptProps['version']";
+  const exportInterface = dupeName ? '' : 'export';
   return `
-    export interface ${componentName} {
+    ${exportInterface} interface ${componentName} {
       ${propsInterfaceProperties}
       version?: ${versionProperty};
       on?: string;
@@ -134,6 +137,7 @@ export default ({
     import ${componentOverrideName} from './components/${componentOverrideFileName}';
     ${propsInterfaceReducer({
       componentName,
+      dupeName,
       propsCode,
       extensionSpec,
     })}

@@ -32,357 +32,357 @@ const REACT_AMPHTML_CONTEXT = {
 //
 // Find: ^"?([a-z].*?)"?:.*;
 //
-// Replace: // @ts-ignore\ntype JSXIntrinsicElements$1 = JSX.IntrinsicElements['$1'];
+// Replace: // @ts-ignore\nexport type JSXIntrinsicElements$1 = JSX.IntrinsicElements['$1'];
 
 // HTML
 // @ts-ignore
-type JSXIntrinsicElementsa = JSX.IntrinsicElements['a'];
+export type JSXIntrinsicElementsa = JSX.IntrinsicElements['a'];
 // @ts-ignore
-type JSXIntrinsicElementsabbr = JSX.IntrinsicElements['abbr'];
+export type JSXIntrinsicElementsabbr = JSX.IntrinsicElements['abbr'];
 // @ts-ignore
-type JSXIntrinsicElementsaddress = JSX.IntrinsicElements['address'];
+export type JSXIntrinsicElementsaddress = JSX.IntrinsicElements['address'];
 // @ts-ignore
-type JSXIntrinsicElementsarea = JSX.IntrinsicElements['area'];
+export type JSXIntrinsicElementsarea = JSX.IntrinsicElements['area'];
 // @ts-ignore
-type JSXIntrinsicElementsarticle = JSX.IntrinsicElements['article'];
+export type JSXIntrinsicElementsarticle = JSX.IntrinsicElements['article'];
 // @ts-ignore
-type JSXIntrinsicElementsaside = JSX.IntrinsicElements['aside'];
+export type JSXIntrinsicElementsaside = JSX.IntrinsicElements['aside'];
 // @ts-ignore
-type JSXIntrinsicElementsaudio = JSX.IntrinsicElements['audio'];
+export type JSXIntrinsicElementsaudio = JSX.IntrinsicElements['audio'];
 // @ts-ignore
-type JSXIntrinsicElementsb = JSX.IntrinsicElements['b'];
+export type JSXIntrinsicElementsb = JSX.IntrinsicElements['b'];
 // @ts-ignore
-type JSXIntrinsicElementsbase = JSX.IntrinsicElements['base'];
+export type JSXIntrinsicElementsbase = JSX.IntrinsicElements['base'];
 // @ts-ignore
-type JSXIntrinsicElementsbdi = JSX.IntrinsicElements['bdi'];
+export type JSXIntrinsicElementsbdi = JSX.IntrinsicElements['bdi'];
 // @ts-ignore
-type JSXIntrinsicElementsbdo = JSX.IntrinsicElements['bdo'];
+export type JSXIntrinsicElementsbdo = JSX.IntrinsicElements['bdo'];
 // @ts-ignore
-type JSXIntrinsicElementsbig = JSX.IntrinsicElements['big'];
+export type JSXIntrinsicElementsbig = JSX.IntrinsicElements['big'];
 // @ts-ignore
-type JSXIntrinsicElementsblockquote = JSX.IntrinsicElements['blockquote'];
+export type JSXIntrinsicElementsblockquote = JSX.IntrinsicElements['blockquote'];
 // @ts-ignore
-type JSXIntrinsicElementsbody = JSX.IntrinsicElements['body'];
+export type JSXIntrinsicElementsbody = JSX.IntrinsicElements['body'];
 // @ts-ignore
-type JSXIntrinsicElementsbr = JSX.IntrinsicElements['br'];
+export type JSXIntrinsicElementsbr = JSX.IntrinsicElements['br'];
 // @ts-ignore
-type JSXIntrinsicElementsbutton = JSX.IntrinsicElements['button'];
+export type JSXIntrinsicElementsbutton = JSX.IntrinsicElements['button'];
 // @ts-ignore
-type JSXIntrinsicElementscanvas = JSX.IntrinsicElements['canvas'];
+export type JSXIntrinsicElementscanvas = JSX.IntrinsicElements['canvas'];
 // @ts-ignore
-type JSXIntrinsicElementscaption = JSX.IntrinsicElements['caption'];
+export type JSXIntrinsicElementscaption = JSX.IntrinsicElements['caption'];
 // @ts-ignore
-type JSXIntrinsicElementscite = JSX.IntrinsicElements['cite'];
+export type JSXIntrinsicElementscite = JSX.IntrinsicElements['cite'];
 // @ts-ignore
-type JSXIntrinsicElementscode = JSX.IntrinsicElements['code'];
+export type JSXIntrinsicElementscode = JSX.IntrinsicElements['code'];
 // @ts-ignore
-type JSXIntrinsicElementscol = JSX.IntrinsicElements['col'];
+export type JSXIntrinsicElementscol = JSX.IntrinsicElements['col'];
 // @ts-ignore
-type JSXIntrinsicElementscolgroup = JSX.IntrinsicElements['colgroup'];
+export type JSXIntrinsicElementscolgroup = JSX.IntrinsicElements['colgroup'];
 // @ts-ignore
-type JSXIntrinsicElementsdata = JSX.IntrinsicElements['data'];
+export type JSXIntrinsicElementsdata = JSX.IntrinsicElements['data'];
 // @ts-ignore
-type JSXIntrinsicElementsdatalist = JSX.IntrinsicElements['datalist'];
+export type JSXIntrinsicElementsdatalist = JSX.IntrinsicElements['datalist'];
 // @ts-ignore
-type JSXIntrinsicElementsdd = JSX.IntrinsicElements['dd'];
+export type JSXIntrinsicElementsdd = JSX.IntrinsicElements['dd'];
 // @ts-ignore
-type JSXIntrinsicElementsdel = JSX.IntrinsicElements['del'];
+export type JSXIntrinsicElementsdel = JSX.IntrinsicElements['del'];
 // @ts-ignore
-type JSXIntrinsicElementsdetails = JSX.IntrinsicElements['details'];
+export type JSXIntrinsicElementsdetails = JSX.IntrinsicElements['details'];
 // @ts-ignore
-type JSXIntrinsicElementsdfn = JSX.IntrinsicElements['dfn'];
+export type JSXIntrinsicElementsdfn = JSX.IntrinsicElements['dfn'];
 // @ts-ignore
-type JSXIntrinsicElementsdialog = JSX.IntrinsicElements['dialog'];
+export type JSXIntrinsicElementsdialog = JSX.IntrinsicElements['dialog'];
 // @ts-ignore
-type JSXIntrinsicElementsdiv = JSX.IntrinsicElements['div'];
+export type JSXIntrinsicElementsdiv = JSX.IntrinsicElements['div'];
 // @ts-ignore
-type JSXIntrinsicElementsdl = JSX.IntrinsicElements['dl'];
+export type JSXIntrinsicElementsdl = JSX.IntrinsicElements['dl'];
 // @ts-ignore
-type JSXIntrinsicElementsdt = JSX.IntrinsicElements['dt'];
+export type JSXIntrinsicElementsdt = JSX.IntrinsicElements['dt'];
 // @ts-ignore
-type JSXIntrinsicElementsem = JSX.IntrinsicElements['em'];
+export type JSXIntrinsicElementsem = JSX.IntrinsicElements['em'];
 // @ts-ignore
-type JSXIntrinsicElementsembed = JSX.IntrinsicElements['embed'];
+export type JSXIntrinsicElementsembed = JSX.IntrinsicElements['embed'];
 // @ts-ignore
-type JSXIntrinsicElementsfieldset = JSX.IntrinsicElements['fieldset'];
+export type JSXIntrinsicElementsfieldset = JSX.IntrinsicElements['fieldset'];
 // @ts-ignore
-type JSXIntrinsicElementsfigcaption = JSX.IntrinsicElements['figcaption'];
+export type JSXIntrinsicElementsfigcaption = JSX.IntrinsicElements['figcaption'];
 // @ts-ignore
-type JSXIntrinsicElementsfigure = JSX.IntrinsicElements['figure'];
+export type JSXIntrinsicElementsfigure = JSX.IntrinsicElements['figure'];
 // @ts-ignore
-type JSXIntrinsicElementsfooter = JSX.IntrinsicElements['footer'];
+export type JSXIntrinsicElementsfooter = JSX.IntrinsicElements['footer'];
 // @ts-ignore
-type JSXIntrinsicElementsform = JSX.IntrinsicElements['form'];
+export type JSXIntrinsicElementsform = JSX.IntrinsicElements['form'];
 // @ts-ignore
-type JSXIntrinsicElementsh1 = JSX.IntrinsicElements['h1'];
+export type JSXIntrinsicElementsh1 = JSX.IntrinsicElements['h1'];
 // @ts-ignore
-type JSXIntrinsicElementsh2 = JSX.IntrinsicElements['h2'];
+export type JSXIntrinsicElementsh2 = JSX.IntrinsicElements['h2'];
 // @ts-ignore
-type JSXIntrinsicElementsh3 = JSX.IntrinsicElements['h3'];
+export type JSXIntrinsicElementsh3 = JSX.IntrinsicElements['h3'];
 // @ts-ignore
-type JSXIntrinsicElementsh4 = JSX.IntrinsicElements['h4'];
+export type JSXIntrinsicElementsh4 = JSX.IntrinsicElements['h4'];
 // @ts-ignore
-type JSXIntrinsicElementsh5 = JSX.IntrinsicElements['h5'];
+export type JSXIntrinsicElementsh5 = JSX.IntrinsicElements['h5'];
 // @ts-ignore
-type JSXIntrinsicElementsh6 = JSX.IntrinsicElements['h6'];
+export type JSXIntrinsicElementsh6 = JSX.IntrinsicElements['h6'];
 // @ts-ignore
-type JSXIntrinsicElementshead = JSX.IntrinsicElements['head'];
+export type JSXIntrinsicElementshead = JSX.IntrinsicElements['head'];
 // @ts-ignore
-type JSXIntrinsicElementsheader = JSX.IntrinsicElements['header'];
+export type JSXIntrinsicElementsheader = JSX.IntrinsicElements['header'];
 // @ts-ignore
-type JSXIntrinsicElementshgroup = JSX.IntrinsicElements['hgroup'];
+export type JSXIntrinsicElementshgroup = JSX.IntrinsicElements['hgroup'];
 // @ts-ignore
-type JSXIntrinsicElementshr = JSX.IntrinsicElements['hr'];
+export type JSXIntrinsicElementshr = JSX.IntrinsicElements['hr'];
 // @ts-ignore
-type JSXIntrinsicElementshtml = JSX.IntrinsicElements['html'];
+export type JSXIntrinsicElementshtml = JSX.IntrinsicElements['html'];
 // @ts-ignore
-type JSXIntrinsicElementsi = JSX.IntrinsicElements['i'];
+export type JSXIntrinsicElementsi = JSX.IntrinsicElements['i'];
 // @ts-ignore
-type JSXIntrinsicElementsiframe = JSX.IntrinsicElements['iframe'];
+export type JSXIntrinsicElementsiframe = JSX.IntrinsicElements['iframe'];
 // @ts-ignore
-type JSXIntrinsicElementsimg = JSX.IntrinsicElements['img'];
+export type JSXIntrinsicElementsimg = JSX.IntrinsicElements['img'];
 // @ts-ignore
-type JSXIntrinsicElementsinput = JSX.IntrinsicElements['input'];
+export type JSXIntrinsicElementsinput = JSX.IntrinsicElements['input'];
 // @ts-ignore
-type JSXIntrinsicElementsins = JSX.IntrinsicElements['ins'];
+export type JSXIntrinsicElementsins = JSX.IntrinsicElements['ins'];
 // @ts-ignore
-type JSXIntrinsicElementskbd = JSX.IntrinsicElements['kbd'];
+export type JSXIntrinsicElementskbd = JSX.IntrinsicElements['kbd'];
 // @ts-ignore
-type JSXIntrinsicElementskeygen = JSX.IntrinsicElements['keygen'];
+export type JSXIntrinsicElementskeygen = JSX.IntrinsicElements['keygen'];
 // @ts-ignore
-type JSXIntrinsicElementslabel = JSX.IntrinsicElements['label'];
+export type JSXIntrinsicElementslabel = JSX.IntrinsicElements['label'];
 // @ts-ignore
-type JSXIntrinsicElementslegend = JSX.IntrinsicElements['legend'];
+export type JSXIntrinsicElementslegend = JSX.IntrinsicElements['legend'];
 // @ts-ignore
-type JSXIntrinsicElementsli = JSX.IntrinsicElements['li'];
+export type JSXIntrinsicElementsli = JSX.IntrinsicElements['li'];
 // @ts-ignore
-type JSXIntrinsicElementslink = JSX.IntrinsicElements['link'];
+export type JSXIntrinsicElementslink = JSX.IntrinsicElements['link'];
 // @ts-ignore
-type JSXIntrinsicElementsmain = JSX.IntrinsicElements['main'];
+export type JSXIntrinsicElementsmain = JSX.IntrinsicElements['main'];
 // @ts-ignore
-type JSXIntrinsicElementsmap = JSX.IntrinsicElements['map'];
+export type JSXIntrinsicElementsmap = JSX.IntrinsicElements['map'];
 // @ts-ignore
-type JSXIntrinsicElementsmark = JSX.IntrinsicElements['mark'];
+export type JSXIntrinsicElementsmark = JSX.IntrinsicElements['mark'];
 // @ts-ignore
-type JSXIntrinsicElementsmenu = JSX.IntrinsicElements['menu'];
+export type JSXIntrinsicElementsmenu = JSX.IntrinsicElements['menu'];
 // @ts-ignore
-type JSXIntrinsicElementsmenuitem = JSX.IntrinsicElements['menuitem'];
+export type JSXIntrinsicElementsmenuitem = JSX.IntrinsicElements['menuitem'];
 // @ts-ignore
-type JSXIntrinsicElementsmeta = JSX.IntrinsicElements['meta'];
+export type JSXIntrinsicElementsmeta = JSX.IntrinsicElements['meta'];
 // @ts-ignore
-type JSXIntrinsicElementsmeter = JSX.IntrinsicElements['meter'];
+export type JSXIntrinsicElementsmeter = JSX.IntrinsicElements['meter'];
 // @ts-ignore
-type JSXIntrinsicElementsnav = JSX.IntrinsicElements['nav'];
+export type JSXIntrinsicElementsnav = JSX.IntrinsicElements['nav'];
 // @ts-ignore
-type JSXIntrinsicElementsnoindex = JSX.IntrinsicElements['noindex'];
+export type JSXIntrinsicElementsnoindex = JSX.IntrinsicElements['noindex'];
 // @ts-ignore
-type JSXIntrinsicElementsnoscript = JSX.IntrinsicElements['noscript'];
+export type JSXIntrinsicElementsnoscript = JSX.IntrinsicElements['noscript'];
 // @ts-ignore
-type JSXIntrinsicElementsobject = JSX.IntrinsicElements['object'];
+export type JSXIntrinsicElementsobject = JSX.IntrinsicElements['object'];
 // @ts-ignore
-type JSXIntrinsicElementsol = JSX.IntrinsicElements['ol'];
+export type JSXIntrinsicElementsol = JSX.IntrinsicElements['ol'];
 // @ts-ignore
-type JSXIntrinsicElementsoptgroup = JSX.IntrinsicElements['optgroup'];
+export type JSXIntrinsicElementsoptgroup = JSX.IntrinsicElements['optgroup'];
 // @ts-ignore
-type JSXIntrinsicElementsoption = JSX.IntrinsicElements['option'];
+export type JSXIntrinsicElementsoption = JSX.IntrinsicElements['option'];
 // @ts-ignore
-type JSXIntrinsicElementsoutput = JSX.IntrinsicElements['output'];
+export type JSXIntrinsicElementsoutput = JSX.IntrinsicElements['output'];
 // @ts-ignore
-type JSXIntrinsicElementsp = JSX.IntrinsicElements['p'];
+export type JSXIntrinsicElementsp = JSX.IntrinsicElements['p'];
 // @ts-ignore
-type JSXIntrinsicElementsparam = JSX.IntrinsicElements['param'];
+export type JSXIntrinsicElementsparam = JSX.IntrinsicElements['param'];
 // @ts-ignore
-type JSXIntrinsicElementspicture = JSX.IntrinsicElements['picture'];
+export type JSXIntrinsicElementspicture = JSX.IntrinsicElements['picture'];
 // @ts-ignore
-type JSXIntrinsicElementspre = JSX.IntrinsicElements['pre'];
+export type JSXIntrinsicElementspre = JSX.IntrinsicElements['pre'];
 // @ts-ignore
-type JSXIntrinsicElementsprogress = JSX.IntrinsicElements['progress'];
+export type JSXIntrinsicElementsprogress = JSX.IntrinsicElements['progress'];
 // @ts-ignore
-type JSXIntrinsicElementsq = JSX.IntrinsicElements['q'];
+export type JSXIntrinsicElementsq = JSX.IntrinsicElements['q'];
 // @ts-ignore
-type JSXIntrinsicElementsrp = JSX.IntrinsicElements['rp'];
+export type JSXIntrinsicElementsrp = JSX.IntrinsicElements['rp'];
 // @ts-ignore
-type JSXIntrinsicElementsrt = JSX.IntrinsicElements['rt'];
+export type JSXIntrinsicElementsrt = JSX.IntrinsicElements['rt'];
 // @ts-ignore
-type JSXIntrinsicElementsruby = JSX.IntrinsicElements['ruby'];
+export type JSXIntrinsicElementsruby = JSX.IntrinsicElements['ruby'];
 // @ts-ignore
-type JSXIntrinsicElementss = JSX.IntrinsicElements['s'];
+export type JSXIntrinsicElementss = JSX.IntrinsicElements['s'];
 // @ts-ignore
-type JSXIntrinsicElementssamp = JSX.IntrinsicElements['samp'];
+export type JSXIntrinsicElementssamp = JSX.IntrinsicElements['samp'];
 // @ts-ignore
-type JSXIntrinsicElementsscript = JSX.IntrinsicElements['script'];
+export type JSXIntrinsicElementsscript = JSX.IntrinsicElements['script'];
 // @ts-ignore
-type JSXIntrinsicElementssection = JSX.IntrinsicElements['section'];
+export type JSXIntrinsicElementssection = JSX.IntrinsicElements['section'];
 // @ts-ignore
-type JSXIntrinsicElementsselect = JSX.IntrinsicElements['select'];
+export type JSXIntrinsicElementsselect = JSX.IntrinsicElements['select'];
 // @ts-ignore
-type JSXIntrinsicElementssmall = JSX.IntrinsicElements['small'];
+export type JSXIntrinsicElementssmall = JSX.IntrinsicElements['small'];
 // @ts-ignore
-type JSXIntrinsicElementssource = JSX.IntrinsicElements['source'];
+export type JSXIntrinsicElementssource = JSX.IntrinsicElements['source'];
 // @ts-ignore
-type JSXIntrinsicElementsspan = JSX.IntrinsicElements['span'];
+export type JSXIntrinsicElementsspan = JSX.IntrinsicElements['span'];
 // @ts-ignore
-type JSXIntrinsicElementsstrong = JSX.IntrinsicElements['strong'];
+export type JSXIntrinsicElementsstrong = JSX.IntrinsicElements['strong'];
 // @ts-ignore
-type JSXIntrinsicElementsstyle = JSX.IntrinsicElements['style'];
+export type JSXIntrinsicElementsstyle = JSX.IntrinsicElements['style'];
 // @ts-ignore
-type JSXIntrinsicElementssub = JSX.IntrinsicElements['sub'];
+export type JSXIntrinsicElementssub = JSX.IntrinsicElements['sub'];
 // @ts-ignore
-type JSXIntrinsicElementssummary = JSX.IntrinsicElements['summary'];
+export type JSXIntrinsicElementssummary = JSX.IntrinsicElements['summary'];
 // @ts-ignore
-type JSXIntrinsicElementssup = JSX.IntrinsicElements['sup'];
+export type JSXIntrinsicElementssup = JSX.IntrinsicElements['sup'];
 // @ts-ignore
-type JSXIntrinsicElementstable = JSX.IntrinsicElements['table'];
+export type JSXIntrinsicElementstable = JSX.IntrinsicElements['table'];
 // @ts-ignore
-type JSXIntrinsicElementstemplate = JSX.IntrinsicElements['template'];
+export type JSXIntrinsicElementstemplate = JSX.IntrinsicElements['template'];
 // @ts-ignore
-type JSXIntrinsicElementstbody = JSX.IntrinsicElements['tbody'];
+export type JSXIntrinsicElementstbody = JSX.IntrinsicElements['tbody'];
 // @ts-ignore
-type JSXIntrinsicElementstd = JSX.IntrinsicElements['td'];
+export type JSXIntrinsicElementstd = JSX.IntrinsicElements['td'];
 // @ts-ignore
-type JSXIntrinsicElementstextarea = JSX.IntrinsicElements['textarea'];
+export type JSXIntrinsicElementstextarea = JSX.IntrinsicElements['textarea'];
 // @ts-ignore
-type JSXIntrinsicElementstfoot = JSX.IntrinsicElements['tfoot'];
+export type JSXIntrinsicElementstfoot = JSX.IntrinsicElements['tfoot'];
 // @ts-ignore
-type JSXIntrinsicElementsth = JSX.IntrinsicElements['th'];
+export type JSXIntrinsicElementsth = JSX.IntrinsicElements['th'];
 // @ts-ignore
-type JSXIntrinsicElementsthead = JSX.IntrinsicElements['thead'];
+export type JSXIntrinsicElementsthead = JSX.IntrinsicElements['thead'];
 // @ts-ignore
-type JSXIntrinsicElementstime = JSX.IntrinsicElements['time'];
+export type JSXIntrinsicElementstime = JSX.IntrinsicElements['time'];
 // @ts-ignore
-type JSXIntrinsicElementstitle = JSX.IntrinsicElements['title'];
+export type JSXIntrinsicElementstitle = JSX.IntrinsicElements['title'];
 // @ts-ignore
-type JSXIntrinsicElementstr = JSX.IntrinsicElements['tr'];
+export type JSXIntrinsicElementstr = JSX.IntrinsicElements['tr'];
 // @ts-ignore
-type JSXIntrinsicElementstrack = JSX.IntrinsicElements['track'];
+export type JSXIntrinsicElementstrack = JSX.IntrinsicElements['track'];
 // @ts-ignore
-type JSXIntrinsicElementsu = JSX.IntrinsicElements['u'];
+export type JSXIntrinsicElementsu = JSX.IntrinsicElements['u'];
 // @ts-ignore
-type JSXIntrinsicElementsul = JSX.IntrinsicElements['ul'];
+export type JSXIntrinsicElementsul = JSX.IntrinsicElements['ul'];
 // @ts-ignore
-type JSXIntrinsicElementsvar = JSX.IntrinsicElements['var'];
+export type JSXIntrinsicElementsvar = JSX.IntrinsicElements['var'];
 // @ts-ignore
-type JSXIntrinsicElementsvideo = JSX.IntrinsicElements['video'];
+export type JSXIntrinsicElementsvideo = JSX.IntrinsicElements['video'];
 // @ts-ignore
-type JSXIntrinsicElementswbr = JSX.IntrinsicElements['wbr'];
+export type JSXIntrinsicElementswbr = JSX.IntrinsicElements['wbr'];
 // @ts-ignore
-type JSXIntrinsicElementswebview = JSX.IntrinsicElements['webview'];
+export type JSXIntrinsicElementswebview = JSX.IntrinsicElements['webview'];
 
 // SVG
 // @ts-ignore
-type JSXIntrinsicElementssvg = JSX.IntrinsicElements['svg'];
+export type JSXIntrinsicElementssvg = JSX.IntrinsicElements['svg'];
 
 // @ts-ignore
-type JSXIntrinsicElementsanimate = JSX.IntrinsicElements['animate']; // TODO: It is SVGAnimateElement but is not in TypeScript's lib.dom.d.ts for now.
+export type JSXIntrinsicElementsanimate = JSX.IntrinsicElements['animate']; // TODO: It is SVGAnimateElement but is not in TypeScript's lib.dom.d.ts for now.
 // @ts-ignore
-type JSXIntrinsicElementsanimateMotion = JSX.IntrinsicElements['animateMotion'];
+export type JSXIntrinsicElementsanimateMotion = JSX.IntrinsicElements['animateMotion'];
 // @ts-ignore
-type JSXIntrinsicElementsanimateTransform = JSX.IntrinsicElements['animateTransform']; // TODO: It is SVGAnimateTransformElement but is not in TypeScript's lib.dom.d.ts for now.
+export type JSXIntrinsicElementsanimateTransform = JSX.IntrinsicElements['animateTransform']; // TODO: It is SVGAnimateTransformElement but is not in TypeScript's lib.dom.d.ts for now.
 // @ts-ignore
-type JSXIntrinsicElementscircle = JSX.IntrinsicElements['circle'];
+export type JSXIntrinsicElementscircle = JSX.IntrinsicElements['circle'];
 // @ts-ignore
-type JSXIntrinsicElementsclipPath = JSX.IntrinsicElements['clipPath'];
+export type JSXIntrinsicElementsclipPath = JSX.IntrinsicElements['clipPath'];
 // @ts-ignore
-type JSXIntrinsicElementsdefs = JSX.IntrinsicElements['defs'];
+export type JSXIntrinsicElementsdefs = JSX.IntrinsicElements['defs'];
 // @ts-ignore
-type JSXIntrinsicElementsdesc = JSX.IntrinsicElements['desc'];
+export type JSXIntrinsicElementsdesc = JSX.IntrinsicElements['desc'];
 // @ts-ignore
-type JSXIntrinsicElementsellipse = JSX.IntrinsicElements['ellipse'];
+export type JSXIntrinsicElementsellipse = JSX.IntrinsicElements['ellipse'];
 // @ts-ignore
-type JSXIntrinsicElementsfeBlend = JSX.IntrinsicElements['feBlend'];
+export type JSXIntrinsicElementsfeBlend = JSX.IntrinsicElements['feBlend'];
 // @ts-ignore
-type JSXIntrinsicElementsfeColorMatrix = JSX.IntrinsicElements['feColorMatrix'];
+export type JSXIntrinsicElementsfeColorMatrix = JSX.IntrinsicElements['feColorMatrix'];
 // @ts-ignore
-type JSXIntrinsicElementsfeComponentTransfer = JSX.IntrinsicElements['feComponentTransfer'];
+export type JSXIntrinsicElementsfeComponentTransfer = JSX.IntrinsicElements['feComponentTransfer'];
 // @ts-ignore
-type JSXIntrinsicElementsfeComposite = JSX.IntrinsicElements['feComposite'];
+export type JSXIntrinsicElementsfeComposite = JSX.IntrinsicElements['feComposite'];
 // @ts-ignore
-type JSXIntrinsicElementsfeConvolveMatrix = JSX.IntrinsicElements['feConvolveMatrix'];
+export type JSXIntrinsicElementsfeConvolveMatrix = JSX.IntrinsicElements['feConvolveMatrix'];
 // @ts-ignore
-type JSXIntrinsicElementsfeDiffuseLighting = JSX.IntrinsicElements['feDiffuseLighting'];
+export type JSXIntrinsicElementsfeDiffuseLighting = JSX.IntrinsicElements['feDiffuseLighting'];
 // @ts-ignore
-type JSXIntrinsicElementsfeDisplacementMap = JSX.IntrinsicElements['feDisplacementMap'];
+export type JSXIntrinsicElementsfeDisplacementMap = JSX.IntrinsicElements['feDisplacementMap'];
 // @ts-ignore
-type JSXIntrinsicElementsfeDistantLight = JSX.IntrinsicElements['feDistantLight'];
+export type JSXIntrinsicElementsfeDistantLight = JSX.IntrinsicElements['feDistantLight'];
 // @ts-ignore
-type JSXIntrinsicElementsfeDropShadow = JSX.IntrinsicElements['feDropShadow'];
+export type JSXIntrinsicElementsfeDropShadow = JSX.IntrinsicElements['feDropShadow'];
 // @ts-ignore
-type JSXIntrinsicElementsfeFlood = JSX.IntrinsicElements['feFlood'];
+export type JSXIntrinsicElementsfeFlood = JSX.IntrinsicElements['feFlood'];
 // @ts-ignore
-type JSXIntrinsicElementsfeFuncA = JSX.IntrinsicElements['feFuncA'];
+export type JSXIntrinsicElementsfeFuncA = JSX.IntrinsicElements['feFuncA'];
 // @ts-ignore
-type JSXIntrinsicElementsfeFuncB = JSX.IntrinsicElements['feFuncB'];
+export type JSXIntrinsicElementsfeFuncB = JSX.IntrinsicElements['feFuncB'];
 // @ts-ignore
-type JSXIntrinsicElementsfeFuncG = JSX.IntrinsicElements['feFuncG'];
+export type JSXIntrinsicElementsfeFuncG = JSX.IntrinsicElements['feFuncG'];
 // @ts-ignore
-type JSXIntrinsicElementsfeFuncR = JSX.IntrinsicElements['feFuncR'];
+export type JSXIntrinsicElementsfeFuncR = JSX.IntrinsicElements['feFuncR'];
 // @ts-ignore
-type JSXIntrinsicElementsfeGaussianBlur = JSX.IntrinsicElements['feGaussianBlur'];
+export type JSXIntrinsicElementsfeGaussianBlur = JSX.IntrinsicElements['feGaussianBlur'];
 // @ts-ignore
-type JSXIntrinsicElementsfeImage = JSX.IntrinsicElements['feImage'];
+export type JSXIntrinsicElementsfeImage = JSX.IntrinsicElements['feImage'];
 // @ts-ignore
-type JSXIntrinsicElementsfeMerge = JSX.IntrinsicElements['feMerge'];
+export type JSXIntrinsicElementsfeMerge = JSX.IntrinsicElements['feMerge'];
 // @ts-ignore
-type JSXIntrinsicElementsfeMergeNode = JSX.IntrinsicElements['feMergeNode'];
+export type JSXIntrinsicElementsfeMergeNode = JSX.IntrinsicElements['feMergeNode'];
 // @ts-ignore
-type JSXIntrinsicElementsfeMorphology = JSX.IntrinsicElements['feMorphology'];
+export type JSXIntrinsicElementsfeMorphology = JSX.IntrinsicElements['feMorphology'];
 // @ts-ignore
-type JSXIntrinsicElementsfeOffset = JSX.IntrinsicElements['feOffset'];
+export type JSXIntrinsicElementsfeOffset = JSX.IntrinsicElements['feOffset'];
 // @ts-ignore
-type JSXIntrinsicElementsfePointLight = JSX.IntrinsicElements['fePointLight'];
+export type JSXIntrinsicElementsfePointLight = JSX.IntrinsicElements['fePointLight'];
 // @ts-ignore
-type JSXIntrinsicElementsfeSpecularLighting = JSX.IntrinsicElements['feSpecularLighting'];
+export type JSXIntrinsicElementsfeSpecularLighting = JSX.IntrinsicElements['feSpecularLighting'];
 // @ts-ignore
-type JSXIntrinsicElementsfeSpotLight = JSX.IntrinsicElements['feSpotLight'];
+export type JSXIntrinsicElementsfeSpotLight = JSX.IntrinsicElements['feSpotLight'];
 // @ts-ignore
-type JSXIntrinsicElementsfeTile = JSX.IntrinsicElements['feTile'];
+export type JSXIntrinsicElementsfeTile = JSX.IntrinsicElements['feTile'];
 // @ts-ignore
-type JSXIntrinsicElementsfeTurbulence = JSX.IntrinsicElements['feTurbulence'];
+export type JSXIntrinsicElementsfeTurbulence = JSX.IntrinsicElements['feTurbulence'];
 // @ts-ignore
-type JSXIntrinsicElementsfilter = JSX.IntrinsicElements['filter'];
+export type JSXIntrinsicElementsfilter = JSX.IntrinsicElements['filter'];
 // @ts-ignore
-type JSXIntrinsicElementsforeignObject = JSX.IntrinsicElements['foreignObject'];
+export type JSXIntrinsicElementsforeignObject = JSX.IntrinsicElements['foreignObject'];
 // @ts-ignore
-type JSXIntrinsicElementsg = JSX.IntrinsicElements['g'];
+export type JSXIntrinsicElementsg = JSX.IntrinsicElements['g'];
 // @ts-ignore
-type JSXIntrinsicElementsimage = JSX.IntrinsicElements['image'];
+export type JSXIntrinsicElementsimage = JSX.IntrinsicElements['image'];
 // @ts-ignore
-type JSXIntrinsicElementsline = JSX.IntrinsicElements['line'];
+export type JSXIntrinsicElementsline = JSX.IntrinsicElements['line'];
 // @ts-ignore
-type JSXIntrinsicElementslinearGradient = JSX.IntrinsicElements['linearGradient'];
+export type JSXIntrinsicElementslinearGradient = JSX.IntrinsicElements['linearGradient'];
 // @ts-ignore
-type JSXIntrinsicElementsmarker = JSX.IntrinsicElements['marker'];
+export type JSXIntrinsicElementsmarker = JSX.IntrinsicElements['marker'];
 // @ts-ignore
-type JSXIntrinsicElementsmask = JSX.IntrinsicElements['mask'];
+export type JSXIntrinsicElementsmask = JSX.IntrinsicElements['mask'];
 // @ts-ignore
-type JSXIntrinsicElementsmetadata = JSX.IntrinsicElements['metadata'];
+export type JSXIntrinsicElementsmetadata = JSX.IntrinsicElements['metadata'];
 // @ts-ignore
-type JSXIntrinsicElementsmpath = JSX.IntrinsicElements['mpath'];
+export type JSXIntrinsicElementsmpath = JSX.IntrinsicElements['mpath'];
 // @ts-ignore
-type JSXIntrinsicElementspath = JSX.IntrinsicElements['path'];
+export type JSXIntrinsicElementspath = JSX.IntrinsicElements['path'];
 // @ts-ignore
-type JSXIntrinsicElementspattern = JSX.IntrinsicElements['pattern'];
+export type JSXIntrinsicElementspattern = JSX.IntrinsicElements['pattern'];
 // @ts-ignore
-type JSXIntrinsicElementspolygon = JSX.IntrinsicElements['polygon'];
+export type JSXIntrinsicElementspolygon = JSX.IntrinsicElements['polygon'];
 // @ts-ignore
-type JSXIntrinsicElementspolyline = JSX.IntrinsicElements['polyline'];
+export type JSXIntrinsicElementspolyline = JSX.IntrinsicElements['polyline'];
 // @ts-ignore
-type JSXIntrinsicElementsradialGradient = JSX.IntrinsicElements['radialGradient'];
+export type JSXIntrinsicElementsradialGradient = JSX.IntrinsicElements['radialGradient'];
 // @ts-ignore
-type JSXIntrinsicElementsrect = JSX.IntrinsicElements['rect'];
+export type JSXIntrinsicElementsrect = JSX.IntrinsicElements['rect'];
 // @ts-ignore
-type JSXIntrinsicElementsstop = JSX.IntrinsicElements['stop'];
+export type JSXIntrinsicElementsstop = JSX.IntrinsicElements['stop'];
 // @ts-ignore
-type JSXIntrinsicElementsswitch = JSX.IntrinsicElements['switch'];
+export type JSXIntrinsicElementsswitch = JSX.IntrinsicElements['switch'];
 // @ts-ignore
-type JSXIntrinsicElementssymbol = JSX.IntrinsicElements['symbol'];
+export type JSXIntrinsicElementssymbol = JSX.IntrinsicElements['symbol'];
 // @ts-ignore
-type JSXIntrinsicElementstext = JSX.IntrinsicElements['text'];
+export type JSXIntrinsicElementstext = JSX.IntrinsicElements['text'];
 // @ts-ignore
-type JSXIntrinsicElementstextPath = JSX.IntrinsicElements['textPath'];
+export type JSXIntrinsicElementstextPath = JSX.IntrinsicElements['textPath'];
 // @ts-ignore
-type JSXIntrinsicElementstspan = JSX.IntrinsicElements['tspan'];
+export type JSXIntrinsicElementstspan = JSX.IntrinsicElements['tspan'];
 // @ts-ignore
-type JSXIntrinsicElementsuse = JSX.IntrinsicElements['use'];
+export type JSXIntrinsicElementsuse = JSX.IntrinsicElements['use'];
 // @ts-ignore
-type JSXIntrinsicElementsview = JSX.IntrinsicElements['view'];
+export type JSXIntrinsicElementsview = JSX.IntrinsicElements['view'];

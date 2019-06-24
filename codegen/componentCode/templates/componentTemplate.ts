@@ -6,11 +6,13 @@ const propsInterfaceReducer = ({
   isCustomElement,
   camelCasedTagName,
   componentPropsName,
+  dupeName,
   propsCode,
 }: {
   isCustomElement: boolean;
   camelCasedTagName: string;
   componentPropsName: string;
+  dupeName?: string;
   propsCode: PropsCode;
 }): string => {
   const classProperty = isCustomElement ? 'class?: string | undefined;' : '';
@@ -25,9 +27,10 @@ const propsInterfaceReducer = ({
     },
     '',
   );
+  const exportTypeOrInterface = dupeName ? '' : 'export';
   if (isCustomElement) {
     return `
-      export interface ${componentPropsName} extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
+      ${exportTypeOrInterface} interface ${componentPropsName} extends React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement>, HTMLElement> {
         ${propsInterfaceProperties}
         ${classProperty}
         version?: ScriptProps['version'];
@@ -37,7 +40,7 @@ const propsInterfaceReducer = ({
   }
 
   return `
-    type ${componentPropsName} = {
+    ${exportTypeOrInterface} type ${componentPropsName} = {
       ${propsInterfaceProperties}
       ${classProperty}
       version?: ScriptProps['version'];
@@ -167,6 +170,7 @@ export default ({
       isCustomElement,
       camelCasedTagName,
       componentPropsName,
+      dupeName,
       propsCode,
     })}
     ${exportComponent} const ${componentName}: React.FunctionComponent<${componentPropsName}> = (${propsArgument}: ${componentPropsName}${contextArgument}) => {
