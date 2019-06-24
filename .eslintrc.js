@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const typescriptEslintRecommended = require('@typescript-eslint/eslint-plugin/dist/configs/recommended.json');
 const typescriptEslintPrettier = require('eslint-config-prettier/@typescript-eslint');
 
@@ -20,7 +21,13 @@ module.exports = {
     'import/no-extraneous-dependencies': [
       'error',
       {
-        devDependencies: ['rollup.config.js', '**/__tests__/**/*', 'setupTest.ts'],
+        devDependencies: [
+          '.eslintrc.js',
+          'rollup.config.js',
+          '**/__tests__/**/*',
+          'setupTest.ts',
+          'codegen/**/*',
+        ],
       },
     ],
     '@typescript-eslint/no-unused-vars': [

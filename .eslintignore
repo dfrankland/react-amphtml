@@ -1,3 +1,4 @@
 /coverage
 /dist
 /src/amphtml/amphtml.tsx
+!.eslintrc.js
