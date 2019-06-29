@@ -3,12 +3,12 @@ import AmpScriptsManager, {
   AmpScriptsManagerContext,
   AmpScriptsManagerProps,
 } from './dist/setup/AmpScriptsManager';
-import headerBoilerPlate from './dist/setup/headerBoilerplate';
+import headerBoilerplate from './dist/setup/headerBoilerplate';
 
 export {
   AmpScripts,
   AmpScriptsManagerContext,
   AmpScriptsManagerProps,
   AmpScriptsManager,
-  headerBoilerPlate,
+  headerBoilerplate,
 };

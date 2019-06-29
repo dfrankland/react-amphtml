@@ -1,3 +1,1 @@
-import * as amphtml from './dist/amphtml/amphtml';
-
-export default amphtml;
+export * from './dist/amphtml/amphtml';
