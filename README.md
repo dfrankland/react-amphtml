@@ -176,7 +176,8 @@ at is `can server-side render valid html` for a good complete usage of
 
 ### About
 
-The code for `react-amphtml` is generated from [AMP HTML's own validator][].
+The code for `react-amphtml` is generated from [AMP HTML's own validator][] via
+[`amphtml-validator-rules`][].
 
 Want to learn about AMP HTML validation? See the guide: [Validate AMP pages][].
 
