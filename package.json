@@ -6,10 +6,9 @@
   "typings": "./index.d.ts",
   "files": [
     "dist/*",
-    "index.js",
-    "helpers.js",
-    "setup.js",
-    "index.d.ts"
+    "index.*",
+    "helpers.*",
+    "setup.*"
   ],
   "scripts": {
     "codegen": "babel-node --extensions='.js,.ts,.tsx' ./codegen/index.ts > ./src/amphtml/amphtml.tsx",
