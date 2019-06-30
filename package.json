@@ -16,7 +16,7 @@
     "build": "rollup -c ./rollup.config.js",
     "postbuild": "npm run ts-declarations",
     "prepublishOnly": "npm run build",
-    "lint": "eslint -c ./package.json ./",
+    "lint": "eslint --ext .ts --ext .tsx --ext .js .",
     "test": "jest --no-cache",
     "format": "prettier --write '**/*.js' '**/*.jsx' '**/*.ts' '**/*.tsx' '**/*.md'",
     "typecheck": "tsc -p ./tsconfig.json --noEmit",
