@@ -131,11 +131,12 @@ describe('react-amphtml', (): void => {
 
   it('renders amp-state & amp-bind properly, and only appends the amp-bind script', (): void => {
     const ampScripts = new AmpScripts();
+    const initialState = { text: 'Hello, World!' };
     const wrapper = mount(
       <AmpScriptsManager ampScripts={ampScripts}>
         <div>
           <Amp.AmpState specName="amp-state" id="myState">
-            {{ text: 'Hello, World!' }}
+            {initialState}
           </Amp.AmpState>
           <AmpHelpers.Bind text="myState.text">
             {(props): ReactElement => <div {...props} />}
@@ -149,6 +150,7 @@ describe('react-amphtml', (): void => {
     expect(ampScriptElements.length).toBe(2);
     expect(wrapper.find('[data-amp-bind-text="myState.text"]').length).toBe(1);
     expect(wrapper.find('amp-state').length).toBe(1);
+    expect(wrapper.find('amp-state').text()).toBe(JSON.stringify(initialState));
   });
 
   it('renders amphtml action `on` attribute properly', (): void => {

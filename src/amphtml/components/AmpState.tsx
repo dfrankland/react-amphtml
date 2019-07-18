@@ -16,12 +16,10 @@ const AmpState: React.FunctionComponent<AmpStateProps> = (
   contextHelper({ context, extension: 'amp-bind' });
 
   if (src) {
-    // @ts-ignore
     return <amp-state id={id} src={src} />;
   }
 
   return (
-    // @ts-ignore
     <amp-state id={id}>
       <script
         type="application/json"
@@ -30,7 +28,6 @@ const AmpState: React.FunctionComponent<AmpStateProps> = (
           __html: JSON.stringify(children),
         }}
       />
-      // @ts-ignore
     </amp-state>
   );
 };
