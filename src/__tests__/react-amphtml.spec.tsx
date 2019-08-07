@@ -187,7 +187,7 @@ describe('react-amphtml', (): void => {
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        {(props: ActionOnProps): ReactElement => <input {...(props as any)} />}
+        {(props: ActionOnProps): ReactElement => <input {...props as any} />}
       </AmpHelpers.Action>,
     );
 
@@ -213,7 +213,7 @@ describe('react-amphtml', (): void => {
             }}
           >
             {(props1: ActionOnProps): ReactElement => (
-              <input {...(props1 as any)} />
+              <input {...props1 as any} />
             )}
           </AmpHelpers.Action>
         )}
@@ -349,15 +349,17 @@ describe('react-amphtml', (): void => {
     const validator = await amphtmlValidator.getInstance();
     const result = validator.validateString(htmlPage);
 
-    result.errors.forEach(({ line, col, message, specUrl, severity }): void => {
-      // eslint-disable-next-line no-console
-      (severity === 'ERROR' ? console.error : console.warn)(
-        // eslint-disable-line no-console
-        `line ${line}, col ${col}: ${message} ${
-          specUrl ? ` (see ${specUrl})` : ''
-        }`,
-      );
-    });
+    result.errors.forEach(
+      ({ line, col, message, specUrl, severity }): void => {
+        // eslint-disable-next-line no-console
+        (severity === 'ERROR' ? console.error : console.warn)(
+          // eslint-disable-line no-console
+          `line ${line}, col ${col}: ${message} ${
+            specUrl ? ` (see ${specUrl})` : ''
+          }`,
+        );
+      },
+    );
 
     expect(result.status).toBe('PASS');
   });
