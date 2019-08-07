@@ -64,11 +64,13 @@ describe('react-amphtml', (): void => {
     const ampScriptSources = ampScripts.getScripts();
 
     expect(ampScriptSources).toEqual(
-      expect.arrayContaining([
-        'https://cdn.ampproject.org/v0/amp-youtube-latest.js',
-        'https://cdn.ampproject.org/v0/amp-script-latest.js',
-        'https://cdn.ampproject.org/v0/amp-accordion-latest.js',
-      ]),
+      expect.arrayContaining(
+        [
+          'https://cdn.ampproject.org/v0/amp-youtube-latest.js',
+          'https://cdn.ampproject.org/v0/amp-script-latest.js',
+          'https://cdn.ampproject.org/v0/amp-accordion-latest.js',
+        ].map((src): any => expect.objectContaining({ src })),
+      ),
     );
   });
 
@@ -87,7 +89,9 @@ describe('react-amphtml', (): void => {
     const ampScriptsSources = ampScripts.getScripts();
     expect(ampScriptsSources).toEqual(
       expect.arrayContaining([
-        'https://cdn.ampproject.org/v0/amp-mustache-0.2.js',
+        expect.objectContaining({
+          src: 'https://cdn.ampproject.org/v0/amp-mustache-0.2.js',
+        }),
       ]),
     );
   });

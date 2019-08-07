@@ -3,6 +3,11 @@ import { Script, ScriptProps } from '../amphtml/amphtml';
 import { getScriptSource } from '../amphtml/components/Script';
 import { AMP, AMP_SRCS, Formats } from '../constants';
 
+export interface ScriptSource {
+  src: string;
+  extension: string;
+}
+
 export default class AmpScripts {
   private scripts: Map<string, ScriptProps>;
 
@@ -28,10 +33,13 @@ export default class AmpScripts {
     this.scripts.set(extension, { specName: extension, version });
   }
 
-  public getScripts(): string[] {
+  public getScripts(): ScriptSource[] {
     return Array.from(this.scripts.values()).map(
-      ({ specName, version, src }): string => {
-        return getScriptSource({ extension: specName, version, src });
+      ({ specName, version, src }): ScriptSource => {
+        return {
+          src: getScriptSource({ extension: specName, version, src }),
+          extension: specName,
+        };
       },
     );
   }
