@@ -49,6 +49,29 @@ describe('react-amphtml', (): void => {
     expect(wrapper.find('script').length).toBe(4);
   });
 
+  it('should be able to statically export script sources', (): void => {
+    const ampScripts = new AmpScripts();
+    mount(
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.AmpYoutube />
+          <Amp.AmpScript src="test.js" />
+          <Amp.AmpAccordion />
+        </div>
+      </AmpScriptsManager>,
+    );
+
+    const ampScriptSources = ampScripts.getScripts();
+
+    expect(ampScriptSources).toEqual(
+      expect.arrayContaining([
+        'https://cdn.ampproject.org/v0/amp-youtube-latest.js',
+        'https://cdn.ampproject.org/v0/amp-script-latest.js',
+        'https://cdn.ampproject.org/v0/amp-accordion-latest.js',
+      ]),
+    );
+  });
+
   it('can specify versions of script tags', (): void => {
     const ampScripts = new AmpScripts();
     mount(
@@ -61,13 +84,12 @@ describe('react-amphtml', (): void => {
       </AmpScriptsManager>,
     );
 
-    const ampScriptElements = ampScripts.getScriptElements();
-    const wrapper = mount(<div>{ampScriptElements}</div>);
-    expect(
-      wrapper
-        .find('script[src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"]')
-        .exists(),
-    ).toBe(true);
+    const ampScriptsSources = ampScripts.getScripts();
+    expect(ampScriptsSources).toEqual(
+      expect.arrayContaining([
+        'https://cdn.ampproject.org/v0/amp-mustache-0.2.js',
+      ]),
+    );
   });
 
   it('warns on invalid versions of script tags', (): void => {
@@ -161,7 +183,7 @@ describe('react-amphtml', (): void => {
           change: ['AMP.setState({ myState: { input: event.value } })'],
         }}
       >
-        {(props: ActionOnProps): ReactElement => <input {...props as any} />}
+        {(props: ActionOnProps): ReactElement => <input {...(props as any)} />}
       </AmpHelpers.Action>,
     );
 
@@ -187,7 +209,7 @@ describe('react-amphtml', (): void => {
             }}
           >
             {(props1: ActionOnProps): ReactElement => (
-              <input {...props1 as any} />
+              <input {...(props1 as any)} />
             )}
           </AmpHelpers.Action>
         )}
@@ -323,17 +345,15 @@ describe('react-amphtml', (): void => {
     const validator = await amphtmlValidator.getInstance();
     const result = validator.validateString(htmlPage);
 
-    result.errors.forEach(
-      ({ line, col, message, specUrl, severity }): void => {
-        // eslint-disable-next-line no-console
-        (severity === 'ERROR' ? console.error : console.warn)(
-          // eslint-disable-line no-console
-          `line ${line}, col ${col}: ${message} ${
-            specUrl ? ` (see ${specUrl})` : ''
-          }`,
-        );
-      },
-    );
+    result.errors.forEach(({ line, col, message, specUrl, severity }): void => {
+      // eslint-disable-next-line no-console
+      (severity === 'ERROR' ? console.error : console.warn)(
+        // eslint-disable-line no-console
+        `line ${line}, col ${col}: ${message} ${
+          specUrl ? ` (see ${specUrl})` : ''
+        }`,
+      );
+    });
 
     expect(result.status).toBe('PASS');
   });

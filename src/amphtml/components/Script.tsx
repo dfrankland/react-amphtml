@@ -11,23 +11,45 @@ export interface ScriptProps {
   type?: string;
 }
 
+interface ScriptSource {
+  src?: string;
+  extension?: string;
+  version?: string;
+}
+
+export const getScriptSource = ({
+  src = '',
+  extension = '',
+  version = 'latest',
+}: ScriptSource): string => {
+  if (src) {
+    return src;
+  }
+
+  return `https://cdn.ampproject.org/v0/${extension}-${version}.js`;
+};
+
 const Script: React.FunctionComponent<ScriptProps> = ({
   src,
   extension,
   version,
   isCustomTemplate,
+  ...otherProps
 }): ReactElement | null => {
   if (!src && (!extension || !version)) return null;
+
   const props = src
-    ? {}
+    ? otherProps
     : {
+        ...otherProps,
         [`custom-${isCustomTemplate ? 'template' : 'element'}`]: extension,
       };
+
   return (
     <script
       async
       {...props}
-      src={src || `https://cdn.ampproject.org/v0/${extension}-${version}.js`}
+      src={getScriptSource({ src, extension, version })}
     />
   );
 };
