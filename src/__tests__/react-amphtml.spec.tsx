@@ -49,6 +49,31 @@ describe('react-amphtml', (): void => {
     expect(wrapper.find('script').length).toBe(4);
   });
 
+  it('should be able to statically export script sources', (): void => {
+    const ampScripts = new AmpScripts();
+    mount(
+      <AmpScriptsManager ampScripts={ampScripts}>
+        <div>
+          <Amp.AmpYoutube />
+          <Amp.AmpScript src="test.js" />
+          <Amp.AmpAccordion />
+        </div>
+      </AmpScriptsManager>,
+    );
+
+    const ampScriptSources = ampScripts.getScripts();
+
+    expect(ampScriptSources).toEqual(
+      expect.arrayContaining(
+        [
+          'https://cdn.ampproject.org/v0/amp-youtube-latest.js',
+          'https://cdn.ampproject.org/v0/amp-script-latest.js',
+          'https://cdn.ampproject.org/v0/amp-accordion-latest.js',
+        ].map((src): any => expect.objectContaining({ src })),
+      ),
+    );
+  });
+
   it('can specify versions of script tags', (): void => {
     const ampScripts = new AmpScripts();
     mount(
@@ -61,13 +86,14 @@ describe('react-amphtml', (): void => {
       </AmpScriptsManager>,
     );
 
-    const ampScriptElements = ampScripts.getScriptElements();
-    const wrapper = mount(<div>{ampScriptElements}</div>);
-    expect(
-      wrapper
-        .find('script[src="https://cdn.ampproject.org/v0/amp-mustache-0.2.js"]')
-        .exists(),
-    ).toBe(true);
+    const ampScriptsSources = ampScripts.getScripts();
+    expect(ampScriptsSources).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          src: 'https://cdn.ampproject.org/v0/amp-mustache-0.2.js',
+        }),
+      ]),
+    );
   });
 
   it('warns on invalid versions of script tags', (): void => {
