@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react';
 import PropTypes from 'prop-types';
+import getScriptSource from '../../lib/getScriptSource';
 
 export interface ScriptProps {
   src?: string;
@@ -10,24 +11,6 @@ export interface ScriptProps {
   nonce?: string;
   type?: string;
 }
-
-interface ScriptSource {
-  src?: string;
-  extension?: string;
-  version?: string;
-}
-
-export const getScriptSource = ({
-  src = '',
-  extension = '',
-  version = 'latest',
-}: ScriptSource): string => {
-  if (src) {
-    return src;
-  }
-
-  return `https://cdn.ampproject.org/v0/${extension}-${version}.js`;
-};
 
 const Script: React.FunctionComponent<ScriptProps> = ({
   src,

@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import { Script, ScriptProps } from '../amphtml/amphtml';
-import { getScriptSource } from '../amphtml/components/Script';
+import getScriptSource from '../lib/getScriptSource';
 import { AMP, AMP_SRCS, Formats } from '../constants';
 
 export interface ScriptSource {
@@ -34,13 +34,11 @@ export default class AmpScripts {
   }
 
   public getScripts(): ScriptSource[] {
-    return Array.from(this.scripts.values()).map(
-      ({ specName, version, src }): ScriptSource => {
-        return {
-          src: getScriptSource({ extension: specName, version, src }),
-          extension: specName,
-        };
-      },
+    return [...this.scripts.values()].map(
+      ({ specName, version, src }): ScriptSource => ({
+        src: getScriptSource({ extension: specName, version, src }),
+        extension: specName,
+      }),
     );
   }
 
