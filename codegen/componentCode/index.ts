@@ -8,6 +8,7 @@ import {
 } from '../constants';
 import tagNameToComponentName from '../tagNameToComponentName';
 import propsCodeReducer from './lib/propsCodeReducer';
+import withLayout from './lib/withLayoutAttributes';
 import mandatoryComponentOverrideTemplate from './templates/mandatoryComponentOverrideTemplate';
 import componentOverrideTemplate from './templates/componentOverrideTemplate';
 import componentTemplate from './templates/componentTemplate';
@@ -22,6 +23,7 @@ export default newRules.tags.reduce(
       dupeName,
       attrs,
       attrLists,
+      ampLayout,
       requiresExtension,
       extensionSpec,
       mandatoryAncestorSuggestedAlternative,
@@ -40,7 +42,8 @@ export default newRules.tags.reduce(
       });
     }
 
-    const propsCode = propsCodeReducer({ tagName, attrs, attrLists });
+    const reducedAttributes = propsCodeReducer({ tagName, attrs, attrLists });
+    const propsCode = withLayout(reducedAttributes, ampLayout);
 
     const requiresExtensionContext = (Array.isArray(requiresExtension)
       ? requiresExtension
