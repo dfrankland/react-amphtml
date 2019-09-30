@@ -1,14 +1,18 @@
-import kababCase from './kababCase';
 import { AmpLayout } from 'amphtml-validator-rules';
+import kababCase from './kababCase';
 import { PropsCode } from './propsCodeReducer';
 
-export default (propsCode: PropsCode, layout?: AmpLayout) => {
+export default (propsCode: PropsCode, layout?: AmpLayout): PropsCode => {
   if (!layout) {
     return propsCode;
   }
 
   const { supportedLayouts } = layout;
-  const layoutProps = supportedLayouts.map(kababCase).map(layout => `"${layout}"`);
+  const layoutProps = supportedLayouts.map(kababCase).map(
+    (layoutValue: string): string => {
+      return `"${layoutValue}"`;
+    },
+  );
   const layoutInterface = layoutProps.join(' | ');
 
   const { propTypesCode, defaultPropsCode, propsInterfaceCode } = propsCode;

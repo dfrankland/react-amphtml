@@ -1,2 +1,1 @@
-export default (attr: string): string =>
-  attr.toLowerCase().replace('_', '-');
+export default (attr: string): string => attr.toLowerCase().replace('_', '-');
